@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Autofixer Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14181C; --soft:#1E252B; --paper:#F2EEE6; --dim:#B5B0A4; --amber:#F2A93B; --red:#E26B61; --green:#5EA671;
+    --line:rgba(242,238,230,0.14);
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:inherit; margin:0; padding:0;}
+  body{background:var(--ink); color:var(--paper); font-family:'Inter',sans-serif; line-height:1.5; font-size:16px;}
+  h1,h2,h3{font-family:'Archivo Black',sans-serif; font-weight:400;}
+  button,input,select,textarea{font-family:inherit; font-size:0.95rem;}
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--amber); outline-offset:2px;}
+  [hidden]{display:none !important;}
+
+  .btn{background:var(--amber); color:var(--ink); font-weight:700; border:none; border-radius:5px; padding:11px 18px; cursor:pointer;}
+  .btn.ghost{background:none; color:var(--paper); border:1px solid var(--line); font-weight:600;}
+  .btn.danger{background:none; color:var(--red); border:1px solid var(--red); font-weight:600;}
+  input,select,textarea{background:var(--ink); color:var(--paper); border:1px solid var(--line); border-radius:5px; padding:10px 12px;}
+  .err{color:var(--red); font-size:0.9rem; margin-top:12px;}
+
+  /* LOGIN */
+  .login{min-height:100dvh; display:flex; align-items:center; justify-content:center; padding:24px;}
+  .login-card{width:100%; max-width:380px; background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:32px 28px;}
+  .brand{font-family:'Archivo Black',sans-serif; font-size:1.4rem;} .brand span{color:var(--amber);}
+  .login-card p.lead{color:var(--dim); font-size:0.93rem; margin:8px 0 22px;}
+  .login-card label{display:block; font-size:0.85rem; color:var(--dim);}
+  .login-card input{display:block; width:100%; margin:6px 0 16px;}
+  .login-card .btn{width:100%;}
+  .demo-note{margin-top:18px; font-size:0.8rem; color:var(--amber);}
+
+  /* APP */
+  .bar{display:flex; justify-content:space-between; align-items:center; padding:14px 24px; border-bottom:1px solid var(--line); position:sticky; top:0; background:rgba(20,24,28,0.95); z-index:5;}
+  .wrap{max-width:860px; margin:0 auto; padding:24px 20px 80px;}
+  .banner{background:rgba(242,169,59,0.14); color:var(--amber); font-size:0.85rem; padding:10px 14px; border-radius:6px; margin-bottom:18px;}
+  .tabs{display:flex; gap:6px; border-bottom:1px solid var(--line); margin-bottom:22px;}
+  .tab{background:none; border:none; color:var(--dim); font-weight:600; padding:12px 14px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px;}
+  .tab.active{color:var(--paper); border-bottom-color:var(--amber);}
+  .count{display:inline-block; min-width:22px; text-align:center; background:var(--amber); color:var(--ink); border-radius:11px; font-size:0.75rem; font-weight:700; padding:1px 7px; margin-left:6px;}
+  .count.zero{background:var(--line); color:var(--dim);}
+  .chips{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;}
+  .chip{background:none; border:1px solid var(--line); color:var(--dim); border-radius:20px; padding:7px 14px; cursor:pointer; font-size:0.88rem;}
+  .chip.active{border-color:var(--amber); color:var(--amber);}
+  .list{display:grid; gap:14px;}
+  .empty{color:var(--dim); padding:28px 0; text-align:center;}
+
+  .card{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:18px;}
+  .rr{display:flex; gap:18px; align-items:flex-start;}
+  .thumb{flex:0 0 130px;} .thumb img{width:130px; height:176px; object-fit:cover; border-radius:6px; border:1px solid var(--line); display:block; background:var(--ink);}
+  .body{flex:1; min-width:0;}
+  .top{display:flex; justify-content:space-between; gap:10px; align-items:flex-start;}
+  .card h3{font-size:1.05rem;}
+  .meta{color:var(--dim); font-size:0.9rem; margin-top:2px;}
+  .meta a{color:var(--paper); font-weight:600;}
+  .mech{font-size:0.88rem; margin-top:8px;}
+  .money{display:flex; gap:18px; flex-wrap:wrap; margin-top:10px; font-size:0.9rem; color:var(--dim);}
+  .money b{color:var(--paper); font-weight:600;} .money .total b{color:var(--amber);}
+  .when{font-size:0.78rem; color:var(--dim); margin-top:8px;}
+  .row{display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;}
+  details{margin-top:12px;} summary{cursor:pointer; color:var(--dim); font-size:0.86rem;}
+  details .fields{display:grid; gap:8px; margin-top:10px;} details textarea{min-height:64px; resize:vertical; width:100%;}
+  .pill{font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap;}
+  .pill.amber{background:rgba(242,169,59,0.16); color:var(--amber);} .pill.green{background:rgba(94,166,113,0.18); color:var(--green);}
+  .pill.red{background:rgba(226,107,97,0.18); color:var(--red);} .pill.grey{background:var(--line); color:var(--dim);}
+  .tags{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;} .tags span{font-size:0.72rem; color:var(--amber); border:1px solid var(--line); border-radius:3px; padding:2px 7px;}
+  .coords{display:flex; gap:8px;} .coords input{width:120px;}
+  .group{margin-top:26px;} .group>summary{font-size:0.95rem; color:var(--paper); font-weight:600;} .group .list{margin-top:12px;}
+
+  @media (max-width:640px){
+    .rr{flex-direction:column;} .thumb{flex:none;} .thumb img{width:100%; height:220px;}
+    .bar{padding:12px 16px;} .wrap{padding:18px 14px 80px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- SIGN IN -->
+<div class="login" id="login">
+  <form class="login-card" id="loginForm">
+    <div class="brand">Auto<span>fixer</span> Admin</div>
+    <p class="lead">Sign in to see repair requests and workshop applications.</p>
+    <label for="pw">Password</label>
+    <input id="pw" type="password" autocomplete="current-password" required>
+    <button class="btn" type="submit">Sign in</button>
+    <p class="err" id="loginErr" hidden></p>
+    <p class="demo-note" id="demoNote" hidden>Backend not connected: any password opens a demo with sample data.</p>
+  </form>
+</div>
+
+<!-- APP -->
+<div id="app" hidden>
+  <div class="bar">
+    <div class="brand">Auto<span>fixer</span> Admin</div>
+    <button class="btn ghost" id="signOut">Sign out</button>
+  </div>
+  <div class="wrap">
+    <div class="banner" id="demoBanner" hidden>Demo data. Nothing here is real and nothing is saved.</div>
+    <div class="tabs">
+      <button class="tab active" id="tabReq">Repair requests <span class="count" id="cReq">0</span></button>
+      <button class="tab" id="tabWs">Workshops <span class="count" id="cWs">0</span></button>
+    </div>
+
+    <section id="viewReq">
+      <div class="chips" id="chips"></div>
+      <div class="list" id="reqList"></div>
+    </section>
+
+    <section id="viewWs" hidden>
+      <div class="list" id="wsPending"></div>
+      <details class="group"><summary id="sumApproved">Approved workshops</summary><div class="list" id="wsApproved"></div></details>
+      <details class="group"><summary id="sumRejected">Rejected</summary><div class="list" id="wsRejected"></div></details>
+    </section>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+  // ---- Set this after deploying the backend ----
+  var API_BASE = window.AUTOFIXER_API || 'https://YOUR_PROJECT_REF.supabase.co/functions/v1'; // normally set via config.js
+  var ANON_KEY = window.AUTOFIXER_ANON_KEY || ''; // optional: only if Supabase rejects calls with 401 before reaching the function
+
+  var DEMO = API_BASE.indexOf('YOUR_PROJECT' + '_REF') !== -1;
+  var password = '', requests = [], workshops = [], filter = 'new';
+
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function $(id){ return document.getElementById(id); }
+  function naira(n){ return '\u20a6' + Number(n || 0).toLocaleString('en-NG'); }
+
+  // ---- Statuses in plain language ----
+  var STATUS = {
+    new:             { label: 'New',             group: 'new',      color: 'amber' },
+    contacted:       { label: 'Contacted',       group: 'progress', color: 'grey'  },
+    sent_to_partner: { label: 'With the lender', group: 'progress', color: 'grey'  },
+    approved:        { label: 'Lender approved', group: 'done',     color: 'green' },
+    declined:        { label: 'Lender declined', group: 'done',     color: 'red'   },
+    closed:          { label: 'Closed',          group: 'done',     color: 'grey'  }
+  };
+  var FILTERS = [['new','New'],['progress','In progress'],['done','Finished'],['all','All']];
+
+  // ---- Backend calls (or demo data when not connected) ----
+  function api(path, opts){
+    if(DEMO) return demoApi(path, opts || {});
+    var h = { 'x-admin-key': password, 'Content-Type': 'application/json' };
+    if(ANON_KEY){ h['apikey'] = ANON_KEY; h['Authorization'] = 'Bearer ' + ANON_KEY; }
+    return fetch(API_BASE + path, { method: (opts && opts.method) || 'GET', headers: h, body: opts && opts.body })
+      .then(function(r){
+        return r.json().catch(function(){ return {}; }).then(function(j){
+          if(r.status === 401) throw new Error('auth');
+          if(!r.ok) throw new Error(j.error || 'failed');
+          return j;
+        });
+      });
+  }
+
+  // ---- Sign in / out ----
+  $('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    password = $('pw').value;
+    $('loginErr').hidden = true;
+    start(true);
+  });
+  $('signOut').addEventListener('click', function(){
+    password = '';
+    try { sessionStorage.removeItem('af_admin_pw'); } catch(e){}
+    $('app').hidden = true; $('login').hidden = false; $('pw').value = '';
+  });
+  function start(fromForm){
+    Promise.all([loadRequests(), loadWorkshops()]).then(function(){
+      try { sessionStorage.setItem('af_admin_pw', password); } catch(e){}
+      $('login').hidden = true; $('app').hidden = false; $('demoBanner').hidden = !DEMO;
+      renderAll();
+    }).catch(function(err){
+      password = '';
+      try { sessionStorage.removeItem('af_admin_pw'); } catch(e){}
+      if(fromForm){
+        $('loginErr').textContent = err.message === 'auth' ? 'Wrong password. Please try again.' : "Couldn't reach the server. Check your connection and try again.";
+        $('loginErr').hidden = false;
+      }
+    });
+  }
+  $('demoNote').hidden = !DEMO;
+  try { var saved = sessionStorage.getItem('af_admin_pw'); if(saved && !DEMO){ password = saved; start(false); } } catch(e){}
+
+  // ---- Tabs ----
+  function showTab(name){
+    $('viewReq').hidden = name !== 'req'; $('viewWs').hidden = name !== 'ws';
+    $('tabReq').classList.toggle('active', name === 'req'); $('tabWs').classList.toggle('active', name === 'ws');
+  }
+  $('tabReq').addEventListener('click', function(){ showTab('req'); });
+  $('tabWs').addEventListener('click', function(){ showTab('ws'); });
+
+  // ---- Repair requests ----
+  function loadRequests(){ return api('/repairs/admin?status=all').then(function(j){ requests = j.requests || []; }); }
+  function inGroup(r, g){ return g === 'all' || (STATUS[r.status] && STATUS[r.status].group === g); }
+
+  function mechanicLine(r){
+    var w = r.workshops;
+    if(r.workshop_id && w) return '<p class="mech"><span class="pill green">Registered mechanic</span> <b>' + esc(w.name) + '</b> \u00b7 ' + esc(w.contact_name || '') + ' \u00b7 <a href="tel:+' + esc(w.phone_normalized || '') + '">' + esc(w.phone) + '</a><br><span class="meta">' + esc(w.address) + ', ' + esc(w.city) + '</span></p>';
+    if(r.workshop_id) return '<p class="mech"><span class="pill green">Registered mechanic</span> ' + esc(r.workshop_name || '') + '</p>';
+    if(r.workshop_name) return '<p class="mech"><span class="pill grey">Not registered</span> ' + esc(r.workshop_name) + '</p>';
+    return '<p class="mech meta">No mechanic given</p>';
+  }
+
+  function renderRequests(){
+    $('chips').innerHTML = FILTERS.map(function(f){
+      var n = requests.filter(function(r){ return inGroup(r, f[0]); }).length;
+      return '<button class="chip' + (filter === f[0] ? ' active' : '') + '" data-f="' + f[0] + '">' + f[1] + ' (' + n + ')</button>';
+    }).join('');
+    var rows = requests.filter(function(r){ return inGroup(r, filter); });
+    if(!rows.length){ $('reqList').innerHTML = '<p class="empty">' + (filter === 'new' ? 'No new requests. You\'re all caught up.' : 'Nothing here.') + '</p>'; return; }
+    $('reqList').innerHTML = rows.map(function(r){
+      var st = STATUS[r.status] || STATUS.new, ref = esc(r.reference);
+      var img = r.invoice_url ? '<a class="thumb" href="' + esc(r.invoice_url) + '" target="_blank" rel="noopener" title="Open full size"><img src="' + esc(r.invoice_url) + '" alt="Invoice ' + ref + '"></a>' : '<div class="thumb"><img alt="No image"></div>';
+      var opts = Object.keys(STATUS).map(function(k){ return '<option value="' + k + '"' + (r.status === k ? ' selected' : '') + '>' + STATUS[k].label + '</option>'; }).join('');
+      return '<article class="card rr">' + img + '<div class="body">' +
+        '<div class="top"><h3>' + esc(r.name) + '</h3><span class="pill ' + st.color + '">' + st.label + '</span></div>' +
+        '<p class="meta"><a href="tel:+' + esc(r.phone) + '">' + esc(r.phone) + '</a> \u00b7 ' + esc(r.vehicle_plate) + '</p>' + mechanicLine(r) +
+        '<div class="money"><span>Parts <b>' + naira(r.parts_cost) + '</b></span><span>Labor <b>' + naira(r.labor_cost) + '</b></span><span class="total">Total <b>' + naira(r.total_cost) + '</b></span></div>' +
+        '<p class="when">' + ref + ' \u00b7 received ' + esc(new Date(r.created_at).toLocaleString()) + (r.policy_version ? ' \u00b7 accepted policy ' + esc(r.policy_version) : '') + '</p>' +
+        '<div class="row"><select id="st-' + ref + '" aria-label="Status">' + opts + '</select><button class="btn" data-save="' + ref + '">Save</button></div>' +
+        '<details><summary>Notes and lender reference</summary><div class="fields"><input id="pr-' + ref + '" placeholder="Lender\'s reference" value="' + esc(r.partner_reference || '') + '"><textarea id="nt-' + ref + '" placeholder="Calls made, lender feedback\u2026">' + esc(r.notes || '') + '</textarea></div></details>' +
+        '</div></article>';
+    }).join('');
+  }
+
+  $('chips').addEventListener('click', function(e){ var b = e.target.closest('[data-f]'); if(b){ filter = b.dataset.f; renderRequests(); } });
+  $('reqList').addEventListener('click', function(e){
+    var b = e.target.closest('[data-save]'); if(!b) return;
+    var ref = b.dataset.save; b.disabled = true;
+    api('/repairs/' + ref + '/status', { method: 'PATCH', body: JSON.stringify({
+      status: $('st-' + ref).value, notes: $('nt-' + ref).value, partnerReference: $('pr-' + ref).value
+    }) }).then(loadRequests).then(renderAll).catch(function(){ b.disabled = false; alert('Could not save. Please try again.'); });
+  });
+
+  // ---- Workshops ----
+  function loadWorkshops(){ return api('/workshops/admin?status=all').then(function(j){ workshops = j.workshops || []; }); }
+  function tags(w){ return (w.specialties || []).map(function(s){ return '<span>' + esc(s) + '</span>'; }).join(''); }
+
+  function renderWorkshops(){
+    var by = { pending: [], approved: [], rejected: [] };
+    workshops.forEach(function(w){ (by[w.status] || by.pending).push(w); });
+    $('wsPending').innerHTML = by.pending.length ? '<h3 style="margin-bottom:2px;">Waiting for your approval</h3>' + by.pending.map(function(w){
+      return '<article class="card"><div class="top"><h3>' + esc(w.name) + '</h3><span class="pill amber">Pending</span></div>' +
+        '<p class="meta">' + esc(w.contact_name || '') + ' \u00b7 <a href="tel:+' + esc(w.phone_normalized || '') + '">' + esc(w.phone) + '</a> \u00b7 ' + esc(w.email) + '</p>' +
+        '<p class="meta">' + esc(w.address) + ', ' + esc(w.city) + '</p><div class="tags">' + tags(w) + '</div>' +
+        '<div class="row"><button class="btn" data-approve="' + w.id + '">Approve</button><button class="btn danger" data-reject="' + w.id + '">Reject</button></div>' +
+        '<details><summary>Add map coordinates (optional)</summary><div class="fields coords"><input id="lat-' + w.id + '" type="number" step="any" placeholder="Latitude"><input id="lng-' + w.id + '" type="number" step="any" placeholder="Longitude"></div></details></article>';
+    }).join('') : '<p class="empty">No workshops are waiting for approval.</p>';
+    function simple(list, pill, color){ return list.map(function(w){
+      return '<article class="card"><div class="top"><h3>' + esc(w.name) + '</h3><span class="pill ' + color + '">' + pill + '</span></div><p class="meta">' + esc(w.contact_name || '') + ' \u00b7 ' + esc(w.phone) + '</p><p class="meta">' + esc(w.address) + ', ' + esc(w.city) + '</p></article>';
+    }).join('') || '<p class="empty">None.</p>'; }
+    $('wsApproved').innerHTML = simple(by.approved, 'Approved', 'green');
+    $('wsRejected').innerHTML = simple(by.rejected, 'Rejected', 'red');
+    $('sumApproved').textContent = 'Approved workshops (' + by.approved.length + ')';
+    $('sumRejected').textContent = 'Rejected (' + by.rejected.length + ')';
+  }
+
+  function setWorkshop(id, body){
+    return api('/workshops/' + id + '/status', { method: 'PATCH', body: JSON.stringify(body) }).then(loadWorkshops).then(renderAll)
+      .catch(function(){ alert('Could not update the workshop. Please try again.'); });
+  }
+  $('wsPending').addEventListener('click', function(e){
+    var a = e.target.closest('[data-approve]'), r = e.target.closest('[data-reject]');
+    if(a){
+      var id = a.dataset.approve, body = { status: 'approved' };
+      var lat = parseFloat($('lat-' + id).value), lng = parseFloat($('lng-' + id).value);
+      if(!isNaN(lat) && !isNaN(lng)){ body.lat = lat; body.lng = lng; }
+      setWorkshop(id, body);
+    }
+    if(r && confirm('Reject this workshop?')) setWorkshop(r.dataset.reject, { status: 'rejected' });
+  });
+
+  function renderAll(){
+    var newCount = requests.filter(function(r){ return r.status === 'new'; }).length;
+    var pendingCount = workshops.filter(function(w){ return w.status === 'pending'; }).length;
+    $('cReq').textContent = newCount; $('cReq').classList.toggle('zero', !newCount);
+    $('cWs').textContent = pendingCount; $('cWs').classList.toggle('zero', !pendingCount);
+    renderRequests(); renderWorkshops();
+  }
+
+  // ---- Demo data (only used while the backend isn't connected) ----
+  var SAMPLE_INVOICE = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="260" height="352"><rect width="260" height="352" fill="#f5f3ee"/><rect x="20" y="24" width="120" height="12" fill="#999"/><g fill="#bbb"><rect x="20" y="70" width="220" height="8"/><rect x="20" y="92" width="200" height="8"/><rect x="20" y="114" width="210" height="8"/><rect x="20" y="136" width="180" height="8"/></g><rect x="120" y="290" width="120" height="14" fill="#777"/></svg>');
+  var demo = {
+    requests: [
+      { reference:'RR-A1B2C3D4', name:'Amaka Obi', phone:'2348030000001', vehicle_plate:'LAG-234-KJA', workshop_id:1, workshop_name:"Ade's Auto Clinic", mechanic_name:'Ade Bello',
+        workshops:{ name:"Ade's Auto Clinic", contact_name:'Ade Bello', phone:'0803 111 2222', phone_normalized:'2348031112222', address:'12 Allen Avenue, Ikeja', city:'Lagos' },
+        parts_cost:68000, labor_cost:12000, total_cost:80000, status:'new', created_at:new Date().toISOString(), invoice_url:SAMPLE_INVOICE, notes:'', partner_reference:'' },
+      { reference:'RR-E5F6A7B8', name:'Tunde Bakare', phone:'2348050000002', vehicle_plate:'ABJ-882-XY', workshop_id:null, workshop_name:'Roadside Garage',
+        workshops:null, parts_cost:24500, labor_cost:8000, total_cost:32500, status:'sent_to_partner', created_at:new Date(Date.now()-86400000).toISOString(), invoice_url:SAMPLE_INVOICE, notes:'Sent file by email.', partner_reference:'' }
+    ],
+    workshops: [
+      { id:1, name:"Ade's Auto Clinic", contact_name:'Ade Bello', phone:'0803 111 2222', phone_normalized:'2348031112222', email:'ade@example.com', city:'Lagos', address:'12 Allen Avenue, Ikeja', specialties:['Engine','Brakes'], status:'approved' },
+      { id:2, name:'Precision Auto Care', contact_name:'Grace Yakubu', phone:'0805 333 4444', phone_normalized:'2348053334444', email:'grace@example.com', city:'Abuja', address:'9 Ademola Adetokunbo St, Wuse 2', specialties:['Brakes','Tyres'], status:'pending' }
+    ]
+  };
+  function demoApi(path, opts){
+    var out = {};
+    if(path.indexOf('/repairs/admin') === 0) out = { requests: demo.requests };
+    else if(path.indexOf('/workshops/admin') === 0) out = { workshops: demo.workshops };
+    else if(opts.method === 'PATCH'){
+      var body = JSON.parse(opts.body), parts = path.split('/');
+      if(parts[1] === 'repairs'){ var r = demo.requests.filter(function(x){ return x.reference === parts[2]; })[0]; if(r){ r.status = body.status; r.notes = body.notes; r.partner_reference = body.partnerReference; } }
+      if(parts[1] === 'workshops'){ var w = demo.workshops.filter(function(x){ return String(x.id) === parts[2]; })[0]; if(w) w.status = body.status; }
+      out = { ok: true };
+    }
+    return Promise.resolve(out);
+  }
+</script>
+</body>
+</html>
