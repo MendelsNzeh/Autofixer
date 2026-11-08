@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Complete your Ecoswitch membership</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0F2E22; --card:#163D2E; --ink:#EAF6F0; --dim:#9FC9B8; --line:rgba(234,246,240,0.16); --accent:#5EEAA6; --warn:#F2A93B; --err:#FF8F85; --code:#0B1F17;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+  *{box-sizing:inherit; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.5; font-size:16px; -webkit-text-size-adjust:100%;}
+  [hidden]{display:none !important;}
+  .wrap{max-width:560px; margin:0 auto; padding:26px 18px 80px;}
+  .brand{font-weight:600; letter-spacing:0.16em; font-size:0.9rem; margin-bottom:26px;}
+  h1{font-size:1.7rem; line-height:1.15; letter-spacing:-0.02em; margin-bottom:6px;}
+  h2{font-size:1.15rem; margin:0 0 6px;}
+  p.sub{color:var(--dim); font-size:0.95rem; margin-bottom:18px;}
+  .steps{display:flex; gap:8px; margin:18px 0 24px;}
+  .steps span{flex:1; text-align:center; font-size:0.78rem; padding:8px 4px; border-radius:6px; border:1px solid var(--line); color:var(--dim);}
+  .steps span.on{background:var(--accent); color:#0F2E22; border-color:var(--accent); font-weight:700;}
+  .steps span.done{color:var(--accent); border-color:var(--accent);}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:20px; margin-bottom:16px;}
+  label{display:block; font-size:0.85rem; color:var(--dim); margin-bottom:14px;}
+  input[type=text],input[type=tel],input[type=email],input[type=password]{display:block; width:100%; margin-top:6px; padding:12px; font-size:16px; font-family:inherit; color:var(--ink); background:var(--code); border:1px solid var(--line); border-radius:6px;}
+  .btn{display:block; width:100%; text-align:center; background:var(--accent); color:#0F2E22; font-weight:700; font-size:1rem; padding:14px; border:none; border-radius:6px; cursor:pointer; font-family:inherit; -webkit-appearance:none; text-decoration:none;}
+  .btn:disabled{opacity:0.4; cursor:not-allowed;} .btn.ghost{background:transparent; color:var(--ink); border:1px solid var(--line); font-weight:600;}
+  .err{color:var(--err); font-size:0.9rem; margin-top:12px;} .ok{color:var(--accent); font-size:0.9rem; margin-top:12px;}
+  .idbox{background:var(--code); border:1px dashed var(--accent); border-radius:8px; padding:14px; text-align:center; margin:12px 0;}
+  .idbox small{display:block; color:var(--dim); font-size:0.78rem;} .idbox b{font-size:1.5rem; letter-spacing:0.08em;}
+  .termsbox{max-height:40dvh; overflow-y:auto; background:var(--code); border:1px solid var(--line); border-radius:6px; padding:14px; font-size:0.84rem; line-height:1.55; color:var(--dim);}
+  .termsbox h4{color:var(--ink); font-size:0.95rem; margin:16px 0 6px;} .termsbox p{margin:0 0 9px;} .termsbox ul{margin:0 0 9px 18px;} .termsbox b{color:var(--ink);}
+  mark.ph{background:rgba(242,169,59,0.22); color:var(--warn); padding:0 2px; border-radius:2px;}
+  .hint{font-size:0.82rem; color:var(--warn); margin:10px 0 12px;} .hint.done{color:var(--accent);}
+  .ack{display:flex; gap:10px; align-items:flex-start; font-size:0.86rem; color:var(--ink); margin-bottom:10px;} .ack input{margin-top:3px; width:18px; height:18px; flex:none; accent-color:var(--accent);} .ack.locked{opacity:0.4;}
+  .banner{background:rgba(242,169,59,0.14); color:var(--warn); border-radius:6px; padding:10px 12px; font-size:0.84rem; margin-bottom:14px;}
+  .bar{height:10px; background:var(--code); border-radius:5px; overflow:hidden; margin:10px 0 6px;} .bar i{display:block; height:100%; background:var(--accent);}
+  .two{display:grid; gap:14px;} .link{background:none; border:none; color:var(--dim); text-decoration:underline; font-size:0.88rem; cursor:pointer; padding:6px 0; font-family:inherit;}
+  .warn{border-left:4px solid var(--warn); padding:10px 12px; background:rgba(242,169,59,0.08); border-radius:4px; font-size:0.86rem; margin:12px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><a href="index.html" style="color:inherit;text-decoration:none;">ECOSWITCH</a></div>
+  <div class="banner" id="demoBanner" hidden>Preview only: nothing here is real and nothing is saved.</div>
+  <h1>Complete your membership</h1>
+  <p class="sub">Three short steps after you pay: sign up, join or create a group, and you're set.</p>
+  <div class="steps" id="steps"><span id="s1" class="on">1. Sign up</span><span id="s2">2. Group</span><span id="s3">3. Done</span></div>
+
+  <!-- RESUME -->
+  <div class="card" id="resumeCard">
+    <h2>Already signed up?</h2>
+    <p class="sub" style="margin-bottom:12px;">Sign in with your Membership ID and password. <b>Lost your ID or forgot your password?</b> Fill in the sign-up form below again with the same payment reference, phone number and email, and choose a new password: we will email you a code, show your ID again and save the new password.</p>
+    <label>Membership ID<input id="rId" type="text" autocapitalize="characters" autocorrect="off" placeholder="ECO-XXXXXX"></label>
+    <label>Password<input id="rPw" type="password" autocomplete="current-password"></label>
+    <button class="btn ghost" id="rGo" type="button">Sign in</button>
+    <p class="err" id="rErr" hidden></p>
+  </div>
+
+  <!-- STEP 1 -->
+  <section id="step1">
+    <div class="card">
+      <h2>1. Sign up</h2>
+      <p class="sub" style="margin-bottom:12px;">Use the same email you paid with. We check your payment with Paystack. You will use your Membership ID and this password to sign in.</p>
+      <label>Payment reference<input id="fRef" type="text" autocapitalize="none" autocorrect="off" placeholder="Shown on your Paystack receipt"></label>
+      <label>Full name<input id="fName" type="text" autocomplete="name"></label>
+      <label>Phone number<input id="fPhone" type="tel" autocomplete="tel" placeholder="0803 000 0000"></label>
+      <label>Email you paid with<input id="fEmail" type="email" autocomplete="email" autocapitalize="none"></label>
+      <label>Choose a password (8 or more characters)<input id="fPw" type="password" autocomplete="new-password"></label>
+      <label>Type the password again<input id="fPw2" type="password" autocomplete="new-password"></label>
+    </div>
+    <div class="card">
+      <h2>Membership Terms</h2>
+      <p class="sub" style="margin-bottom:10px;">Please read all of it, especially section 14 (Groups). Scroll to the end to unlock the boxes.</p>
+      <div class="banner" id="draftBanner" hidden>DRAFT: these terms still have blanks (highlighted) and are not ready for real members.</div>
+      <div class="termsbox" id="termsBox" tabindex="0" role="region" aria-label="Ecoswitch Membership Terms">
+<h4>1. About these terms</h4>
+<p><b>1.1</b> These terms apply to the Ecoswitch plan ("Membership"), an annual membership offered by Autofixer, which includes any of its subsidiaries now or in the future ("we", "us"). Membership is separate from the free Autofixer repair-financing service.</p>
+<p><b>1.2</b> Autofixer repair financing is governed by the Autofixer Customer Policy and by the loan agreement you sign with the lending partner. These terms do not change them. All loan terms, including repayment, security, default and recovery, are set only by the lending partner and are its responsibility. We do not give loans, collect repayments or recover vehicles.</p>
+<p><b>1.3</b> Repair loans offered through Membership are provided by our licensed partners, not by us, unless we say otherwise in writing. We are not a lender, bank or deposit-taker.</p>
+<p><b>1.4</b> By paying the Membership fee you confirm that you are at least 18, that you have read these terms and our <a href="privacy.html" target="_blank" rel="noopener" style="color:var(--accent);">Privacy Notice</a>, and that the details you gave us are true. Please read section 14 (Groups) carefully before you pay: it makes you responsible, together with other members, for defaults.</p>
+<h4>2. The fee and the Membership period</h4>
+<p><b>2.1</b> The Membership fee is ₦10,000 per year, charged automatically each year until you cancel (clause 5).</p>
+<p><b>2.2</b> You pay by bank card through Paystack, our payment processor. Paystack keeps a secure token of your card so that it can charge it each year, as clause 5 explains. We do not see or store your full card details.</p>
+<p><b>2.3</b> Membership starts when we receive your payment and lasts 12 months from that date. To receive the benefits you must also sign up and link a Group ID (clause 14.2).</p>
+<p><b>2.4</b> We will issue your Membership ID immediately when you finish sign-up, and in any case within 2 working days of payment, to the phone number or email you gave us. Keep it safe.</p>
+<p><b>2.5</b> The fee includes any VAT that applies.</p>
+<h4>3. What Membership includes</h4>
+<p><b>3.1</b> While your Membership is active, linked to a group and approved by us, you may receive the following, subject to the rest of these terms and to the terms of the partner that provides each item:</p>
+<ul>
+<li>a <b>Membership ID</b>;</li>
+<li><b>better repair loans</b> through our lending partners, on the terms each lender sets in your Loan Agreement (clause 7);</li>
+<li><b>CNG conversion</b>, so that you can convert your vehicle to CNG and pay small small (clause 8).</li>
+</ul>
+<p><b>3.2</b> We may add benefits during your Membership. We will not remove a benefit during your current 12 months unless the law, or our partner, makes us. We may add, replace or stop working with partners at any time. Partners are not named in these terms. Each partner is identified in the separate agreement you sign with it. If we stop working with a partner, we will use reasonable efforts to offer a comparable benefit through another partner.</p>
+<h4>4. What Membership does not guarantee</h4>
+<p><b>4.1</b> Membership does not guarantee that any repair loan will be approved or provided to you. Our lending partners decide each case using their own rules.</p>
+<p><b>4.2</b> Interest rates, fees and repayment terms are set by the lending partner and stated in the loan agreement you sign with them. We do not set them.</p>
+<p><b>4.3</b> Membership does not guarantee any loan on your behalf and does not make us responsible for anything you owe. Your group's responsibility for members' defaults is explained in section 14.</p>
+<h4>5. Renewal</h4>
+<p><b>5.1</b> Membership renews automatically every 12 months. On the anniversary of your payment, Paystack charges your card ₦10,000 for the next year, unless you have cancelled before that date.</p>
+<p><b>5.2</b> We will tell you at least one month before each renewal, by SMS and email, and by WhatsApp where you have given us your number. The notice will give the renewal date and the amount, and will tell you how to cancel.</p>
+<p><b>5.3</b> If Membership ends, the member benefits stop. Any loan agreement you already have with a partner continues under its own terms.</p>
+<p><b>5.4</b> If a renewal payment fails, for example because your card has expired, we will tell you and give you 14 days to update your card or pay another way. If it is still unpaid after that, Membership ends. If you renew within 30 days after it ends, the new year starts from the date of the new payment.</p>
+<h4>6. Cancellation and refunds</h4>
+<p><b>6.1</b> You can cancel at any time, for any reason, by contacting us at support@autofixer.fund. We will cancel it within 3 working days and confirm in writing. You will not be charged for a renewal if you cancelled before the renewal date. Your Membership and its benefits continue to the end of the year you have paid for. Cancelling does not end your group responsibility for loans that already exist (clause 14.9). Refunds are covered in clause 6.2.</p>
+<p><b>6.2</b> You may have a full refund if you ask within 7 days of paying and have not used a member benefit (for example, a loan approval or joining a group).</p>
+<p><b>6.3</b> If we cancel Membership because you broke these terms or acted dishonestly, we will not refund the fee, except where the law requires.</p>
+<p><b>6.4</b> Refunds go back to the payment method you used, usually within 10 working days.</p>
+<h4>7. Repair loans</h4>
+<p><b>7.1</b> Repair loans offered through Membership are provided by our licensed lending partners, not by us, under the Loan Agreement you sign with the lender. A repair loan can only be used to pay for the repair on your approved invoice. It is not paid to you in cash.</p>
+<p><b>7.2</b> Membership gives you access to apply for better repair loans. It does not guarantee approval, an amount or an interest rate. Each lender decides using its own rules, and the Customer Policy applies to every repair financing request.</p>
+<p><b>7.3</b> Your group's responsibility for repair loans is explained in section 14.</p>
+<h4>8. CNG conversion</h4>
+<p><b>8.1</b> Converting your vehicle to compressed natural gas (CNG) and paying for it in small instalments is provided by one of our partners, and its approved installers, under a separate agreement. If our lending partner finances the conversion, the Customer Policy applies to that financing.</p>
+<p><b>8.2</b> Membership gives you access to apply for CNG conversion. It does not guarantee approval. The conversion is carried out by independent installers, not by us. Only installers certified by the relevant regulator carry out conversions. Each conversion includes a safety check and a written installer warranty, which you will see before you pay.</p>
+<h4>9. Your Membership ID and your account</h4>
+<p><b>9.1</b> Your Membership ID is personal to you. You must not share it, sell it or let someone else use it.</p>
+<p><b>9.2</b> Tell us at once if it is lost or someone else may be using it. We may replace it.</p>
+<p><b>9.3</b> We may suspend or end your Membership if you give false information, misuse your ID, or break these terms or the Customer Policy. We will tell you why unless the law stops us.</p>
+<p><b>9.4</b> <i>Your password.</i> You choose a password when you sign up. Keep it private and do not share it. We never ask for it, and we store it in a form we cannot read. If you forget it, you can set a new one by signing up again with your payment reference, the same phone number and email, and the code we email you. This signs you out everywhere else. After 5 wrong passwords in a row, sign-in is locked for 15 minutes. Tell us at once if someone else may know your password.</p>
+<h4>10. Changes to these terms and the fee</h4>
+<p><b>10.1</b> We may change these terms or the fee. We will give you at least 30 days' notice. A change to the fee applies from your next renewal. Other changes that make your Membership worse apply only if you agree, or from your next renewal.</p>
+<p><b>10.2</b> If you do not accept a change, you may cancel under clause 6.</p>
+<h4>11. Your information</h4>
+<p><b>11.1</b> We use your name, phone number, email, Membership ID and payment details to run your Membership, take payment, send reminders and prevent fraud, as our Privacy Notice explains.</p>
+<p><b>11.2</b> Paystack processes your payment under its own terms and privacy notice. We receive a record of the payment, such as the reference, amount and date.</p>
+<p><b>11.3</b> We share what is needed with our partners so they can provide the benefits you have chosen.</p>
+<h4>12. Our responsibility to you</h4>
+<p><b>12.1</b> We will provide Membership with reasonable care and skill.</p>
+<p><b>12.2</b> We are not responsible for decisions made by our lending and other partners, or for loss that was not a foreseeable result of our breach.</p>
+<p><b>12.3</b> Nothing in these terms limits liability that cannot be limited by law, including liability for fraud or for death or personal injury caused by our negligence.</p>
+<h4>13. Complaints, law and general</h4>
+<p><b>13.1</b> Send complaints to support@autofixer.fund. We will acknowledge within 2 working days and aim to resolve within 14 days. If you are not satisfied you may escalate complaints about Membership to the Federal Competition and Consumer Protection Commission (FCCPC), and complaints about a loan to the lender’s own regulator.</p>
+<p><b>13.2</b> These terms are governed by the laws of the Federal Republic of Nigeria. We will try to settle any dispute by good-faith negotiation for 14 days. If it is not settled, the courts of Lagos State have jurisdiction. This does not limit any right you have by law that cannot be waived.</p>
+<p><b>13.3</b> If any part of these terms cannot be enforced, the rest continues to apply. A delay in enforcing a right is not a waiver of it.</p>
+<p><b>13.4</b> You may not transfer your Membership. We may transfer ours to a successor business, and we will tell you if we do.</p>
+<p><b>13.5</b> We keep a record of when you accepted these terms and paid.</p>
+<h4>14. Groups</h4>
+<p><b>14.1</b> <i>Why groups.</i> Membership is for people who join a group of members. The members of a group are responsible together for defaults by members of that group, as this section and the lender's group agreement explain. Groups exist to lower the risk of default, and that is why members receive the benefits in clause 3.</p>
+<p><b>14.2</b> <i>Sign-up and Group ID.</i> After you pay, you must sign up on our website and link your Membership ID to a Group ID. Any member can create a group, which gives them a Group ID. Anyone else joins an existing group as clause 14.13 explains. Your benefits start only when your Membership ID is linked to a Group ID, your group has at least 5 members, and we have approved your Membership (clause 14.16). You should link a group within 30 days of paying. Your 12 months run from the date of payment whether or not you have linked a group. If you have not linked a group within 60 days of paying, you may cancel and receive a full refund.</p>
+<p><b>14.3</b> <i>Choose carefully.</i> Only join a group with people you know and trust. We do not check whether other members can repay. A group needs at least 5 members before benefits start. There is no maximum size. You can belong to only one group at a time.</p>
+<p><b>14.4</b> <i>Group responsibility.</i> If a member of your group defaults on a loan made through our lending partner, whether and how the other members of the group are responsible is set only by the lender's group agreement. You will be shown it before you sign it.</p>
+<p><b>14.5</b> <i>Who you owe.</i> Group responsibility is owed to the lender named in the loan, and is set out in the group agreement that the lender asks you to sign before your first loan is approved. This section alone does not create a debt to the lender or to other members. The group agreement does.</p>
+<p><b>14.6</b> <i>Order of recovery.</i> The order in which the lender looks to the borrower's own security and to the group is set only by the lender's group agreement.</p>
+<p><b>14.7</b> <i>Early warning.</i> If a member misses a payment, the lender may tell the other members of the group the member's name and the amount overdue, as the lender's group agreement says.</p>
+<p><b>14.8</b> <i>Contribution between members.</i> If you pay more than your share of another member's default, you may recover that amount from that member. We will help by sharing the information the law allows.</p>
+<p><b>14.9</b> <i>Leaving or changing groups.</i> You may not leave your group, or move to another, while you or any member of your group has a loan that is not fully repaid, unless we agree in writing. Cancelling Membership does not end your group responsibility for loans that already exist.</p>
+<p><b>14.10</b> <i>Removal.</i> We may remove a member from a group, after 14 days’ written notice (or immediately if we suspect fraud), if they misuse the group, give false information, or default repeatedly. Removing someone does not release them from loans they already have.</p>
+<p><b>14.11</b> <i>Information about members.</i> To run groups, we share with the other members of your group your name and Membership ID and the group's status. Information about missed or defaulted payments is shared by the lender, as clause 14.7 says. Our <a href="privacy.html" target="_blank" rel="noopener" style="color:var(--accent);">Privacy Notice</a> explains this.</p>
+<p><b>14.12</b> <i>Our role.</i> We organise groups and Membership. We do not guarantee any member's loan and we are not responsible for a member's default.</p>
+<p><b>14.13</b> <i>Joining a group by code.</i> To join an existing group you enter its Group ID. We then email a one-time code to the member who created the group (the "creator"). The creator decides whether to give you the code. When you enter the correct code, you are added to the group automatically. A code expires after 15 minutes and stops working after 5 wrong attempts. Never give a code to anyone you do not know and trust: it lets that person into your group, and makes you responsible, together with the rest of the group, for their defaults.</p>
+<p><b>14.14</b> <i>The group creator.</i> The creator is a member like any other. The creator's only extra role is that join codes are sent to the creator's email address, so the creator decides who may join. You must keep your email account secure and tell us if you lose access to it. If a creator cannot be reached for 30 days or leaves, the members of the group may choose another member by majority vote to receive join codes, and we will send join codes to that member.</p>
+<p><b>14.15</b> <i>Groups below 5 members.</i> If a group has fewer than 5 members, for example because a member left or was removed, the benefits of its members pause until it has 5 members again. Loans that already exist continue under their terms, and group responsibility for them continues.</p>
+<p><b>14.16</b> <i>Approval.</i> Your benefits start only after we have approved your Membership. We review each member to check your identity and payment, and that your phone number and email match before approving, and we may refuse or withdraw approval if we cannot confirm who you are, if information you gave is false, or if we think a group is not safe. If we refuse, we will tell you and refund your fee in full within 10 working days. Approval is decided member by member, so one member's approval does not approve another.</p>
+<p><b>14.17</b> <i>Email check.</i> When you sign up, we send a one-time code to the email address on your payment. Your Membership is created only when you enter the code. This protects you and your group from people using someone else's payment. You must use the email address you paid with.</p>
+      </div>
+      <p class="hint" id="termsHint">↓ Scroll to the end of the terms to unlock the boxes below</p>
+      <label class="ack locked"><input type="checkbox" class="ackbox" disabled><span>I have read the Membership Terms, including section 14 (Groups).</span></label>
+      <label class="ack locked"><input type="checkbox" class="ackbox" disabled><span>I understand that if another member of my group defaults, I and the other members may be responsible, as the Membership Terms and the lender's group agreement say.</span></label>
+      <label class="ack locked"><input type="checkbox" class="ackbox" disabled><span>I will only create or join a group with people I know and trust, and I will never give a join code to someone I do not know and trust.</span></label>
+      <label class="ack locked"><input type="checkbox" class="ackbox" disabled><span>I understand my Membership renews automatically each year until I cancel, and that cancelling does not end my responsibility for loans that already exist.</span></label>
+      <label class="ack locked"><input type="checkbox" class="ackbox" disabled><span>I agree that other members of my group may be told my name and Membership ID and, as the lender's group agreement says, if I miss a payment or default, the amount overdue.</span></label>
+      <button class="btn" id="signupBtn" type="button" disabled>Send me a verification code</button>
+      <div id="codeBox" hidden style="margin-top:16px;">
+        <p class="ok" id="codeMsg"></p>
+        <label>6-digit code from your email<input id="sOtp" type="tel" inputmode="numeric" maxlength="6" placeholder="6-digit code"></label>
+        <button class="btn" id="signupVerifyBtn" type="button">Verify and create my membership</button>
+        <button class="link" id="signupResendBtn" type="button">Send a new code</button>
+      </div>
+      <p class="err" id="signupErr" hidden></p>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section id="step2" hidden>
+    <div class="card">
+      <h2>Your Membership ID</h2>
+      <div class="idbox"><small>Keep this safe. You need it with your password to come back.</small><b id="mId">ECO-------</b></div>
+    </div>
+    <div class="card">
+      <h2>2. Link a group</h2>
+      <p class="sub">Your benefits start when you are in a group of at least 5 members. Create your own group, or join one.</p>
+      <div class="warn">Members of a group share responsibility for defaults. Only join people you know and trust.</div>
+      <div class="two">
+        <div>
+          <button class="btn" id="createBtn" type="button">Create a new group</button>
+          <p class="sub" style="margin:8px 0 0;">You get a Group ID to share with people you trust. You'll receive their join codes by email.</p>
+        </div>
+        <div style="border-top:1px solid var(--line); padding-top:14px;">
+          <label>Or join a group: enter its Group ID<input id="gCode" type="text" autocapitalize="characters" autocorrect="off" placeholder="GRP-XXXXXX"></label>
+          <button class="btn ghost" id="requestBtn" type="button">Ask to join</button>
+          <div id="otpBox" hidden style="margin-top:14px;">
+            <p class="ok" id="otpMsg"></p>
+            <label>Code from the group creator<input id="gOtp" type="tel" inputmode="numeric" maxlength="6" placeholder="6-digit code"></label>
+            <button class="btn" id="verifyBtn" type="button">Join the group</button>
+            <button class="link" id="resendBtn" type="button">Send a new code</button>
+          </div>
+        </div>
+      </div>
+      <p class="err" id="groupErr" hidden></p>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section id="step3" hidden>
+    <div class="card">
+      <h2>3. You're in a group</h2>
+      <div class="idbox"><small>Membership ID</small><b id="dId"></b></div>
+      <div class="idbox"><small>Group ID</small><b id="dGroup"></b></div>
+      <p id="dApproval" style="font-weight:600; margin-bottom:6px;"></p>
+      <p id="dCount" style="font-weight:600;"></p>
+      <div class="bar"><i id="dBar" style="width:0"></i></div>
+      <p class="sub" id="dMsg"></p>
+      <div class="warn" id="creatorNote" hidden>You created this group. Share the Group ID only with people you know and trust. When someone asks to join, a code is emailed to you. Give it to them only if you trust them: once they use it they join your group, and the group shares responsibility for their defaults.</div>
+      <a class="btn" href="dashboard.html" style="margin-bottom:10px;">Open my dashboard</a>
+      <button class="btn ghost" id="refreshBtn" type="button">Refresh</button>
+    </div>
+  </section>
+</div>
+
+<script src="config.js"></script>
+<script>
+  var API_BASE = window.AUTOFIXER_API || 'https://YOUR_PROJECT_REF.supabase.co/functions/v1'; // normally set via config.js
+  var ANON_KEY = window.AUTOFIXER_ANON_KEY || '';
+  var TERMS_VERSION = 'm0.7-draft'; // must equal MEMBERSHIP_TERMS_VERSION on the server; change both when the terms text changes
+  var MIN_GROUP = 5;
+  var DEMO = API_BASE.indexOf('YOUR_PROJECT' + '_REF') !== -1 || API_BASE.indexOf('YOUR-REF') !== -1;
+  var me = { id: '', token: '' }, termsRead = false;
+
+  function $(id){ return document.getElementById(id); }
+  function show(id, msg){ var e = $(id); e.textContent = msg || ''; e.hidden = !msg; }
+  function blocked(){ return !DEMO && !!document.querySelector('#termsBox mark.ph'); }
+  var TEXT = {
+    password_required:'Please choose a password.', weak_password:'Choose a stronger password: at least 8 characters, and not an easy one like 12345678 or password.', password_mismatch:'The two passwords do not match.',
+    invalid_login:'Wrong Membership ID or password. If you forgot it, use the sign-up form below to set a new password.', session_expired:'Your sign-in has ended. Please sign in again.',
+    reference_required:'Enter your payment reference from your Paystack receipt.', invalid_name:'Please enter your full name.', invalid_phone:'Please check your phone number.', invalid_email:'Please check your email address.',
+    terms_required:'Please read the terms and tick all five boxes.', terms_outdated:'The terms were updated. Please reload this page and read the latest version.',
+    reference_already_used:'This payment has already been used to create a membership. If it is yours, sign in above with your Membership ID.',
+    payment_not_found:'We could not find a successful payment with that reference. Check it on your receipt.', payment_too_low:'That payment is less than the membership fee.',
+    email_mismatch:'Use the same email address you paid with.', payment_check_unavailable:'We could not check your payment just now. Please try again in a minute.', save_failed:'Something went wrong saving. Please try again.',
+    not_found:'We could not find that Membership ID with that phone number.', already_in_group:'You are already in a group.', group_not_found:'We could not find that Group ID. Check it with the creator.',
+    too_many_requests:'You have asked for too many codes. Please wait an hour and try again.', email_failed:'We could not send the code just now. Please try again.',
+    otp_wrong:'That code is not right.', otp_invalid_or_expired:'That code is wrong or has expired. Ask to join again to get a new one.', too_many_attempts:'Too many wrong tries. Ask to join again to get a new code.'
+  };
+
+  // ---------- backend calls (or an in-page preview when not connected) ----------
+  var demoState = { member: null, group: null, joiners: 0 };
+  function demoSummary(){ var g = demoState.group; return { membershipId:'ECO-DEMO42', fullName:'Demo Member', status: g ? 'linked' : 'pending_group', approval:'pending', group: g ? { groupCode: g.code, memberCount: g.count, minimum: MIN_GROUP, active: g.count >= MIN_GROUP, isCreator: g.creator } : null, benefitsActive: false }; }
+  function demoApi(path, body){
+    if(path === '/signup/start') return { status:200, body:{ sent:true, email:'d***@mail.com', expiresInMinutes:15 } };
+    if(path === '/signup/verify'){ if(String(body.otp) !== '123456') return { status:400, body:{ error:'otp_wrong', attemptsLeft:4 } }; demoState.member = true; return { status:201, body:{ membershipId:'ECO-DEMO42', status:'pending_group', token:'demo-token-demo-token-demo' } }; }
+    if(path === '/login') return { status:200, body:{ token:'demo-token-demo-token-demo', membershipId:'ECO-DEMO42' } };
+    if(path === '/status') return demoState.member ? { status:200, body: demoSummary() } : { status:404, body:{ error:'not_found' } };
+    if(path === '/group/create'){ demoState.group = { code:'GRP-DEMO77', count:1, creator:true }; return { status:201, body: demoSummary() }; }
+    if(path === '/group/request-join') return { status:200, body:{ sent:true, creatorEmail:'d***@mail.com', expiresInMinutes:15 } };
+    if(path === '/group/verify-join'){ if(String(body.otp) !== '123456') return { status:400, body:{ error:'otp_wrong', attemptsLeft:4 } }; demoState.group = { code:String(body.groupCode).toUpperCase(), count:7, creator:false }; return { status:200, body: Object.assign({ joined:true }, demoSummary()) }; }
+    return { status:404, body:{ error:'not_found' } };
+  }
+  function api(path, body){
+    if(DEMO) return new Promise(function(res){ setTimeout(function(){ res(demoApi(path, body)); }, 350); });
+    var h = { 'Content-Type':'application/json' };
+    if(ANON_KEY){ h['apikey'] = ANON_KEY; h['Authorization'] = 'Bearer ' + ANON_KEY; }
+    if(me.token) h['x-member-token'] = me.token;
+    return fetch(API_BASE + '/members' + path, { method:'POST', headers:h, body: JSON.stringify(body || {}) })
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return { status:r.status, body:j }; }); });
+  }
+  function signOutLocal(){ me = { id: '', token: '' }; try{ sessionStorage.removeItem('eco_me'); }catch(e){} }
+  function fail(el, res){
+    var e = res.body && res.body.error;
+    if(e === 'session_expired'){ signOutLocal(); setStep(1); return show('rErr', TEXT.session_expired); }
+    if(e === 'locked') return show(el, 'Too many wrong tries. Please wait ' + (res.body.minutes || 15) + ' minutes, or set a new password with the sign-up form below.');
+    show(el, TEXT[e] || 'Something went wrong. Please check your connection and try again.');
+  }
+
+  // ---------- screens ----------
+  function setStep(n){
+    $('step1').hidden = n !== 1; $('step2').hidden = n !== 2; $('step3').hidden = n !== 3; $('resumeCard').hidden = n !== 1;
+    ['s1','s2','s3'].forEach(function(id, i){ $(id).className = (i + 1 === n) ? 'on' : (i + 1 < n ? 'done' : ''); });
+    window.scrollTo(0, 0);
+  }
+  function remember(){ try{ sessionStorage.setItem('eco_me', JSON.stringify(me)); }catch(e){} }
+  function render(sum){
+    $('mId').textContent = sum.membershipId; $('dId').textContent = sum.membershipId;
+    if(!sum.group){ setStep(2); return; }
+    var g = sum.group, pct = Math.min(100, Math.round(g.memberCount * 100 / g.minimum));
+    $('dGroup').textContent = g.groupCode;
+    $('dCount').textContent = g.memberCount + ' of ' + g.minimum + ' members' + (g.memberCount >= g.minimum ? '' : ' needed');
+    $('dBar').style.width = pct + '%';
+    var ap = sum.approval || 'pending';
+    $('dApproval').textContent = 'Approval by our team: ' + (ap === 'approved' ? 'Approved' : ap === 'rejected' ? 'Not approved' : 'Waiting');
+    $('dMsg').textContent = sum.benefitsActive ? 'Your group has ' + g.minimum + ' or more members and our team has approved you. Your member benefits are active.'
+      : ap === 'rejected' ? 'Our team could not approve your membership. Please contact us.'
+      : (g.active ? 'Your group is complete. Your membership is waiting for approval by our team. Benefits start once you are approved.'
+                  : 'Your benefits start when your group has ' + g.minimum + ' members and our team has approved you. Share your Group ID with people you trust.');
+    $('creatorNote').hidden = !g.isCreator;
+    setStep(3);
+  }
+
+  // ---------- Terms gate ----------
+  var acks = document.querySelectorAll('.ackbox');
+  function termsEnd(){
+    var b = $('termsBox'); if(termsRead || b.clientHeight === 0) return;
+    if(b.scrollTop + b.clientHeight >= b.scrollHeight - 6){
+      termsRead = true;
+      for(var i = 0; i < acks.length; i++){ acks[i].disabled = false; acks[i].parentNode.classList.remove('locked'); }
+      $('termsHint').textContent = '✓ You have reached the end. Please confirm each statement below.'; $('termsHint').className = 'hint done';
+    }
+    updateSignup();
+  }
+  function updateSignup(){
+    var all = Array.prototype.every.call(acks, function(a){ return a.checked; });
+    $('signupBtn').disabled = !(termsRead && all) || blocked();
+  }
+  $('termsBox').addEventListener('scroll', termsEnd);
+  for(var k = 0; k < acks.length; k++){ acks[k].addEventListener('change', updateSignup); }
+  $('draftBanner').hidden = !document.querySelector('#termsBox mark.ph');
+  if(blocked()) show('signupErr', 'These terms still have blanks to fill in, so memberships cannot be created yet.');
+  if(DEMO) $('demoBanner').hidden = false;
+  var qs = new URLSearchParams(window.location.search); $('fRef').value = qs.get('reference') || qs.get('trxref') || '';
+  setTimeout(termsEnd, 300);
+
+  // ---------- actions ----------
+  var pending = null;
+  function startSignup(){
+    var phone = $('fPhone').value.trim(), email = $('fEmail').value.trim(), name = $('fName').value.trim(), ref = $('fRef').value.trim();
+    if(!ref) return show('signupErr', TEXT.reference_required);
+    if(name.length < 2) return show('signupErr', TEXT.invalid_name);
+    if(phone.replace(/\D/g, '').length < 10) return show('signupErr', TEXT.invalid_phone);
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return show('signupErr', TEXT.invalid_email);
+    var pw = $('fPw').value;
+    if(pw.length < 8) return show('signupErr', TEXT.weak_password);
+    if(pw !== $('fPw2').value) return show('signupErr', TEXT.password_mismatch);
+    show('signupErr', ''); $('signupBtn').disabled = true;
+    pending = { ref: ref, phone: phone };
+    api('/signup/start', { reference:ref, fullName:name, phone:phone, email:email, password:pw, accepted:'true', acks:'1,2,3,4,5', termsVersion:TERMS_VERSION }).then(function(res){
+      if(res.status === 200){ $('codeBox').hidden = false; $('codeMsg').textContent = 'We emailed a 6-digit code to ' + res.body.email + '. Enter it below. It works for ' + res.body.expiresInMinutes + ' minutes.'; $('sOtp').focus(); }
+      else { fail('signupErr', res); }
+      updateSignup();
+    }).catch(function(){ show('signupErr', TEXT.save_failed); updateSignup(); });
+  }
+  $('signupBtn').addEventListener('click', startSignup); $('signupResendBtn').addEventListener('click', startSignup);
+  $('signupVerifyBtn').addEventListener('click', function(){
+    if(!pending) return; show('signupErr', ''); $('signupVerifyBtn').disabled = true;
+    api('/signup/verify', { reference: pending.ref, otp: $('sOtp').value.trim() }).then(function(res){
+      $('signupVerifyBtn').disabled = false;
+      if(res.status === 200 || res.status === 201){
+        me = { id: res.body.membershipId, token: res.body.token }; remember(); $('fPw').value = ''; $('fPw2').value = '';
+        return api('/status', {}).then(function(s){ if(s.status === 200) render(s.body); else fail('signupErr', s); });
+      }
+      fail('signupErr', res); if(res.body && res.body.error === 'otp_wrong') show('signupErr', TEXT.otp_wrong + ' ' + res.body.attemptsLeft + ' tries left.');
+    }).catch(function(){ $('signupVerifyBtn').disabled = false; show('signupErr', TEXT.save_failed); });
+  });
+  $('rGo').addEventListener('click', function(){
+    var id = $('rId').value.trim(), pw = $('rPw').value; show('rErr', '');
+    api('/login', { membershipId:id, password:pw }).then(function(res){ if(res.status !== 200){ fail('rErr', res); return; } me = { id: res.body.membershipId, token: res.body.token }; remember(); $('rPw').value = ''; return api('/status', {}).then(function(s){ if(s.status === 200) render(s.body); else fail('rErr', s); }); })
+      .catch(function(){ show('rErr', TEXT.save_failed); });
+  });
+  $('createBtn').addEventListener('click', function(){
+    show('groupErr', ''); $('createBtn').disabled = true;
+    api('/group/create', {}).then(function(res){ $('createBtn').disabled = false; if(res.status === 201) render(res.body); else fail('groupErr', res); })
+      .catch(function(){ $('createBtn').disabled = false; show('groupErr', TEXT.save_failed); });
+  });
+  function requestCode(){
+    var code = $('gCode').value.trim(); if(!code) return show('groupErr', 'Enter the Group ID first.'); show('groupErr', '');
+    $('requestBtn').disabled = true;
+    api('/group/request-join', { groupCode: code }).then(function(res){
+      $('requestBtn').disabled = false;
+      if(res.status === 200){ $('otpBox').hidden = false; $('otpMsg').textContent = 'We emailed a 6-digit code to the group creator (' + res.body.creatorEmail + '). Ask them for it. It works for ' + res.body.expiresInMinutes + ' minutes.'; $('gOtp').focus(); }
+      else fail('groupErr', res);
+    }).catch(function(){ $('requestBtn').disabled = false; show('groupErr', TEXT.save_failed); });
+  }
+  $('requestBtn').addEventListener('click', requestCode); $('resendBtn').addEventListener('click', requestCode);
+  $('verifyBtn').addEventListener('click', function(){
+    show('groupErr', ''); $('verifyBtn').disabled = true;
+    api('/group/verify-join', { groupCode: $('gCode').value.trim(), otp: $('gOtp').value.trim() }).then(function(res){
+      $('verifyBtn').disabled = false;
+      if(res.status === 200) render(res.body);
+      else { fail('groupErr', res); if(res.body && res.body.error === 'otp_wrong') show('groupErr', TEXT.otp_wrong + ' ' + res.body.attemptsLeft + ' tries left.'); }
+    }).catch(function(){ $('verifyBtn').disabled = false; show('groupErr', TEXT.save_failed); });
+  });
+  $('refreshBtn').addEventListener('click', function(){ api('/status', {}).then(function(res){ if(res.status === 200) render(res.body); else fail('groupErr', res); }); });
+  try{ var saved = JSON.parse(sessionStorage.getItem('eco_me') || 'null'); if(saved && saved.id && saved.token){ me = saved; api('/status', {}).then(function(res){ if(res.status === 200) render(res.body); else signOutLocal(); }); } }catch(e){}
+</script>
+</body>
+</html>
