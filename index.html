@@ -6,7 +6,7 @@
 <title>Autofixer — Repair now, pay small small</title>
 <meta name="description" content="Send Autofixer your repair invoice. If our lending partner approves it, you repay the repair in small instalments.">
 <meta property="og:title" content="Autofixer — Repair now, pay small small">
-<meta property="og:description" content="Photograph your repair invoice and request financing. No subscription, no application fee.">
+<meta property="og:description" content="Photograph your repair invoice and request financing.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,7 @@
   h1,h2,h3,h4{font-family:'Archivo Black',sans-serif; font-weight:400; letter-spacing:-0.01em;}
   a{color:inherit; text-decoration:none;}
   .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
-  button,input,select{font-family:inherit;}
+  button,input,select,textarea{font-family:inherit;}
 
   header{position:sticky; top:0; z-index:10; background:rgba(20,24,28,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--line);}
   nav.wrap{display:flex; align-items:center; justify-content:space-between; height:66px;}
@@ -62,6 +62,19 @@
   .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
   .stat b{display:block; font-family:'Archivo Black',sans-serif; font-size:1.9rem; color:var(--amber);} .stat span{color:var(--paper-dim); font-size:0.9rem;}
 
+  .pgrid{display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:820px;}
+  .pcard{background:var(--ink-soft); border:1px solid var(--line); border-radius:10px; padding:26px 24px; display:flex; flex-direction:column; position:relative;}
+  .pcard.featured{border:2px solid var(--amber);}
+  .pcard .ptag{position:absolute; top:-12px; left:20px; background:var(--amber); color:var(--ink); font-size:0.72rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:4px 10px; border-radius:3px;}
+  .pcard h3{font-size:1.1rem;} .pprice{font-family:'Archivo Black',sans-serif; font-size:1.9rem; margin:10px 0 4px;} .pprice small{font-family:'Inter',sans-serif; font-size:0.85rem; color:var(--paper-dim);}
+  .gnote{font-size:0.82rem; color:var(--amber); margin:-8px 0 14px;}
+  .pnote{font-size:0.8rem; color:var(--paper-dim); margin:-2px 0 0;}
+  .pcard ul{list-style:none; margin:14px 0 24px; font-size:0.93rem; flex:1;}
+  .pcard li{padding:9px 0 9px 26px; border-top:1px solid var(--line); position:relative;}
+  .pcard li::before{content:"\2713"; position:absolute; left:2px; color:#7FC48F; font-weight:700;}
+  .pcard li.no{color:var(--paper-dim);} .pcard li.no::before{content:"\2715"; color:var(--brake);}
+  .pcard .btn-primary,.pcard .btn-ghost{display:block; width:100%; text-align:center;}
+  #ecoLink{background:#5EEAA6; color:#0F2E22; border-color:#5EEAA6; font-weight:700;}
   .finder{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
   .finder select{background:var(--ink-soft); color:var(--paper); border:1px solid var(--line); border-radius:4px; padding:12px; font-size:0.9rem;}
   .or{color:var(--paper-dim); font-size:0.88rem;}
@@ -88,7 +101,9 @@
   .modal h3{font-size:1.25rem;} .sub{color:var(--paper-dim); font-size:0.92rem; margin:8px 0 20px;}
   .step-pane[hidden]{display:none;}
   label{display:block; font-size:0.84rem; color:var(--paper-dim); margin-bottom:14px;}
-  input[type=text],input[type=tel],input[type=email],input[type=number],select.field{display:block; width:100%; margin-top:6px; background:var(--ink); border:1px solid var(--line); color:var(--paper); border-radius:4px; padding:11px 12px; font-size:0.95rem;}
+  input[type=text],input[type=tel],input[type=email],input[type=number],input[type=date],select.field{display:block; width:100%; margin-top:6px; background:var(--ink); border:1px solid var(--line); color:var(--paper); border-radius:4px; padding:11px 12px; font-size:0.95rem;}
+  input[type=datetime-local],textarea.field{display:block; width:100%; margin-top:6px; background:var(--ink); border:1px solid var(--line); color:var(--paper); border-radius:4px; padding:11px 12px; font-size:0.95rem; font-family:inherit;}
+  textarea.field{min-height:72px; resize:vertical;}
   .hp{position:absolute; left:-9999px; width:1px; height:1px; opacity:0;}
   .consent{display:flex; gap:10px; align-items:flex-start; font-size:0.82rem; line-height:1.45;}
   .consent input{margin-top:3px; accent-color:var(--amber);}
@@ -119,13 +134,17 @@
   .specs{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
   .specs button{background:var(--ink); border:1px solid var(--line); color:var(--paper); border-radius:5px; padding:13px 8px; font-size:0.86rem; font-weight:600; cursor:pointer;}
   .specs button.on{border-color:var(--amber); background:rgba(242,169,59,0.14); color:var(--amber);}
+  .wterms{border:1px solid var(--line); border-radius:6px; padding:14px 16px; background:var(--ink); font-size:0.84rem; line-height:1.55; color:var(--paper-dim); margin:6px 0 12px;}
+  .wterms b{color:var(--paper);} .wterms ol{margin:8px 0 8px 18px;} .wterms li{margin-bottom:6px;}
+  .callrow{display:flex; gap:10px; margin:14px 0;} .callrow a{flex:1;}
 
   @media (max-width:760px){
-    .hero-grid,.steps,.stats,.partner .wrap,.invoice-grid{grid-template-columns:1fr;}
+    .hero-grid,.steps,.stats,.partner .wrap,.invoice-grid,.pgrid{grid-template-columns:1fr;}
     .hero{padding-top:56px;} .camera{aspect-ratio:4/3;}
     .modal{padding:24px 20px;}
   }
   @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} .spinner{animation:none;} }
+
 </style>
 </head>
 <body>
@@ -147,7 +166,6 @@
         <button class="btn-primary" onclick="openRequest()">Request repair financing</button>
         <a class="btn-ghost" href="#workshops">I run a workshop</a>
       </div>
-      <p class="fineprint">No subscription. No application fee. Final approval is decided by our licensed lending partner.</p>
     </div>
     <div class="ticket" aria-hidden="true">
       <div class="t-head"><span>REPAIR INVOICE</span><span>Your mechanic's</span></div>
@@ -174,12 +192,51 @@
   </div>
 </section>
 
+<section id="plans">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Plans</div>
+      <h2>Start free. Upgrade when you are ready.</h2>
+    </div>
+    <div class="pgrid">
+      <div class="pcard">
+        <h3>Free forever</h3>
+        <div class="pprice">₦0</div>
+        <ul>
+          <li>Access to quality mechanics</li>
+          <li>Repair loans</li>
+          <li>Loan approval by lending partners, determined from your bank data</li>
+          <li>Clear an outstanding loan before getting another</li>
+          <li>Interest rates determined by lending partners</li>
+        </ul>
+        <button class="btn-primary" onclick="openRequest()">Request repair financing</button>
+      </div>
+      <div class="pcard featured">
+        <span class="ptag">Ecoswitch plan</span>
+        <h3>Ecoswitch</h3>
+        <div class="pprice">₦10,000 <small>/ year</small></div>
+        <p class="pnote">Renews automatically each year. Cancel any time.</p>
+        <ul>
+          <li>Membership ID</li>
+          <li>Better repair loans through our lending partners</li>
+          <li>Loan approval by lending partners, determined from your bank data and your vehicle value</li>
+          <li>One loan approval, multiple repairs</li>
+          <li>Convert to CNG and pay small small</li>
+        </ul>
+        <p class="gnote">You join a group of at least 5 members. Group members share responsibility for defaults. Our team approves each membership before benefits start. Read the Membership Terms before you pay.</p>
+        <a class="btn-ghost" id="ecoLink" href="ecoswitch.html">Join Ecoswitch</a>
+        <p class="pnote" style="margin-top:12px;text-align:center;">Already paid? <a href="join.html" style="text-decoration:underline;">Complete your membership</a> &middot; <a href="dashboard.html" style="text-decoration:underline;">Member dashboard</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="find-workshop">
   <div class="wrap">
     <div class="section-head">
       <div class="kicker">Find a workshop</div>
       <h2>Autofixer partner workshops</h2>
-      <p>Workshops that have registered with Autofixer and been approved by our team.</p>
+      <p>Workshops that have registered with Autofixer and been approved by our team. Book one and we show you the mechanic's phone number.</p>
     </div>
     <div class="finder">
       <button class="btn-primary" onclick="findNearest()">Use my location</button>
@@ -197,7 +254,7 @@
   <div class="wrap">
     <div class="section-head"><div class="kicker">Why Autofixer</div><h2>Simple to start</h2></div>
     <div class="stats">
-      <div class="stat"><b>₦0</b><span>Subscription or application fee</span></div>
+      <div class="stat"><b>₦0</b><span>To request repair financing</span></div>
       <div class="stat"><b>1 invoice</b><span>is all we ask for to start</span></div>
       <div class="stat"><b>Licensed</b><span>lending partner makes the decision</span></div>
     </div>
@@ -208,7 +265,7 @@
   <div class="wrap">
     <div>
       <h2>Run a workshop?</h2>
-      <p>Register with Autofixer. Once our team approves you, you'll appear in the list customers use to find a workshop.</p>
+      <p>Register with Autofixer. Once our team approves you, you'll appear in the list customers use to find and book a workshop.</p>
     </div>
     <button class="btn-primary" onclick="openWorkshop()">Register your workshop</button>
   </div>
@@ -217,7 +274,7 @@
 <footer>
   <div class="wrap">
     <span>© 2026 Autofixer</span>
-    <span>Repairs are financed by a licensed lending partner. Approval is not guaranteed.</span>
+    <span>Repairs are financed by a licensed lending partner. Approval is not guaranteed. <a href="privacy.html" style="text-decoration:underline;">Privacy</a> &middot; <a href="dashboard.html#repairs" style="text-decoration:underline;">Track a repair</a></span>
   </div>
 </footer>
 
@@ -234,7 +291,7 @@
       <label>Vehicle registration<input id="fPlate" type="text" placeholder="LAG-234-KJA"></label>
       <div class="hp" aria-hidden="true"><label>Website<input id="fWebsite" type="text" tabindex="-1" autocomplete="off"></label></div>
       <p class="msg-err" id="detailsErr" hidden></p>
-      <button class="btn-primary full" onclick="goToPolicy()">Continue</button>
+      <button class="btn-primary full" onclick="submitDetails()">Continue</button>
     </div>
 
     <div class="step-pane" data-step="policy" hidden>
@@ -242,30 +299,25 @@
       <p class="sub">You must scroll to the end of the policy before you can accept it. You can't send a request without accepting.</p>
       <div class="draftbanner" id="draftBanner" hidden>DRAFT: this policy still has blanks (highlighted) and is not ready for real customers.</div>
       <div class="policybox" id="policyBox" tabindex="0" role="region" aria-label="Autofixer Customer Policy">
-        <h4 style="font-size:1rem;color:var(--paper);margin-top:0;">Autofixer Customer Policy: Repair Financing, Repayment and Recovery</h4>
+        <h4 style="font-size:1rem;color:var(--paper);margin-top:0;">Autofixer Customer Policy: Repair Financing</h4>
 <h4>1. About this Policy</h4>
 <p><b>1.1</b> This Policy sets out what you agree to, and what we expect of you, when you request or receive financing for a vehicle repair through Autofixer.</p>
-<p><b>1.2</b> Autofixer is operated by <mark class="ph">[COMPANY NAME]</mark> (RC <mark class="ph">[NUMBER]</mark>) (“Autofixer”). Financing is provided by <mark class="ph">[LENDER NAME]</mark>, licensed as <mark class="ph">[LICENCE DETAILS]</mark> (the “Lender”). The Lender alone decides whether to approve a request and on what terms. Autofixer is not a lender.</p>
-<p><b>1.3</b> If you are approved you will sign a loan agreement with the Lender (the “Loan Agreement”). If this Policy conflicts with the Loan Agreement on the credit terms (amount, charges, repayment schedule or security), the Loan Agreement prevails. In every other respect they apply together.</p>
+<p><b>1.2</b> In this Policy, “Autofixer”, “we” and “us” mean Autofixer and any of its subsidiaries, now or in the future, that provide the Autofixer service to you. Financing is provided by a licensed lending partner of Autofixer (the “Lender”). The Lender for your request is named in the loan agreement you are offered. We may work with more than one lending partner and may add or replace them from time to time. The Lender alone decides whether to approve a request and on what terms. Autofixer is not a lender. Autofixer does not give loans, collect repayments, hold security for loans or recover vehicles.</p>
+<p><b>1.3</b> If you are approved you will sign a loan agreement with the Lender (the “Loan Agreement”). All terms of the loan are set only by the Loan Agreement and the Lender’s other documents, and are the Lender’s responsibility. This includes the amount, interest, fees, repayment schedule and methods, late charges, early repayment, security, default, recovery and sale. This Policy does not set or change any of them. If this Policy conflicts with the Loan Agreement on any loan term, the Loan Agreement prevails.</p>
 <p><b>1.4</b> By accepting this Policy you confirm that you are at least 18, that you can legally enter this Policy, and that everything you tell us is true and complete.</p>
 <h4>2. Key terms</h4>
 <ul>
 <li><b>Vehicle</b>: the vehicle being repaired, identified by the registration number you give us.</li>
 <li><b>Mechanic</b>: the mechanic or workshop that carries out the repair.</li>
 <li><b>Repair</b>: all work, parts and services supplied for the Vehicle under your request.</li>
-<li><b>Financed Amount</b>: the amount the Lender approves to pay for the Repair.</li>
-<li><b>Repayment Schedule</b>: the instalments, due dates and total repayable stated in the Loan Agreement.</li>
-<li><b>Outstanding Indebtedness</b>: everything you owe the Lender at any time, including the unpaid Financed Amount, interest, fees, default charges and recovery costs.</li>
-<li><b>Collateral</b>: the Vehicle and any other asset you expressly give as security in writing.</li>
-<li><b>Default</b>: any event listed in clause 9.1.</li>
-<li><b>Forced Sale Value</b>: the price a vehicle would reasonably fetch in a sale held within a limited time, as assessed by an independent valuer (clause 10.4).</li>
 <li><b>Protected Parties</b>: Autofixer, its affiliates, directors, officers, employees and agents, and the Lender.</li>
 </ul>
 <h4>3. Who does what</h4>
-<p><b>3.1</b> Autofixer provides the platform you use to submit your request and invoice, passes your request to the Lender, and communicates with you on the Lender’s behalf where agreed. Autofixer does not repair vehicles, inspect repairs or guarantee anyone’s work.</p>
-<p><b>3.2</b> The Lender assesses requests, funds approved repairs, holds the loan and any security, and collects repayments.</p>
+<p><b>3.1</b> Autofixer provides the platform you use to submit your request and invoice, and passes your request to the Lender. Autofixer does not repair vehicles, inspect repairs or guarantee anyone’s work. It does not give loans, collect repayments or recover security.</p>
+<p><b>3.2</b> The Lender assesses requests, funds approved repairs, holds the loan and any security, collects repayments, and deals with default and recovery, all under the Loan Agreement.</p>
 <p><b>3.3</b> Mechanics are independent businesses. They are not employees, agents or partners of Autofixer or the Lender. An “approved” mechanic is one that has registered with Autofixer and passed Autofixer’s registration checks. Approval is not a guarantee of skill, quality, price, honesty or outcome.</p>
 <p><b>3.4</b> You choose your mechanic and you instruct the work. You are the person best placed to check it.</p>
+<p><b>3.5</b> <i>Ecoswitch members and groups.</i> If you are an Ecoswitch member linked to a group, any responsibility of group members for each other’s loans is set only by the Lender’s group agreement and the Membership Terms. Nothing in this Policy reduces your own duty to repay under your Loan Agreement.</p>
 <h4>4. Your responsibility for the Repair</h4>
 <p><b>4.1</b> You are responsible for making sure the Repair is done properly. Autofixer and the Lender do not supervise or check the work.</p>
 <p><b>4.2</b> Before work starts, agree the following with the Mechanic in writing (a message is enough): the faults to be fixed, the work to be done, the parts to be used (new or used, and brand), the price of parts and labor, the time it will take, and any warranty.</p>
@@ -275,84 +327,48 @@
 <p><b>4.6</b> If a defect appears later, tell the Mechanic in writing straight away, allow a reasonable chance to fix it, keep photos and records, and claim under any warranty the Mechanic gave.</p>
 <p><b>4.7</b> Do not drive a Vehicle you believe to be unsafe.</p>
 <p><b>4.8</b> Help us with any complaint investigation by providing messages, photos and documents when asked.</p>
-<p><b>4.9</b> You should keep comprehensive motor insurance on the Vehicle (see clause 8.3).</p>
+<p><b>4.9</b> You should keep comprehensive motor insurance on the Vehicle, and meet any insurance requirement in your Loan Agreement.</p>
 <h4>5. Risk, disclaimers and indemnity</h4>
 <p><b>5.1</b> The Repair is at your risk. The Protected Parties are not responsible for: the quality, safety or completeness of any work; the quality, origin or authenticity of any part; delays or overcharging by the Mechanic; damage to, or loss, theft or destruction of, the Vehicle or anything in it while it is with the Mechanic or during any test drive; accidents, injury or death arising from the Vehicle or the Repair; the Mechanic closing, disappearing or becoming insolvent; or any claim by a third party connected with the Vehicle or the Repair.</p>
 <p><b>5.2</b> You will indemnify and hold harmless each Protected Party against all losses, damages, claims, liabilities, penalties and costs (including reasonable legal fees) that arise from: the Repair, or any act or omission of the Mechanic; your instructions to the Mechanic; your use or operation of the Vehicle; any false or inaccurate information or invoice you give; your breach of this Policy; or any claim by a third party relating to the Vehicle.</p>
 <p><b>5.3</b> Your remedy for a poor repair is against the Mechanic (and any insurer), not against the Protected Parties. Autofixer may, but is not obliged to, help you raise a complaint with the Mechanic.</p>
-<p><b>5.4</b> Nothing in this Policy excludes or limits liability that cannot be excluded or limited by law, including liability for fraud, wilful misconduct, or death or personal injury caused by a Protected Party’s negligence. Subject to that, the Protected Parties’ total liability to you in connection with the Repair is limited to <mark class="ph">[CAP — lawyer to set]</mark>.</p>
+<p><b>5.4</b> Nothing in this Policy excludes or limits liability that cannot be excluded or limited by law, including liability for fraud, wilful misconduct, or death or personal injury caused by a Protected Party’s negligence.</p>
 <p><b>5.5</b> This clause continues to apply after the loan is repaid.</p>
-<h4>6. Repaying what you owe</h4>
-<p><b>6.1</b> You will repay the Outstanding Indebtedness in full, on the due dates in the Repayment Schedule.</p>
-<p><b>6.2</b> Before you accept any Loan Agreement you will be shown the total amount repayable, each instalment and its due date, the interest rate and any fees. You are bound only after you accept the Loan Agreement.</p>
-<p><b>6.3</b> You will authorise <mark class="ph">[direct debit / recurring card payment / bank transfer — confirm with the Lender]</mark> and make sure the money is available on each due date.</p>
-<p><b>6.4</b> Pay only to the Lender’s designated account(s) shown in the Loan Agreement or in the app. Never pay instalments into a personal account, and never pay a Mechanic or an Autofixer staff member in cash for instalments. If anyone asks you to, report it.</p>
-<p><b>6.5</b> Payments are applied in this order unless the Loan Agreement says otherwise: costs, fees and charges, interest, then principal.</p>
-<p><b>6.6</b> Late payments attract the charges stated in the Loan Agreement and no others.</p>
-<p><b>6.7</b> You may repay early, in whole or in part. <mark class="ph">[Early-repayment terms per the Loan Agreement.]</mark></p>
-<p><b>6.8</b> Tell us within <mark class="ph">[7]</mark> days if your phone number, address or contact details change, or if the Vehicle is sold, damaged or moved.</p>
-<p><b>6.9</b> If you expect trouble paying, contact us before the due date. The Lender may, but need not, agree a revised arrangement. Any arrangement must be in writing.</p>
-<p><b>6.10</b> You can ask at any time for a statement showing what you have paid and what remains.</p>
-<h4>7. Your repayment does not depend on the Repair</h4>
-<p><b>7.1</b> Your duty to repay is separate from, and independent of, the Repair.</p>
-<p><b>7.2</b> You must keep paying in full and on time even if: the Repair is late, incomplete, defective or unsafe; the Mechanic refuses to fix it, closes or disappears; the Vehicle is damaged, lost, stolen or written off before or after the Repair; you are in a dispute with the Mechanic; you have made a complaint or asked for a refund; or you disagree with Autofixer or anyone else.</p>
-<p><b>7.3</b> You will not deduct, set off, counterclaim, withhold, suspend or delay any repayment because of any claim you have, or believe you have, against the Mechanic, Autofixer or anyone else in connection with the Repair.</p>
-<p><b>7.4</b> Take repair problems to the Mechanic first, then to Autofixer’s complaints process (clause 13), then to the courts or the regulator. These steps run separately and do not pause the Repayment Schedule.</p>
-<p><b>7.5</b> The one exception is a genuine billing error by the Lender (for example a wrong amount, a duplicate debit or a payment not credited). Tell us in writing, pay any part you do not dispute, and the Lender will investigate and correct it. This exception does not cover any issue with the Repair.</p>
-<p><b>7.6</b> This clause does not remove any right you have under Nigerian law that cannot be waived.</p>
-<h4>8. Security over your Vehicle</h4>
-<p><b>8.1</b> As security for the Outstanding Indebtedness, you grant the Lender a security interest in the Vehicle and any other Collateral. This is created under the Loan Agreement or a separate security agreement and may be registered at the National Collateral Registry under the Secured Transactions in Movable Assets Act, 2017. <mark class="ph">[Lawyer to confirm.]</mark></p>
-<p><b>8.2</b> You confirm that you own the Vehicle (or have the owner’s written consent to use it as security), that no one else has a claim, lien or security over it that you have not told us about, and that the details you gave us are correct.</p>
-<p><b>8.3</b> While you owe money you must: keep the Vehicle in Nigeria and in your possession; keep it in good, roadworthy condition with all licences and registration current; keep it covered by comprehensive insurance with the Lender’s interest noted <mark class="ph">[if required by the Lender]</mark>; not sell, transfer, lease, lend, or give any other security over it without the Lender’s written consent; not hide it, disguise it, or alter it in a way that reduces its value; keep your ownership documents safe; and allow the Lender to inspect it on reasonable notice. <mark class="ph">[Tracker, if the Lender requires one.]</mark></p>
-<p><b>8.4</b> Tell us within 48 hours if the Vehicle is involved in an accident, stolen, seized or damaged beyond easy repair, or if anyone makes a claim over it.</p>
-<p><b>8.5</b> You assign to the Lender your rights to insurance proceeds on the Vehicle, up to the Outstanding Indebtedness.</p>
-<h4>9. Default</h4>
-<p><b>9.1</b> You are in Default if: (a) you do not pay an instalment in full within <mark class="ph">[7]</mark> days of its due date; (b) you give false or misleading information, or a false, altered or inflated invoice; (c) you break clause 8 or another material term; (d) the Vehicle is sold, transferred, lost, seized or destroyed without the Lender’s consent; (e) you become insolvent or enter an arrangement with creditors; (f) insurance lapses and is not restored within <mark class="ph">[14]</mark> days; or (g) the Lender cannot reach you for <mark class="ph">[30]</mark> days despite reasonable attempts.</p>
-<p><b>9.2</b> Before taking recovery steps the Lender (or Autofixer for it) will notify you in writing, by SMS, WhatsApp or email, of the Default and give you <mark class="ph">[14]</mark> days to put it right. That period may be shortened where the Collateral is at immediate risk or fraud is suspected.</p>
-<p><b>9.3</b> If the Default is not put right: the whole Outstanding Indebtedness becomes due immediately; the default charges in the Loan Agreement apply; the Lender may report the Default to licensed credit bureaus; and the Lender may start recovery under clause 10.</p>
-<p><b>9.4</b> Anyone collecting on the Lender’s behalf must identify themselves and act lawfully and respectfully. They must not threaten or harass you, shame you, or contact your employer, family or phone contacts about the debt except as the law allows.</p>
-<h4>10. Recovery and sale of the Vehicle</h4>
-<p><b>10.1</b> <i>Handing over.</i> If the Default is not remedied, you must, by the date in the Lender’s notice, hand over the Vehicle with all keys, documents and accessories to the Lender or its authorised agent at the place the notice states, or make it available where it is.</p>
-<p><b>10.2</b> <i>Cooperation.</i> You must: sign the documents the Lender reasonably needs (transfer, deregistration, consent to sale, insurance claim, registry amendments); attend valuations and inspections; tell us where the Vehicle is; and not hide, damage, strip or move it. Collect your personal belongings before handover; items left behind will be held for <mark class="ph">[30]</mark> days.</p>
-<p><b>10.3</b> <i>Lawful recovery only.</i> Recovery will be carried out lawfully: without force or breach of the peace, and without entering private premises unless you consent or there is a court order or other lawful authority.</p>
-<p><b>10.4</b> <i>Valuation and sale.</i> The Lender may sell the Collateral by auction, private sale or another commercially reasonable method after giving you at least <mark class="ph">[10]</mark> days’ written notice of the method, date and place. You agree to take part by allowing viewing and providing information. The Lender will have the Collateral valued by an independent valuer, and you will receive the valuation on request. You agree that a sale at or above the Forced Sale Value, meaning the price reasonably obtainable in a time-limited sale, is an acceptable price. You may bring a buyer who will pay more before the sale date.</p>
-<p><b>10.5</b> <i>Proceeds.</i> Proceeds are applied in this order: costs of recovery, storage, valuation, repair-for-sale, sale and legal fees; then default charges and interest; then principal.</p>
-<p><b>10.6</b> <i>Surplus.</i> Anything left after the Outstanding Indebtedness is cleared will be paid to you within <mark class="ph">[14]</mark> days.</p>
-<p><b>10.7</b> <i>Shortfall.</i> If the proceeds do not cover the Outstanding Indebtedness, you remain liable for the balance and must pay it within <mark class="ph">[30]</mark> days of a written statement. The Lender may use any other lawful means to recover it.</p>
-<p><b>10.8</b> <i>Right to redeem.</i> At any time before the sale, you may recover the Vehicle by paying the Outstanding Indebtedness in full, including recovery costs.</p>
-<p><b>10.9</b> <i>Other assets.</i> The Lender may look to assets other than the Collateral only where you have given security over them in writing, or through lawful court process.</p>
-<p><b>10.10</b> The Lender’s rights under this clause belong to the Lender. Autofixer may coordinate on the Lender’s behalf.</p>
-<h4>11. Honest dealing</h4>
-<p><b>11.1</b> You must not: submit a false, altered, duplicated or inflated invoice; agree with a Mechanic to inflate costs, share the money or take cash back; use the financing for anything other than the repair on the invoice; or give someone else’s identity, phone number or Vehicle as your own.</p>
-<p><b>11.2</b> If we find this has happened, we may refuse or cancel the request, treat it as a Default, report it to the Lender, the police or regulators, and recover our losses from you.</p>
-<h4>12. Your information</h4>
-<p><b>12.1</b> You consent to us collecting and using your identity details, phone number, Vehicle details, invoice photo and costs, mechanic details, and repayment history to assess your request, manage the loan, collect repayments, recover the Vehicle, and prevent fraud.</p>
-<p><b>12.2</b> We will share this information with the Lender, licensed credit bureaus, the Mechanic (only what is needed to confirm the invoice), our technology and communications providers, professional advisers, and regulators or law enforcement when required.</p>
-<p><b>12.3</b> We handle your data under the Nigeria Data Protection Act, 2023 and our Privacy Notice <mark class="ph">[LINK]</mark>. You may ask to access or correct your data, or object to its use. Withdrawing consent may mean we cannot continue the financing. We keep records for <mark class="ph">[PERIOD]</mark>.</p>
-<p><b>12.4</b> You agree we may contact you by phone, SMS, WhatsApp and email about your request and repayments.</p>
-<h4>13. Complaints and disputes</h4>
-<p><b>13.1</b> Send complaints to <mark class="ph">[CONTACT]</mark>. We will acknowledge within <mark class="ph">[2]</mark> working days and aim to resolve within <mark class="ph">[X]</mark>. If you are not satisfied, you may escalate to the Lender at <mark class="ph">[CONTACT]</mark>, and then to the regulator <mark class="ph">[FCCPC / CBN as applicable — lawyer to confirm]</mark>.</p>
-<p><b>13.2</b> This Policy is governed by the laws of the Federal Republic of Nigeria. [Dispute resolution: negotiation, then mediation or arbitration, or the courts of <mark class="ph">[STATE]</mark> — lawyer to choose.]</p>
-<p><b>13.3</b> Making a complaint does not suspend your repayments (clause 7).</p>
-<h4>14. General</h4>
-<p><b>14.1</b> We may update this Policy. We will give you at least <mark class="ph">[30]</mark> days’ notice, and changes will not worsen the terms of a loan you already have unless you agree.</p>
-<p><b>14.2</b> The Lender may assign or transfer the loan and its security. You may not transfer your obligations.</p>
-<p><b>14.3</b> Notices sent to the phone number or email you gave us are treated as received <mark class="ph">[24]</mark> hours after sending.</p>
-<p><b>14.4</b> If any part of this Policy is unenforceable, the rest continues to apply. A delay in enforcing a right is not a waiver of it.</p>
-<p><b>14.5</b> We keep a record of when and how you accepted this Policy (date, time and device details).</p>
+<h4>6. Paying the Lender</h4>
+<p><b>6.1</b> You will repay the Lender as the Loan Agreement says. Repayments, charges, early repayment, hardship arrangements and statements are matters between you and the Lender under the Loan Agreement.</p>
+<p><b>6.2</b> The Loan Agreement the Lender offers you will state the total amount repayable, each instalment and its due date, the interest rate, any fees, the security and what happens if you default. You are bound only after you accept the Loan Agreement.</p>
+<p><b>6.3</b> Pay only to the Lender’s designated account(s) shown in the Loan Agreement or in the app. Autofixer does not collect repayments. Never pay instalments into a personal account, and never pay a Mechanic or an Autofixer staff member in cash for instalments. If anyone asks you to, report it.</p>
+<p><b>6.4</b> Tell us within 7 days if your phone number, address or contact details change, and tell the Lender as your Loan Agreement requires.</p>
+<p><b>6.5</b> Take repair problems to the Mechanic first, then to Autofixer’s complaints process (clause 9). Unless your Loan Agreement says otherwise, a repair problem does not suspend your repayments.</p>
+<h4>7. Honest dealing</h4>
+<p><b>7.1</b> You must not: submit a false, altered, duplicated or inflated invoice; agree with a Mechanic to inflate costs, share the money or take cash back; use the financing for anything other than the repair on the invoice; or give someone else’s identity, phone number or Vehicle as your own.</p>
+<p><b>7.2</b> If we find this has happened, we may refuse or cancel the request, report it to the Lender, the police or regulators, and recover our losses from you. The Lender may treat it as a default under your Loan Agreement.</p>
+<h4>8. Your information</h4>
+<p><b>8.1</b> You consent to us collecting and using your identity details, phone number, Vehicle details, invoice photo and costs, mechanic details, and information the Lender gives us about your loan (such as default notices and confirmation of repayment), to assess and pass on your request, and prevent fraud.</p>
+<p><b>8.2</b> We will share this information with the Lender (who uses it to manage the loan, collect repayments and recover what is owed), the Mechanic (only what is needed to confirm the invoice), other members of your group (if you are an Ecoswitch member, as the Membership Terms explain), our technology and communications providers, professional advisers, and regulators or law enforcement when required.</p>
+<p><b>8.3</b> We handle your data under the Nigeria Data Protection Act, 2023 and our <a href="privacy.html" target="_blank" rel="noopener" style="text-decoration:underline;">Privacy Notice</a>. You may ask to access or correct your data, or object to its use. Withdrawing consent may mean we cannot continue to pass on your request. We keep records for 6 years after your request or loan ends, or longer where the law requires.</p>
+<p><b>8.4</b> You agree we may contact you by phone, SMS, WhatsApp and email about your request.</p>
+<h4>9. Complaints and disputes</h4>
+<p><b>9.1</b> Send complaints about Autofixer or the Mechanic to support@autofixer.fund. We will acknowledge within 2 working days and aim to resolve within 14 days. Complaints about the loan itself (charges, repayment, security or recovery) must go to the Lender, using the contact in your Loan Agreement, and we will help pass them on. If you are not satisfied, you may escalate complaints about Autofixer to the Federal Competition and Consumer Protection Commission (FCCPC), and complaints about the loan to the Lender’s own regulator (for example, the CBN where the Lender is CBN-licensed).</p>
+<p><b>9.2</b> This Policy is governed by the laws of the Federal Republic of Nigeria. We will try to settle any dispute by good-faith negotiation for 14 days. If it is not settled, the courts of Lagos State have jurisdiction. This does not limit any right you have by law that cannot be waived.</p>
+<p><b>9.3</b> Making a complaint to Autofixer does not suspend any repayment due under your Loan Agreement.</p>
+<h4>10. General</h4>
+<p><b>10.1</b> We may update this Policy. We will give you at least 30 days’ notice.</p>
+<p><b>10.2</b> You may not transfer your obligations under this Policy.</p>
+<p><b>10.3</b> Notices sent to the phone number or email you gave us are treated as received 24 hours after sending.</p>
+<p><b>10.4</b> If any part of this Policy is unenforceable, the rest continues to apply. A delay in enforcing a right is not a waiver of it.</p>
+<p><b>10.5</b> We keep a record of when and how you accepted this Policy (date, time and device details).</p>
       </div>
       <p class="scrollhint" id="scrollHint">↓ Scroll to the end of the policy to unlock the boxes below</p>
       <div class="acks" id="acks">
         <label class="consent ack-row"><input type="checkbox" class="ack" data-n="1" disabled><span>I am responsible for checking that my mechanic repairs my vehicle properly, and I will not accept it back until I am satisfied.</span></label>
         <label class="consent ack-row"><input type="checkbox" class="ack" data-n="2" disabled><span>I will indemnify Autofixer and the Lender against claims and losses arising from the repair, as set out in clause 5.</span></label>
-        <label class="consent ack-row"><input type="checkbox" class="ack" data-n="3" disabled><span>I will repay the Lender in full and on time as agreed.</span></label>
-        <label class="consent ack-row"><input type="checkbox" class="ack" data-n="4" disabled><span>I will keep repaying even if I have a dispute about the repair, and I will take that dispute to the mechanic rather than hold back payment.</span></label>
-        <label class="consent ack-row"><input type="checkbox" class="ack" data-n="5" disabled><span>My vehicle is security for the loan. If I default I will hand it over, cooperate, and take part in its sale at forced sale value, and I remain liable for any shortfall.</span></label>
+        <label class="consent ack-row"><input type="checkbox" class="ack" data-n="3" disabled><span>I will repay the Lender in full and on time as my Loan Agreement says, and I understand that all loan terms, including security, default and recovery, are set by the Lender and not by Autofixer.</span></label>
       </div>
       <p class="msg-err" id="policyErr" hidden></p>
       <div class="cam-actions">
-        <button class="btn-ghost" onclick="panes('reqModal','details')">Back</button>
-        <button class="btn-primary" id="policyContinue" onclick="goToInvoice()" disabled>I agree, continue</button>
+        <button class="btn-ghost" onclick="backToInvoice()">Back</button>
+        <button class="btn-primary" id="policyContinue" onclick="acceptAndSend()" disabled>I agree, send my request</button>
       </div>
     </div>
 
@@ -371,8 +387,21 @@
             <button class="btn-ghost btn-sm" id="retakeBtn" onclick="retakeInvoice()" hidden>Retake</button>
             <button class="btn-primary btn-sm" id="captureBtn" onclick="captureInvoice()">Capture invoice</button>
           </div>
+          <p class="sub" style="margin:12px 0 0;">Camera not working? <label for="fileInvoice" style="display:inline;color:var(--amber);text-decoration:underline;cursor:pointer;">Upload a photo instead</label><input id="fileInvoice" type="file" accept="image/jpeg,image/png,image/webp" hidden onchange="useFile(this)"></p>
         </div>
         <div>
+          <label>How are you paying for this repair?
+            <select id="fPayMethod" class="field" onchange="payMethodChanged()">
+              <option value="loan">Repair loan (financing)</option>
+              <option value="cash">Cash</option>
+              <option value="bank_transfer">Bank transfer</option>
+            </select>
+          </label>
+          <p class="sub" id="payNote" style="margin:-8px 0 14px;"></p>
+          <div id="paidBox" hidden>
+            <label>Date you paid<input id="fPaidOn" type="date"></label>
+            <label class="consent"><input type="checkbox" id="fPayConfirm"><span>I confirm I have paid this amount to the mechanic and the invoice is genuine.</span></label>
+          </div>
           <label>Mechanic's phone number (optional)
             <span class="inline"><input id="fMechPhone" type="tel" placeholder="0803 000 0000" oninput="clearMechanic()"><button type="button" class="btn-ghost btn-sm" onclick="lookupMechanic()">Find</button></span>
           </label>
@@ -383,7 +412,7 @@
           <label>Labor costs (₦)<input id="fLabor" type="number" inputmode="decimal" min="0" step="any" placeholder="0" oninput="updateTotal()"></label>
           <div class="sumbox"><span>Total repair cost</span><b id="totalOut">₦0</b></div>
           <p class="msg-err" id="invoiceErr" hidden></p>
-          <button class="btn-primary full" onclick="submitRequest()">Submit request</button>
+          <button class="btn-primary full" id="submitBtn" onclick="continueRequest()">Continue to financing terms</button>
         </div>
       </div>
     </div>
@@ -396,6 +425,7 @@
       <div class="badge">Received</div>
       <h3>We've got your request</h3>
       <p class="sub" id="doneText"></p>
+      <p class="sub" id="doneTrack">Ecoswitch members can track the repair, end it and rate the work on their <a href="dashboard.html#repairs" style="color:var(--amber);">member dashboard</a>.</p>
       <button class="btn-primary full" onclick="closeRequest()">Done</button>
     </div>
   </div>
@@ -425,6 +455,21 @@
         <button type="button" data-spec="AC">AC &amp; cooling</button>
         <button type="button" data-spec="Tyres">Tyres &amp; alignment</button>
       </div>
+      <h4 style="font-family:'Archivo Black',sans-serif;font-weight:400;font-size:1rem;margin:20px 0 6px;">Workshop Terms</h4>
+      <div class="wterms">
+        <p>To be listed with Autofixer, you agree that for every repair you carry out for an Autofixer customer:</p>
+        <ol>
+          <li><b>Quality parts.</b> You will buy and use only quality parts for all repairs.</li>
+          <li><b>Warranty on the invoice.</b> You will write the repair warranty period on the invoice.</li>
+          <li><b>Mediation.</b> If you have a repair dispute with a customer, you will allow Autofixer to mediate. Mediation is not binding: Autofixer will help both sides reach an agreement, but it cannot force either side to accept its suggestion, and nobody gives up the right to go to court.</li>
+          <li><b>Commission.</b> Autofixer keeps 10% of the labor cost shown on the invoice as commission. When Autofixer arranges the payment, it is deducted from the payment made to you, so you do not pay it separately. If a customer pays you directly for a repair arranged through Autofixer, you will pay Autofixer 10% of the labor cost within 7 days. It is not added to the customer's bill.</li>
+        </ol>
+        <p>Autofixer may remove you from the list if you break these terms.</p>
+      </div>
+      <label class="consent"><input type="checkbox" class="wack" data-n="1"><span>I will buy only quality parts for all repairs.</span></label>
+      <label class="consent"><input type="checkbox" class="wack" data-n="2"><span>I will write the repair warranty period on every invoice.</span></label>
+      <label class="consent"><input type="checkbox" class="wack" data-n="3"><span>I allow Autofixer to mediate when I have a repair dispute with a customer. I understand mediation is not binding.</span></label>
+      <label class="consent"><input type="checkbox" class="wack" data-n="4"><span>I agree that Autofixer keeps 10% of the repair labor cost as commission, deducted from my payment when Autofixer arranges it, or paid by me within 7 days if the customer pays me directly.</span></label>
       <p class="msg-err" id="wsErr" hidden></p>
       <button class="btn-primary full" style="margin-top:18px;" onclick="submitWorkshop()">Submit application</button>
     </div>
@@ -437,13 +482,45 @@
   </div>
 </div>
 
+<!-- BOOKING MODAL -->
+<div class="overlay" id="bkModal" role="presentation">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="bkTitle">
+    <button class="close" onclick="closeBooking()" aria-label="Close">×</button>
+    <div class="step-pane" data-step="bform">
+      <h3 id="bkTitle">Book this workshop</h3>
+      <p class="sub" id="bkSub"></p>
+      <label>Your name<input id="bName" type="text" autocomplete="name"></label>
+      <label>Your phone number<input id="bPhone" type="tel" autocomplete="tel" placeholder="0803 000 0000"></label>
+      <label>Vehicle registration (optional)<input id="bPlate" type="text" placeholder="LAG-234-KJA"></label>
+      <label>What needs fixing?<textarea id="bIssue" class="field" maxlength="500" placeholder="e.g. Engine overheating, brake noise"></textarea></label>
+      <label>Preferred date and time (optional)<input id="bWhen" type="datetime-local"></label>
+      <div class="hp" aria-hidden="true"><label>Website<input id="bWebsite" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <label class="consent"><input type="checkbox" id="bConsent"><span>I agree that Autofixer may share my name, phone number and vehicle details with this mechanic, and may call me and the mechanic about this booking.</span></label>
+      <p class="msg-err" id="bkErr" hidden></p>
+      <button class="btn-primary full" onclick="submitBooking()">Book and show the mechanic's number</button>
+    </div>
+    <div class="step-pane center" data-step="bdone" hidden>
+      <div id="bkDone"></div>
+      <button class="btn-primary full" onclick="closeBooking()">Done</button>
+    </div>
+  </div>
+</div>
+
 <script src="config.js"></script>
 <script>
   // ---- Configure after deploying the backend ----
   var API_BASE = window.AUTOFIXER_API || 'https://YOUR_PROJECT_REF.supabase.co/functions/v1'; // normally set via config.js
   var ANON_KEY = window.AUTOFIXER_ANON_KEY || ''; // optional: only if Supabase rejects calls with 401 before reaching the function
 
-  function configured(){ return API_BASE.indexOf('YOUR_PROJECT' + '_REF') === -1; }
+  function notConnected(){
+    if(window.AUTOFIXER_PREVIEW || /(^|\.)claude\.ai$/.test(location.hostname)) return 'This is a preview inside Claude, which cannot connect to your backend. Open your own site address instead.';
+    if(typeof window.AUTOFIXER_API === 'undefined') return 'This page could not find its backend address. Check that config.js exists next to index.html, is named exactly config.js, and has straight quotes.';
+    return 'config.js still contains the placeholder. Put your real Reference ID in it.';
+  }
+  // Where "Join Ecoswitch" goes. Defaults to the Ecoswitch page (ecoswitch.html), which then goes to Paystack; override in config.js with
+  // window.AUTOFIXER_ECOSWITCH_URL='https://...' if the address changes.
+  var ECOSWITCH_URL = window.AUTOFIXER_ECOSWITCH_URL || 'ecoswitch.html';
+  function configured(){ return API_BASE.indexOf('YOUR_PROJECT' + '_REF') === -1 && API_BASE.indexOf('YOUR-REF') === -1; }
   function headers(extra){
     var h = extra || {};
     if(ANON_KEY){ h['apikey'] = ANON_KEY; h['Authorization'] = 'Bearer ' + ANON_KEY; }
@@ -455,19 +532,21 @@
     document.querySelectorAll('#' + modalId + ' .step-pane').forEach(function(p){ p.hidden = p.dataset.step !== step; });
   }
 
+  document.getElementById('ecoLink').href = ECOSWITCH_URL;
+
   // ---- Repair request ----
   var invoiceBlob = null, stream = null, mechanic = null;
-  var POLICY_VERSION = 'v0.1-draft'; // must equal POLICY_VERSION on the server; change both whenever the policy text changes
+  var POLICY_VERSION = 'v0.3-draft'; // must equal POLICY_VERSION on the server; change both whenever the policy text changes
   var policyRead = false;
 
   function openRequest(){
     document.getElementById('reqModal').classList.add('open');
     document.getElementById('reqBox').classList.remove('wide');
-    invoiceBlob = null; clearMechanic(); panes('reqModal', 'details');
+    invoiceBlob = null; clearMechanic(); document.getElementById('fPayMethod').value = 'loan'; payMethodChanged(); panes('reqModal', 'details');
   }
   function closeRequest(){ document.getElementById('reqModal').classList.remove('open'); stopCamera(); }
 
-  function goToPolicy(){
+  function submitDetails(){
     var name = document.getElementById('fName').value.trim();
     var phone = document.getElementById('fPhone').value.replace(/\D/g, '');
     var plate = document.getElementById('fPlate').value.trim();
@@ -475,8 +554,7 @@
     if(phone.length < 10) return show('detailsErr', 'Please enter a valid phone number.');
     if(!plate) return show('detailsErr', 'Please enter your vehicle registration.');
     show('detailsErr', '');
-    panes('reqModal', 'policy');
-    resetPolicy();
+    openInvoiceStep();
   }
 
   // The policy must be scrolled to the end before the acknowledgement boxes unlock.
@@ -508,12 +586,45 @@
   document.getElementById('acks').addEventListener('change', updatePolicyContinue);
   document.getElementById('policyBox').addEventListener('scroll', updatePolicyContinue);
 
-  function goToInvoice(){
-    var all = Array.prototype.every.call(document.querySelectorAll('#acks .ack'), function(c){ return c.checked; });
-    if(!policyRead || !all || policyBlocked()) return;
+  function openInvoiceStep(){
     document.getElementById('reqBox').classList.add('wide');
     panes('reqModal', 'invoice');
-    startCamera();
+    if(invoiceBlob) showPreview(invoiceBlob); else startCamera();
+  }
+  function backToInvoice(){ openInvoiceStep(); }
+  function payMethodChanged(){
+    var loan = document.getElementById('fPayMethod').value === 'loan';
+    document.getElementById('paidBox').hidden = loan;
+    var d = document.getElementById('fPaidOn'); if(!loan && !d.value) d.value = new Date().toISOString().slice(0, 10);
+    document.getElementById('payNote').textContent = loan
+      ? 'Our lending partner decides whether to approve the repair loan. You will read and accept the financing policy next.'
+      : 'You have already paid the mechanic. We keep a record of the payment and may confirm it with the mechanic. No financing is involved.';
+    document.getElementById('submitBtn').textContent = loan ? 'Continue to financing terms' : 'Submit';
+  }
+  // Loan: the financing policy comes next. Cash or bank transfer: the request is sent straight away.
+  function continueRequest(){
+    var parts = parseFloat(document.getElementById('fParts').value);
+    var labor = parseFloat(document.getElementById('fLabor').value);
+    var method = document.getElementById('fPayMethod').value;
+    if(!invoiceBlob) return show('invoiceErr', 'Please capture or upload a photo of the invoice first.');
+    if(isNaN(parts) || parts < 0) return show('invoiceErr', 'Enter the total parts cost (enter 0 if there were none).');
+    if(isNaN(labor) || labor < 0) return show('invoiceErr', 'Enter the labor costs (enter 0 if there were none).');
+    if(parts + labor <= 0) return show('invoiceErr', 'The total repair cost must be more than zero.');
+    if(document.getElementById('fMechPhone').value.trim() && !mechanic) return show('invoiceErr', "Tap Find to confirm the mechanic's number, or clear it.");
+    if(!configured()) return show('invoiceErr', notConnected());
+    if(method !== 'loan'){
+      if(!document.getElementById('fPaidOn').value) return show('invoiceErr', 'Enter the date you paid.');
+      if(!document.getElementById('fPayConfirm').checked) return show('invoiceErr', 'Please tick the box to confirm you paid the mechanic.');
+      show('invoiceErr', ''); return sendRequest();
+    }
+    show('invoiceErr', '');
+    stopCamera(); document.getElementById('reqBox').classList.remove('wide');
+    panes('reqModal', 'policy'); resetPolicy();
+  }
+  function acceptAndSend(){
+    var all = Array.prototype.every.call(document.querySelectorAll('#acks .ack'), function(c){ return c.checked; });
+    if(!policyRead || !all || policyBlocked()) return;
+    sendRequest();
   }
 
   function camError(msg){ show('camError', msg); document.getElementById('captureBtn').hidden = true; }
@@ -523,13 +634,21 @@
     document.getElementById('camPreview').hidden = true; video.hidden = false;
     document.getElementById('captureBtn').hidden = false; document.getElementById('retakeBtn').hidden = true;
     if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-      return camError('Camera capture is not supported on this browser. Try Chrome or Safari on your phone.');
+      return camError('Camera capture is not supported on this browser. Use "Upload a photo instead" below.');
     }
     navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 } }, audio: false })
       .then(function(s){ stream = s; video.srcObject = s; })
-      .catch(function(){ camError('Camera access was blocked. Allow camera access for this site in your browser settings, then reopen this form.'); });
+      .catch(function(){ camError('Camera access was blocked. Allow camera access for this site in your browser settings, or use "Upload a photo instead" below.'); });
   }
   function stopCamera(){ if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream = null; } }
+  function showPreview(blob){
+    invoiceBlob = blob;
+    var img = document.getElementById('camPreview');
+    img.src = URL.createObjectURL(blob); img.hidden = false; document.getElementById('camVideo').hidden = true;
+    show('camError', '');
+    document.getElementById('captureBtn').hidden = true; document.getElementById('retakeBtn').hidden = false;
+    show('invoiceErr', '');
+  }
   function captureInvoice(){
     var video = document.getElementById('camVideo'), canvas = document.getElementById('camCanvas');
     var w = video.videoWidth || 1280, h = video.videoHeight || 960;
@@ -538,17 +657,21 @@
     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
     canvas.toBlob(function(blob){
       if(!blob) return camError('Could not capture the photo. Please try again.');
-      invoiceBlob = blob;
-      var img = document.getElementById('camPreview');
-      img.src = URL.createObjectURL(blob); img.hidden = false; video.hidden = true;
-      document.getElementById('captureBtn').hidden = true; document.getElementById('retakeBtn').hidden = false;
-      show('invoiceErr', '');
+      showPreview(blob);
     }, 'image/jpeg', 0.85);
   }
+  // Fallback when the camera is blocked or missing: choose a photo from the phone or computer.
+  function useFile(input){
+    var f = input.files && input.files[0]; if(!f) return;
+    if(f.size > 5 * 1024 * 1024) return show('invoiceErr', 'That photo is too large. Choose one under 5 MB.');
+    if(['image/jpeg', 'image/png', 'image/webp'].indexOf(f.type) === -1) return show('invoiceErr', 'Please choose a JPEG, PNG or WebP photo.');
+    stopCamera(); showPreview(f);
+  }
   function retakeInvoice(){
-    invoiceBlob = null;
+    invoiceBlob = null; document.getElementById('fileInvoice').value = '';
     document.getElementById('camPreview').hidden = true; document.getElementById('camVideo').hidden = false;
     document.getElementById('captureBtn').hidden = false; document.getElementById('retakeBtn').hidden = true;
+    if(!stream) startCamera();
   }
   function clearMechanic(){
     mechanic = null;
@@ -559,7 +682,7 @@
     var phone = document.getElementById('fMechPhone').value.trim();
     show('mechErr', ''); clearMechanic();
     if(phone.replace(/\D/g, '').length < 10) return show('mechErr', "Enter the mechanic's full phone number.");
-    if(!configured()) return show('mechErr', 'This form is not connected to the backend yet.');
+    if(!configured()) return show('mechErr', notConnected());
     fetch(API_BASE + '/workshops/lookup?phone=' + encodeURIComponent(phone), { headers: headers() })
       .then(function(r){ return r.json().then(function(j){ return { status: r.status, body: j }; }); })
       .then(function(res){
@@ -586,20 +709,13 @@
     invalid_name:'Please check your name.', invalid_phone:'Please check your phone number.', invalid_plate:'Please check your vehicle registration.',
     invalid_costs:'Please check the parts and labor costs.', mechanic_not_found:"That mechanic isn't approved with Autofixer. Clear the number or tap Find again.", policy_required:'Please read and accept the policy before sending your request.', policy_outdated:'Our policy was updated. Please reload this page and accept the latest version.',
     invalid_invoice:'The invoice photo could not be accepted. Please retake it.', upload_failed:'We could not save your invoice. Please try again.',
-    save_failed:'We could not save your request. Please try again.'
+    save_failed:'We could not save your request. Please try again.',
+    payment_confirmation_required:'Please tick the box to confirm you paid the mechanic.', invalid_payment_method:'Please choose how you are paying.', invalid_date:'Pick the date you paid, within the last 60 days.'
   };
-  function submitRequest(){
+  function sendRequest(){
     var parts = parseFloat(document.getElementById('fParts').value);
     var labor = parseFloat(document.getElementById('fLabor').value);
-    if(!invoiceBlob) return show('invoiceErr', 'Please capture a photo of the invoice first.');
-    if(isNaN(parts) || parts < 0) return show('invoiceErr', 'Enter the total parts cost (enter 0 if there were none).');
-    if(isNaN(labor) || labor < 0) return show('invoiceErr', 'Enter the labor costs (enter 0 if there were none).');
-    if(parts + labor <= 0) return show('invoiceErr', 'The total repair cost must be more than zero.');
-    if(document.getElementById('fMechPhone').value.trim() && !mechanic) return show('invoiceErr', "Tap Find to confirm the mechanic's number, or clear it.");
-    if(!policyRead) return show('invoiceErr', 'Please accept the policy first.');
-    if(!configured()) return show('invoiceErr', 'This form is not connected to the backend yet, so nothing was sent.');
-    show('invoiceErr', '');
-
+    var method = document.getElementById('fPayMethod').value, loan = method === 'loan';
     var fd = new FormData();
     fd.append('name', document.getElementById('fName').value.trim());
     fd.append('phone', document.getElementById('fPhone').value.trim());
@@ -607,9 +723,12 @@
     if(mechanic) fd.append('mechanicPhone', mechanic.phone);
     else fd.append('workshopName', document.getElementById('fWorkshop').value.trim());
     fd.append('partsCost', parts); fd.append('laborCost', labor);
-    fd.append('policyAccepted', 'true');
-    fd.append('policyVersion', POLICY_VERSION);
-    fd.append('policyAcks', '1,2,3,4,5');
+    fd.append('paymentMethod', method);
+    if(loan){
+      fd.append('policyAccepted', 'true'); fd.append('policyVersion', POLICY_VERSION); fd.append('policyAcks', '1,2,3');
+    } else {
+      fd.append('paidOn', document.getElementById('fPaidOn').value); fd.append('paymentConfirmed', 'true');
+    }
     fd.append('website', document.getElementById('fWebsite').value);
     fd.append('invoice', invoiceBlob, 'invoice.jpg');
 
@@ -619,13 +738,14 @@
       .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, body: j }; }); })
       .then(function(res){
         if(!res.ok) throw new Error(res.body && res.body.error);
-        document.getElementById('doneText').textContent =
-          'Your reference is ' + res.body.reference + '. Our team will review your request with our lending partner and call you on ' +
-          document.getElementById('fPhone').value.trim() + '. Keep your invoice safe.';
+        document.getElementById('doneTrack').hidden = !loan;
+        document.getElementById('doneText').textContent = loan
+          ? 'Your reference is ' + res.body.reference + '. Our team will review your request with our lending partner and call you on ' + document.getElementById('fPhone').value.trim() + '. Keep your invoice safe.'
+          : 'Your reference is ' + res.body.reference + '. We have recorded your ' + (method === 'cash' ? 'cash' : 'bank transfer') + ' payment to the mechanic and may call you on ' + document.getElementById('fPhone').value.trim() + ' to confirm it. Keep your invoice and proof of payment safe.';
         panes('reqModal', 'done');
       })
       .catch(function(err){
-        document.getElementById('reqBox').classList.add('wide'); panes('reqModal', 'invoice'); startCamera();
+        openInvoiceStep();
         show('invoiceErr', errorText[err && err.message] || 'Something went wrong sending your request. Please check your connection and try again.');
       });
   }
@@ -637,12 +757,13 @@
     box.innerHTML = list.map(function(w){
       var tags = (w.specialties || []).map(function(s){ return '<span>' + esc(s) + '</span>'; }).join('');
       var dist = showDist && typeof w.distanceKm === 'number' ? '<div class="dist">' + w.distanceKm.toFixed(1) + ' km</div>' : '';
-      return '<div class="wcard"><div><h4>' + esc(w.name) + '</h4><p>' + esc(w.address) + ' · ' + esc(w.city) + '</p><div class="tags">' + tags + '</div></div>' + dist + '</div>';
+      return '<div class="wcard"><div><h4>' + esc(w.name) + '</h4><p>' + esc(w.address) + ' · ' + esc(w.city) + '</p><div class="tags">' + tags + '</div></div>' +
+        '<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;">' + dist + '<button type="button" class="btn-primary btn-sm" data-book="' + esc(w.id) + '" data-name="' + esc(w.name) + '">Book this workshop</button></div></div>';
     }).join('');
   }
   function fetchWorkshops(path, showDist){
     show('geoError', '');
-    if(!configured()) return show('geoError', 'The workshop list is not connected yet.');
+    if(!configured()) return show('geoError', notConnected());
     fetch(API_BASE + path, { headers: headers() }).then(function(r){ return r.json(); })
       .then(function(j){ render(j.workshops || [], showDist); })
       .catch(function(){ show('geoError', 'Could not load workshops. Please try again.'); });
@@ -657,6 +778,7 @@
 
   // ---- Workshop registration (real) ----
   var specs = [];
+  var WORKSHOP_TERMS_VERSION = 'w0.2-draft'; // must equal WORKSHOP_TERMS_VERSION on the server; change both when the workshop terms change
   function openWorkshop(){ document.getElementById('wsModal').classList.add('open'); panes('wsModal', 'wform'); }
   function closeWorkshop(){ document.getElementById('wsModal').classList.remove('open'); }
   document.getElementById('specs').addEventListener('click', function(e){
@@ -671,19 +793,61 @@
       city: document.getElementById('wCity').value, address: document.getElementById('wAddress').value.trim(), specialties: specs
     };
     if(!payload.name || !payload.phone || !payload.email || !payload.city || !payload.address) return show('wsErr', 'Please fill in workshop name, phone, email, city and address.');
-    if(!configured()) return show('wsErr', 'This form is not connected to the backend yet, so nothing was sent.');
+    var ticked = [].filter.call(document.querySelectorAll('.wack'), function(c){ return c.checked; }).map(function(c){ return c.dataset.n; });
+    if(ticked.length < 4) return show('wsErr', 'Please tick all four boxes to accept the Workshop Terms.');
+    payload.accepted = 'true'; payload.acks = ticked.join(','); payload.termsVersion = WORKSHOP_TERMS_VERSION;
+    if(!configured()) return show('wsErr', notConnected());
     show('wsErr', '');
     fetch(API_BASE + '/workshops/register', { method: 'POST', headers: headers({ 'Content-Type': 'application/json' }), body: JSON.stringify(payload) })
       .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, body: j }; }); })
       .then(function(res){
-        if(!res.ok) throw new Error();
+        if(!res.ok) throw new Error(res.body && res.body.error);
         document.getElementById('wRefText').textContent = 'Reference ' + res.body.reference + '. Our team will call ' + payload.phone + ' to verify ' + payload.name + '.';
         panes('wsModal', 'wsent');
       })
-      .catch(function(){ show('wsErr', 'Something went wrong. Please try again.'); });
+      .catch(function(err){ show('wsErr', err && err.message === 'terms_outdated' ? 'Our terms were updated. Please reload this page and accept the latest version.' : 'Something went wrong. Please try again.'); });
   }
 
-  [['reqModal', closeRequest], ['wsModal', closeWorkshop]].forEach(function(p){
+  // ---- Book a workshop ----
+  var bookTarget = null;
+  document.getElementById('workshopResults').addEventListener('click', function(e){
+    var b = e.target.closest('[data-book]'); if(!b) return;
+    openBooking(Number(b.dataset.book), b.dataset.name);
+  });
+  function openBooking(id, name){
+    bookTarget = { id: id, name: name };
+    document.getElementById('bkSub').textContent = 'Booking ' + name + '. Their phone number is shown as soon as you book.';
+    show('bkErr', ''); document.getElementById('bkModal').classList.add('open'); panes('bkModal', 'bform');
+  }
+  function closeBooking(){ document.getElementById('bkModal').classList.remove('open'); }
+  var bookErrText = { invalid_details:'Please fill in your name, a valid phone number and what needs fixing.', consent_required:'Please tick the box to agree.', invalid_time:'Pick a time from now up to 60 days ahead.', workshop_not_found:'That workshop is no longer listed. Please search again.', too_many_requests:'You have made several bookings in the last hour. Please try again later.' };
+  function submitBooking(){
+    if(!bookTarget) return;
+    var name = document.getElementById('bName').value.trim(), phone = document.getElementById('bPhone').value.trim(), issue = document.getElementById('bIssue').value.trim();
+    if(name.length < 2) return show('bkErr', 'Please enter your name.');
+    if(phone.replace(/\D/g, '').length < 10) return show('bkErr', 'Please enter a valid phone number.');
+    if(issue.length < 5) return show('bkErr', 'Tell us briefly what needs fixing.');
+    if(!document.getElementById('bConsent').checked) return show('bkErr', bookErrText.consent_required);
+    if(!configured()) return show('bkErr', notConnected());
+    show('bkErr', '');
+    var when = document.getElementById('bWhen').value;
+    fetch(API_BASE + '/workshops/book', { method: 'POST', headers: headers({ 'Content-Type': 'application/json' }), body: JSON.stringify({
+      workshopId: bookTarget.id, name: name, phone: phone, vehiclePlate: document.getElementById('bPlate').value.trim(), issue: issue,
+      preferredAt: when ? new Date(when).toISOString() : '', consent: 'true', website: document.getElementById('bWebsite').value }) })
+      .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, body: j }; }); })
+      .then(function(res){
+        if(!res.ok) throw new Error(res.body && res.body.error);
+        var w = res.body.workshop, wa = 'https://wa.me/' + String(w.tel || '').replace(/\D/g, '');
+        document.getElementById('bkDone').innerHTML = '<div class="badge">Booked</div><h3>' + esc(w.name) + '</h3><p class="sub">Booking ' + esc(res.body.reference) + '. Our team will also call you and the mechanic to follow up.</p>' +
+          '<div class="mechcard"><div class="ok">Mechanic</div><b>' + esc(w.mechanicName || w.name) + '</b><span>' + esc(w.address) + ', ' + esc(w.city) + '</span><br><b style="font-size:1.2rem;">' + esc(w.phone) + '</b></div>' +
+          '<div class="callrow"><a class="btn-primary" href="tel:' + esc(w.tel) + '">Call</a><a class="btn-ghost" href="' + esc(wa) + '" target="_blank" rel="noopener">WhatsApp</a></div>' +
+          '<p class="sub">Tell the mechanic your booking reference. When the work is done, send your invoice on this site and tell us whether you paid by cash, bank transfer or a repair loan.</p>';
+        panes('bkModal', 'bdone');
+      })
+      .catch(function(err){ show('bkErr', bookErrText[err && err.message] || 'Something went wrong. Please try again.'); });
+  }
+
+  [['reqModal', closeRequest], ['wsModal', closeWorkshop], ['bkModal', closeBooking]].forEach(function(p){
     document.getElementById(p[0]).addEventListener('click', function(e){ if(e.target === this) p[1](); });
   });
 </script>
