@@ -25,6 +25,7 @@
   .btn{background:var(--amber); color:var(--ink); font-weight:700; border:none; border-radius:5px; padding:11px 18px; cursor:pointer;}
   .btn.ghost{background:none; color:var(--paper); border:1px solid var(--line); font-weight:600;}
   .btn.danger{background:none; color:var(--red); border:1px solid var(--red); font-weight:600;}
+  .btn:disabled{opacity:.5; cursor:not-allowed;}
   input,select,textarea{background:var(--ink); color:var(--paper); border:1px solid var(--line); border-radius:5px; padding:10px 12px;}
   .err{color:var(--red); font-size:0.9rem; margin-top:12px;}
 
@@ -42,8 +43,8 @@
   .bar{display:flex; justify-content:space-between; align-items:center; padding:14px 24px; border-bottom:1px solid var(--line); position:sticky; top:0; background:rgba(20,24,28,0.95); z-index:5;}
   .wrap{max-width:860px; margin:0 auto; padding:24px 20px 80px;}
   .banner{background:rgba(242,169,59,0.14); color:var(--amber); font-size:0.85rem; padding:10px 14px; border-radius:6px; margin-bottom:18px;}
-  .tabs{display:flex; gap:6px; border-bottom:1px solid var(--line); margin-bottom:22px;}
-  .tab{background:none; border:none; color:var(--dim); font-weight:600; padding:12px 14px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px;}
+  .tabs{display:flex; flex-wrap:wrap; gap:2px 6px; border-bottom:1px solid var(--line); margin-bottom:22px;}
+  .tab{background:none; border:none; color:var(--dim); font-weight:600; padding:12px 14px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; white-space:nowrap;}
   .tab.active{color:var(--paper); border-bottom-color:var(--amber);}
   .count{display:inline-block; min-width:22px; text-align:center; background:var(--amber); color:var(--ink); border-radius:11px; font-size:0.75rem; font-weight:700; padding:1px 7px; margin-left:6px;}
   .count.zero{background:var(--line); color:var(--dim);}
@@ -65,7 +66,7 @@
   .money{display:flex; gap:18px; flex-wrap:wrap; margin-top:10px; font-size:0.9rem; color:var(--dim);}
   .money b{color:var(--paper); font-weight:600;} .money .total b{color:var(--amber);}
   .when{font-size:0.78rem; color:var(--dim); margin-top:8px;}
-  .row{display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;}
+  .row{display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; align-items:center;}
   details{margin-top:12px;} summary{cursor:pointer; color:var(--dim); font-size:0.86rem;}
   details .fields{display:grid; gap:8px; margin-top:10px;} details textarea{min-height:64px; resize:vertical; width:100%;}
   .pill{font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap;}
@@ -100,18 +101,41 @@
 <div id="app" hidden>
   <div class="bar">
     <div class="brand">Auto<span>fixer</span> Admin</div>
-    <button class="btn ghost" id="signOut">Sign out</button>
+    <span><a class="btn ghost" href="funding.html" style="text-decoration:none;display:inline-block;margin-right:8px;">Funding</a><button class="btn ghost" id="signOut">Sign out</button></span>
   </div>
   <div class="wrap">
     <div class="banner" id="demoBanner" hidden>Demo data. Nothing here is real and nothing is saved.</div>
     <div class="tabs">
       <button class="tab active" id="tabReq">Repair requests <span class="count" id="cReq">0</span></button>
+      <button class="tab" id="tabBook">Bookings <span class="count zero" id="cBook">0</span></button>
+      <button class="tab" id="tabPay">Direct payments <span class="count zero" id="cPay">0</span></button>
       <button class="tab" id="tabWs">Workshops <span class="count" id="cWs">0</span></button>
+      <button class="tab" id="tabMem">Members <span class="count zero" id="cMem">0</span></button>
     </div>
 
     <section id="viewReq">
       <div class="chips" id="chips"></div>
       <div class="list" id="reqList"></div>
+    </section>
+
+    <section id="viewBook" hidden>
+      <p class="meta" style="margin-bottom:14px;">Customers who booked a workshop and were shown the mechanic's number. Call both sides, record that you did, and track the booking to the end.</p>
+      <div class="chips" id="bkChips"></div>
+      <div class="list" id="bkList"></div>
+    </section>
+
+    <section id="viewPay" hidden>
+      <p class="meta" style="margin-bottom:14px;">Customers who sent an invoice and said they paid a registered mechanic by cash or bank transfer. Confirm each one with the mechanic. Autofixer's 10% commission on the labor is recorded as due; tick "Commission received" when the workshop has paid it.</p>
+      <div class="chips" id="pyChips"></div>
+      <div class="list" id="pyList"></div>
+    </section>
+
+    <section id="viewMem" hidden>
+      <p class="sub" id="memNote" style="color:var(--dim);margin-bottom:14px;"></p>
+      <h3 style="margin-bottom:10px;">Groups</h3>
+      <div class="list" id="grpList"></div>
+      <h3 style="margin:22px 0 10px;">Members</h3>
+      <div class="list" id="memList"></div>
     </section>
 
     <section id="viewWs" hidden>
@@ -128,7 +152,7 @@
   var API_BASE = window.AUTOFIXER_API || 'https://YOUR_PROJECT_REF.supabase.co/functions/v1'; // normally set via config.js
   var ANON_KEY = window.AUTOFIXER_ANON_KEY || ''; // optional: only if Supabase rejects calls with 401 before reaching the function
 
-  var DEMO = API_BASE.indexOf('YOUR_PROJECT' + '_REF') !== -1;
+  var DEMO = API_BASE.indexOf('YOUR_PROJECT' + '_REF') !== -1 || API_BASE.indexOf('YOUR-REF') !== -1;
   var password = '', requests = [], workshops = [], filter = 'new';
 
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
@@ -174,7 +198,7 @@
     $('app').hidden = true; $('login').hidden = false; $('pw').value = '';
   });
   function start(fromForm){
-    Promise.all([loadRequests(), loadWorkshops()]).then(function(){
+    Promise.all([loadRequests(), loadWorkshops(), loadMembers(), loadBookings(), loadPayments()]).then(function(){
       try { sessionStorage.setItem('af_admin_pw', password); } catch(e){}
       $('login').hidden = true; $('app').hidden = false; $('demoBanner').hidden = !DEMO;
       renderAll();
@@ -192,16 +216,22 @@
 
   // ---- Tabs ----
   function showTab(name){
-    $('viewReq').hidden = name !== 'req'; $('viewWs').hidden = name !== 'ws';
-    $('tabReq').classList.toggle('active', name === 'req'); $('tabWs').classList.toggle('active', name === 'ws');
+    ['Req','Book','Pay','Ws','Mem'].forEach(function(k){
+      $('view' + k).hidden = name !== k.toLowerCase();
+      $('tab' + k).classList.toggle('active', name === k.toLowerCase());
+    });
   }
   $('tabReq').addEventListener('click', function(){ showTab('req'); });
+  $('tabBook').addEventListener('click', function(){ showTab('book'); });
+  $('tabPay').addEventListener('click', function(){ showTab('pay'); });
   $('tabWs').addEventListener('click', function(){ showTab('ws'); });
+  $('tabMem').addEventListener('click', function(){ showTab('mem'); });
 
   // ---- Repair requests ----
   function loadRequests(){ return api('/repairs/admin?status=all').then(function(j){ requests = j.requests || []; }); }
   function inGroup(r, g){ return g === 'all' || (STATUS[r.status] && STATUS[r.status].group === g); }
 
+  function payTag(r){ return r.payment_method === 'cash' ? ' \u00b7 <span class="pill grey">Paid cash</span>' : r.payment_method === 'bank_transfer' ? ' \u00b7 <span class="pill grey">Paid by transfer</span>' : ''; }
   function mechanicLine(r){
     var w = r.workshops;
     if(r.workshop_id && w) return '<p class="mech"><span class="pill green">Registered mechanic</span> <b>' + esc(w.name) + '</b> \u00b7 ' + esc(w.contact_name || '') + ' \u00b7 <a href="tel:+' + esc(w.phone_normalized || '') + '">' + esc(w.phone) + '</a><br><span class="meta">' + esc(w.address) + ', ' + esc(w.city) + '</span></p>';
@@ -223,7 +253,7 @@
       var opts = Object.keys(STATUS).map(function(k){ return '<option value="' + k + '"' + (r.status === k ? ' selected' : '') + '>' + STATUS[k].label + '</option>'; }).join('');
       return '<article class="card rr">' + img + '<div class="body">' +
         '<div class="top"><h3>' + esc(r.name) + '</h3><span class="pill ' + st.color + '">' + st.label + '</span></div>' +
-        '<p class="meta"><a href="tel:+' + esc(r.phone) + '">' + esc(r.phone) + '</a> \u00b7 ' + esc(r.vehicle_plate) + '</p>' + mechanicLine(r) +
+        '<p class="meta"><a href="tel:+' + esc(r.phone) + '">' + esc(r.phone) + '</a> \u00b7 ' + esc(r.vehicle_plate) + payTag(r) + '</p>' + mechanicLine(r) +
         '<div class="money"><span>Parts <b>' + naira(r.parts_cost) + '</b></span><span>Labor <b>' + naira(r.labor_cost) + '</b></span><span class="total">Total <b>' + naira(r.total_cost) + '</b></span></div>' +
         '<p class="when">' + ref + ' \u00b7 received ' + esc(new Date(r.created_at).toLocaleString()) + (r.policy_version ? ' \u00b7 accepted policy ' + esc(r.policy_version) : '') + '</p>' +
         '<div class="row"><select id="st-' + ref + '" aria-label="Status">' + opts + '</select><button class="btn" data-save="' + ref + '">Save</button></div>' +
@@ -241,6 +271,120 @@
     }) }).then(loadRequests).then(renderAll).catch(function(){ b.disabled = false; alert('Could not save. Please try again.'); });
   });
 
+  // ---- Bookings: customers who booked a workshop ----
+  var bookings = [], bkFilter = 'open';
+  var BKSTATUS = { new:['New','amber'], following_up:['Following up','grey'], confirmed:['Confirmed','green'], completed:['Completed','green'], cancelled:['Cancelled','red'] };
+  var BKGROUP = { open:['new','following_up','confirmed'], done:['completed','cancelled'] };
+  function loadBookings(){ return api('/workshops/admin/bookings').then(function(j){ bookings = j.bookings || []; }).catch(function(e){ if(e && e.message === 'auth') throw e; bookings = []; }); }
+  function renderBookings(){
+    var n = bookings.filter(function(b){ return b.status === 'new'; }).length;
+    $('cBook').textContent = n; $('cBook').classList.toggle('zero', !n);
+    $('bkChips').innerHTML = [['open','Open'],['done','Closed'],['all','All']].map(function(f){
+      var c = bookings.filter(function(b){ return f[0] === 'all' || BKGROUP[f[0]].indexOf(b.status) > -1; }).length;
+      return '<button class="chip' + (bkFilter === f[0] ? ' active' : '') + '" data-bf="' + f[0] + '">' + f[1] + ' (' + c + ')</button>';
+    }).join('');
+    var rows = bookings.filter(function(b){ return bkFilter === 'all' || BKGROUP[bkFilter].indexOf(b.status) > -1; });
+    $('bkList').innerHTML = rows.map(function(b){
+      var st = BKSTATUS[b.status] || BKSTATUS.new, w = b.workshops || {}, ref = esc(b.reference);
+      var opts = Object.keys(BKSTATUS).map(function(k){ return '<option value="' + k + '"' + (b.status === k ? ' selected' : '') + '>' + BKSTATUS[k][0] + '</option>'; }).join('');
+      return '<article class="card"><div class="top"><h3>' + esc(b.customer_name) + ' \u2192 ' + esc(w.name || '') + '</h3><span class="pill ' + st[1] + '">' + st[0] + '</span></div>' +
+        '<p class="meta">Customer <a href="tel:+' + esc(b.customer_phone_normalized) + '">' + esc(b.customer_phone) + '</a>' + (b.vehicle_plate ? ' \u00b7 ' + esc(b.vehicle_plate) : '') + '</p>' +
+        '<p class="mech">Mechanic <b>' + esc(w.contact_name || w.name || '') + '</b> \u00b7 <a href="tel:+' + esc(w.phone_normalized || '') + '">' + esc(w.phone || '') + '</a><br><span class="meta">' + esc(w.address || '') + ', ' + esc(w.city || '') + '</span></p>' +
+        '<p style="margin-top:8px;">' + esc(b.issue) + '</p>' +
+        '<p class="when">' + ref + ' \u00b7 booked ' + esc(new Date(b.created_at).toLocaleString()) + (b.preferred_at ? ' \u00b7 wants ' + esc(new Date(b.preferred_at).toLocaleString()) : '') + '</p>' +
+        '<div class="row"><label style="margin:0;"><input type="checkbox" id="bc-' + ref + '"' + (b.customer_contacted_at ? ' checked' : '') + '> Customer contacted</label>' +
+        '<label style="margin:0;"><input type="checkbox" id="bm-' + ref + '"' + (b.mechanic_contacted_at ? ' checked' : '') + '> Mechanic contacted</label></div>' +
+        '<div class="row"><select id="bs-' + ref + '" aria-label="Status">' + opts + '</select><button class="btn" data-bksave="' + ref + '">Save</button></div>' +
+        '<details><summary>Notes</summary><div class="fields"><textarea id="bn-' + ref + '" placeholder="Calls made, what was agreed\u2026">' + esc(b.notes || '') + '</textarea></div></details></article>';
+    }).join('') || '<p class="empty">No bookings here.</p>';
+  }
+  $('bkChips').addEventListener('click', function(e){ var b = e.target.closest('[data-bf]'); if(b){ bkFilter = b.dataset.bf; renderBookings(); } });
+  $('bkList').addEventListener('click', function(e){
+    var b = e.target.closest('[data-bksave]'); if(!b) return; var ref = b.dataset.bksave; b.disabled = true;
+    api('/workshops/bookings/' + ref + '/status', { method: 'PATCH', body: JSON.stringify({ status: $('bs-' + ref).value, notes: $('bn-' + ref).value, customerContacted: $('bc-' + ref).checked, mechanicContacted: $('bm-' + ref).checked }) })
+      .then(loadBookings).then(renderAll).catch(function(){ b.disabled = false; alert('Could not save. Please try again.'); });
+  });
+
+  // ---- Direct payments: customers who say they paid a mechanic themselves ----
+  var payments = [], pyFilter = 'open';
+  var PYSTATUS = { declared:['Declared','amber'], confirmed:['Confirmed','green'], disputed:['Disputed','red'], closed:['Closed','grey'] };
+  var PYGROUP = { open:['declared','disputed'], done:['confirmed','closed'] };
+  function loadPayments(){ return api('/workshops/admin/payments').then(function(j){ payments = j.payments || []; }).catch(function(e){ if(e && e.message === 'auth') throw e; payments = []; }); }
+  function renderPayments(){
+    var n = payments.filter(function(p){ return p.status === 'declared'; }).length;
+    $('cPay').textContent = n; $('cPay').classList.toggle('zero', !n);
+    $('pyChips').innerHTML = [['open','Open'],['done','Closed'],['all','All']].map(function(f){
+      var c = payments.filter(function(p){ return f[0] === 'all' || PYGROUP[f[0]].indexOf(p.status) > -1; }).length;
+      return '<button class="chip' + (pyFilter === f[0] ? ' active' : '') + '" data-pf="' + f[0] + '">' + f[1] + ' (' + c + ')</button>';
+    }).join('');
+    var rows = payments.filter(function(p){ return pyFilter === 'all' || PYGROUP[pyFilter].indexOf(p.status) > -1; });
+    $('pyList').innerHTML = rows.map(function(p){
+      var st = PYSTATUS[p.status] || PYSTATUS.declared, w = p.workshops || {}, rq = p.repair_requests || {}, b = p.workshop_bookings || {}, ref = esc(p.reference);
+      var cName = b.customer_name || rq.name || '', cPhone = b.customer_phone || rq.phone || '', cTel = b.customer_phone_normalized || rq.phone || '', src = rq.reference ? 'invoice ' + rq.reference : (b.reference ? 'booking ' + b.reference : '');
+      var opts = Object.keys(PYSTATUS).map(function(k){ return '<option value="' + k + '"' + (p.status === k ? ' selected' : '') + '>' + PYSTATUS[k][0] + '</option>'; }).join('');
+      return '<article class="card"><div class="top"><h3>' + esc(cName) + ' paid ' + esc(w.name || '') + '</h3><span class="pill ' + st[1] + '">' + st[0] + '</span></div>' +
+        '<p class="meta">Customer <a href="tel:+' + esc(cTel) + '">' + esc(cPhone) + '</a> \u00b7 Mechanic <a href="tel:+' + esc(w.phone_normalized || '') + '">' + esc(w.phone || '') + '</a> \u00b7 ' + esc(src) + '</p>' +
+        '<div class="money"><span>Paid <b>' + naira(p.amount_kobo / 100) + '</b></span><span>Labor <b>' + (p.labor_kobo == null ? 'not given' : naira(p.labor_kobo / 100)) + '</b></span><span class="total">Commission due <b>' + (p.commission_due_kobo == null ? 'unknown' : naira(p.commission_due_kobo / 100)) + '</b></span></div>' +
+        '<p class="when">' + ref + ' \u00b7 paid ' + esc(p.paid_on) + ' by ' + esc(String(p.method).replace('_', ' ')) + (p.note ? ' \u00b7 ' + esc(p.note) : '') + '</p>' +
+        '<div class="row"><select id="ps-' + ref + '" aria-label="Status">' + opts + '</select><input id="pl-' + ref + '" type="number" step="any" placeholder="Labor \u20a6 (confirmed)" style="max-width:170px;"><label style="margin:0;"><input type="checkbox" id="pc-' + ref + '"' + (p.commission_received_at ? ' checked' : '') + '> Commission received</label><button class="btn" data-pysave="' + ref + '">Save</button></div>' +
+        '<details><summary>Notes</summary><div class="fields"><textarea id="pn-' + ref + '" placeholder="What the mechanic said\u2026">' + esc(p.staff_notes || '') + '</textarea></div></details></article>';
+    }).join('') || '<p class="empty">Nothing here.</p>';
+  }
+  $('pyChips').addEventListener('click', function(e){ var b = e.target.closest('[data-pf]'); if(b){ pyFilter = b.dataset.pf; renderPayments(); } });
+  $('pyList').addEventListener('click', function(e){
+    var b = e.target.closest('[data-pysave]'); if(!b) return; var ref = b.dataset.pysave; b.disabled = true;
+    api('/workshops/payments/' + ref + '/status', { method: 'PATCH', body: JSON.stringify({ status: $('ps-' + ref).value, notes: $('pn-' + ref).value, laborNaira: $('pl-' + ref).value, commissionReceived: $('pc-' + ref).checked }) })
+      .then(loadPayments).then(renderAll).catch(function(){ b.disabled = false; alert('Could not save. Please try again.'); });
+  });
+
+  // ---- Members and groups ----
+  var members = [], groups = [], MIN = 5, membersOn = false;
+  function loadMembers(){
+    return api('/members/admin').then(function(j){ members = j.members || []; groups = j.groups || []; MIN = j.minimum || 5; membersOn = true; })
+      .catch(function(e){ if(e && e.message === 'auth') throw e; membersOn = false; members = []; groups = []; });
+  }
+  var MSTATUS = { pending_group:['No group yet','amber'], linked:['In a group','green'], cancelled:['Cancelled','grey'] };
+  function renderMembers(){
+    $('memNote').textContent = membersOn ? 'Benefits need three things: the member is in a group, the group has at least ' + MIN + ' members, and you have approved the member.  Approve each member here.' : 'The membership function is not set up yet. Deploy the members function (see the launch guide).';
+    $('grpList').innerHTML = groups.length ? groups.map(function(g){
+      return '<article class="card"><div class="top"><h3>' + esc(g.group_code) + '</h3><span class="pill ' + (g.active ? 'green' : 'amber') + '">' + (g.active ? 'Active' : 'Forming') + '</span></div>' +
+        '<p class="meta">' + g.member_count + ' of ' + MIN + ' members \u00b7 created by ' + esc(g.creator || '') + ' \u00b7 ' + esc(new Date(g.created_at).toLocaleDateString()) + '</p></article>';
+    }).join('') : '<p class="empty">No groups yet.</p>';
+    var needs = members.filter(function(m){ return m.approval_status === 'pending' && m.status !== 'cancelled'; }).length;
+    $('cMem').textContent = needs; $('cMem').classList.toggle('zero', !needs);
+    var order = { pending:0, approved:1, rejected:2 };
+    var sorted = members.slice().sort(function(x, y){ return (order[x.approval_status] || 0) - (order[y.approval_status] || 0); });
+    $('memList').innerHTML = sorted.length ? sorted.map(function(m){
+      var st = MSTATUS[m.status] || MSTATUS.pending_group, ap = m.approval_status || 'pending';
+      var apPill = ap === 'approved' ? '<span class="pill green">Approved</span>' : ap === 'rejected' ? '<span class="pill red">Rejected</span>' : '<span class="pill amber">Needs approval</span>';
+      var id = esc(m.membership_id), btns = '';
+      if(ap !== 'approved') btns += '<button class="btn" data-mem-approve="' + id + '">Approve</button>';
+      if(ap === 'pending') btns += '<button class="btn danger" data-mem-reject="' + id + '">Reject</button>';
+      if(ap !== 'pending') btns += '<button class="btn ghost" data-mem-reset="' + id + '">Back to pending</button>';
+      return '<article class="card"><div class="top"><h3>' + esc(m.full_name) + ' \u2014 ' + id + '</h3>' + apPill + '</div>' +
+        '<p class="meta"><a href="tel:+' + esc(m.phone) + '">' + esc(m.phone) + '</a> \u00b7 ' + esc(m.email) + '</p>' +
+        '<p class="meta">' + st[0] + ' \u00b7 ' + (m.group_code ? 'Group ' + esc(m.group_code) + ' (' + (m.group_size || 0) + ' of ' + MIN + ')' : 'Not in a group') + ' \u00b7 payment ' + esc(m.paystack_reference) + '</p>' +
+        '<p class="meta">Terms ' + esc(m.terms_version || '') + (m.terms_accepted_at ? ' accepted ' + esc(new Date(m.terms_accepted_at).toLocaleString()) : '') + (m.accepted_ip ? ' from ' + esc(m.accepted_ip) : '') + '</p>' +
+        (m.approval_note ? '<p class="meta">Note: ' + esc(m.approval_note) + '</p>' : '') +
+        '<div class="row">' + btns + '</div></article>';
+    }).join('') : '<p class="empty">No members yet.</p>';
+  }
+  $('memList').addEventListener('click', function(e){
+    var ap = e.target.closest('[data-mem-approve]'), rj = e.target.closest('[data-mem-reject]'), rs = e.target.closest('[data-mem-reset]');
+    var el = ap || rj || rs; if(!el) return;
+    var id = el.dataset.memApprove || el.dataset.memReject || el.dataset.memReset;
+    var decision = ap ? 'approved' : rj ? 'rejected' : 'pending';
+    var note = '';
+    if(decision !== 'pending'){
+      note = window.prompt(decision === 'approved' ? 'Approve ' + id + '. Add a note (optional):' : 'Reject ' + id + '. Why? (optional note):');
+      if(note === null) return;
+    }
+    el.disabled = true;
+    api('/members/admin/' + id, { method: 'PATCH', body: JSON.stringify({ approval: decision, note: note, by: 'staff' }) })
+      .then(loadMembers).then(renderAll).catch(function(){ el.disabled = false; alert('Could not save. Please try again.'); });
+  });
+
+
   // ---- Workshops ----
   function loadWorkshops(){ return api('/workshops/admin?status=all').then(function(j){ workshops = j.workshops || []; }); }
   function tags(w){ return (w.specialties || []).map(function(s){ return '<span>' + esc(s) + '</span>'; }).join(''); }
@@ -252,11 +396,12 @@
       return '<article class="card"><div class="top"><h3>' + esc(w.name) + '</h3><span class="pill amber">Pending</span></div>' +
         '<p class="meta">' + esc(w.contact_name || '') + ' \u00b7 <a href="tel:+' + esc(w.phone_normalized || '') + '">' + esc(w.phone) + '</a> \u00b7 ' + esc(w.email) + '</p>' +
         '<p class="meta">' + esc(w.address) + ', ' + esc(w.city) + '</p><div class="tags">' + tags(w) + '</div>' +
+        '<p class="meta">Workshop Terms ' + esc(w.terms_version || 'not accepted') + (w.terms_accepted_at ? ' \u00b7 accepted ' + esc(new Date(w.terms_accepted_at).toLocaleString()) : '') + '</p>' +
         '<div class="row"><button class="btn" data-approve="' + w.id + '">Approve</button><button class="btn danger" data-reject="' + w.id + '">Reject</button></div>' +
         '<details><summary>Add map coordinates (optional)</summary><div class="fields coords"><input id="lat-' + w.id + '" type="number" step="any" placeholder="Latitude"><input id="lng-' + w.id + '" type="number" step="any" placeholder="Longitude"></div></details></article>';
     }).join('') : '<p class="empty">No workshops are waiting for approval.</p>';
     function simple(list, pill, color){ return list.map(function(w){
-      return '<article class="card"><div class="top"><h3>' + esc(w.name) + '</h3><span class="pill ' + color + '">' + pill + '</span></div><p class="meta">' + esc(w.contact_name || '') + ' \u00b7 ' + esc(w.phone) + '</p><p class="meta">' + esc(w.address) + ', ' + esc(w.city) + '</p></article>';
+      return '<article class="card"><div class="top"><h3>' + esc(w.name) + '</h3><span class="pill ' + color + '">' + pill + '</span></div><p class="meta">' + esc(w.contact_name || '') + ' \u00b7 ' + esc(w.phone) + '</p><p class="meta">' + esc(w.address) + ', ' + esc(w.city) + '</p><p class="meta">Workshop Terms ' + esc(w.terms_version || 'not accepted') + '</p></article>';
     }).join('') || '<p class="empty">None.</p>'; }
     $('wsApproved').innerHTML = simple(by.approved, 'Approved', 'green');
     $('wsRejected').innerHTML = simple(by.rejected, 'Rejected', 'red');
@@ -284,7 +429,7 @@
     var pendingCount = workshops.filter(function(w){ return w.status === 'pending'; }).length;
     $('cReq').textContent = newCount; $('cReq').classList.toggle('zero', !newCount);
     $('cWs').textContent = pendingCount; $('cWs').classList.toggle('zero', !pendingCount);
-    renderRequests(); renderWorkshops();
+    renderRequests(); renderBookings(); renderPayments(); renderWorkshops(); renderMembers();
   }
 
   // ---- Demo data (only used while the backend isn't connected) ----
@@ -298,17 +443,22 @@
         workshops:null, parts_cost:24500, labor_cost:8000, total_cost:32500, status:'sent_to_partner', created_at:new Date(Date.now()-86400000).toISOString(), invoice_url:SAMPLE_INVOICE, notes:'Sent file by email.', partner_reference:'' }
     ],
     workshops: [
-      { id:1, name:"Ade's Auto Clinic", contact_name:'Ade Bello', phone:'0803 111 2222', phone_normalized:'2348031112222', email:'ade@example.com', city:'Lagos', address:'12 Allen Avenue, Ikeja', specialties:['Engine','Brakes'], status:'approved' },
-      { id:2, name:'Precision Auto Care', contact_name:'Grace Yakubu', phone:'0805 333 4444', phone_normalized:'2348053334444', email:'grace@example.com', city:'Abuja', address:'9 Ademola Adetokunbo St, Wuse 2', specialties:['Brakes','Tyres'], status:'pending' }
+      { id:1, name:"Ade's Auto Clinic", contact_name:'Ade Bello', phone:'0803 111 2222', phone_normalized:'2348031112222', email:'ade@example.com', city:'Lagos', address:'12 Allen Avenue, Ikeja', specialties:['Engine','Brakes'], status:'approved', terms_version:'w0.2-draft' },
+      { id:2, name:'Precision Auto Care', contact_name:'Grace Yakubu', phone:'0805 333 4444', phone_normalized:'2348053334444', email:'grace@example.com', city:'Abuja', address:'9 Ademola Adetokunbo St, Wuse 2', specialties:['Brakes','Tyres'], status:'pending', terms_version:'w0.2-draft', terms_accepted_at:new Date().toISOString() }
     ]
   };
   function demoApi(path, opts){
     var out = {};
-    if(path.indexOf('/repairs/admin') === 0) out = { requests: demo.requests };
+    if(path.indexOf('/members/admin') === 0 && opts.method !== 'PATCH') out = demo.membersList ? { minimum:5, groups:demo.groupsList, members:demo.membersList } : { minimum:5, groups:[{ group_code:'GRP-4M8X2A', creator:'ECO-K7M2QP', member_count:5, active:true, created_at:new Date().toISOString() },{ group_code:'GRP-9Q2WJT', creator:'ECO-H3N8VD', member_count:3, active:false, created_at:new Date().toISOString() }],
+      members:[{ membership_id:'ECO-K7M2QP', full_name:'Amaka Obi', phone:'2348030000001', email:'amaka@example.com', status:'linked', approval_status:'approved', group_size:5, group_code:'GRP-4M8X2A', paystack_reference:'T84920', terms_version:'m0.7-draft', created_at:new Date().toISOString() },
+               { membership_id:'ECO-P5R6TX', full_name:'Tunde Bakare', phone:'2348050000002', email:'tunde@example.com', status:'linked', approval_status:'pending', group_size:3, group_code:'GRP-9Q2WJT', paystack_reference:'T84931', terms_version:'m0.7-draft', created_at:new Date().toISOString() }] };
+    else if(path.indexOf('/repairs/admin') === 0) out = { requests: demo.requests };
+    if(path.indexOf('/members/admin') === 0 && opts.method !== 'PATCH' && !demo.membersList){ demo.membersList = out.members; demo.groupsList = out.groups; }
     else if(path.indexOf('/workshops/admin') === 0) out = { workshops: demo.workshops };
     else if(opts.method === 'PATCH'){
       var body = JSON.parse(opts.body), parts = path.split('/');
       if(parts[1] === 'repairs'){ var r = demo.requests.filter(function(x){ return x.reference === parts[2]; })[0]; if(r){ r.status = body.status; r.notes = body.notes; r.partner_reference = body.partnerReference; } }
+      if(parts[1] === 'members' && parts[2] === 'admin'){ var mm = (demo.membersList || []).filter(function(x){ return x.membership_id === parts[3]; })[0]; if(mm){ mm.approval_status = body.approval; mm.approval_note = body.note || null; } }
       if(parts[1] === 'workshops'){ var w = demo.workshops.filter(function(x){ return String(x.id) === parts[2]; })[0]; if(w) w.status = body.status; }
       out = { ok: true };
     }
