@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Ecoswitch member dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0F2E22; --card:#163D2E; --ink:#EAF6F0; --dim:#9FC9B8; --line:rgba(234,246,240,0.16); --accent:#5EEAA6; --warn:#F2A93B; --err:#FF8F85; --code:#0B1F17;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+  *{box-sizing:inherit; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.5; font-size:16px; -webkit-text-size-adjust:100%;}
+  [hidden]{display:none !important;}
+  a{color:var(--accent);}
+  .wrap{max-width:640px; margin:0 auto; padding:26px 18px 80px;}
+  .top{display:flex; justify-content:space-between; align-items:center; margin-bottom:22px;}
+  .brand{font-weight:600; letter-spacing:0.16em; font-size:0.9rem;} .brand a{color:inherit; text-decoration:none;}
+  h1{font-size:1.5rem; line-height:1.2; letter-spacing:-0.01em;} h2{font-size:1.1rem; margin-bottom:6px;}
+  .sub{color:var(--dim); font-size:0.92rem; margin-bottom:14px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:20px; margin-bottom:16px;}
+  label{display:block; font-size:0.85rem; color:var(--dim); margin-bottom:14px;}
+  input[type=text],input[type=password]{display:block; width:100%; margin-top:6px; padding:12px; font-size:16px; font-family:inherit; color:var(--ink); background:var(--code); border:1px solid var(--line); border-radius:6px;}
+  .btn{display:block; width:100%; text-align:center; background:var(--accent); color:#0F2E22; font-weight:700; font-size:1rem; padding:14px; border:none; border-radius:6px; cursor:pointer; font-family:inherit; text-decoration:none; -webkit-appearance:none;}
+  .btn:disabled{opacity:0.4; cursor:not-allowed;} .btn.ghost{background:transparent; color:var(--ink); border:1px solid var(--line); font-weight:600;}
+  .err{color:var(--err); font-size:0.9rem; margin-top:12px;}
+  .pill{display:inline-block; font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:20px; background:rgba(234,246,240,0.1); color:var(--dim); margin:0 6px 6px 0;}
+  .pill.green{background:rgba(94,234,166,0.16); color:var(--accent);} .pill.amber{background:rgba(242,169,59,0.16); color:var(--warn);} .pill.red{background:rgba(255,143,133,0.16); color:var(--err);}
+  .bar{height:12px; background:var(--code); border-radius:6px; overflow:hidden; margin:8px 0 4px;} .bar i{display:block; height:100%; background:var(--accent);}
+  .muted{color:var(--dim); font-size:0.88rem;} .link{background:none; border:none; color:var(--dim); text-decoration:underline; font-size:0.86rem; cursor:pointer; font-family:inherit; padding:6px 0;}
+  .idbox{background:var(--code); border:1px dashed var(--accent); border-radius:8px; padding:12px; text-align:center; margin:12px 0;} .idbox small{display:block; color:var(--dim); font-size:0.76rem;} .idbox b{font-size:1.25rem; letter-spacing:0.08em;}
+  .ritem{border-top:1px solid var(--line); padding:14px 0;} .ritem:first-of-type{border-top:none; padding-top:6px;} .rtop{display:flex; justify-content:space-between; gap:10px; align-items:flex-start; flex-wrap:wrap;}
+  .steps{list-style:none; margin:10px 0 0;} .steps li{display:flex; gap:10px; padding:6px 0; color:var(--dim); font-size:.88rem;} .dot{flex:none; width:22px; height:22px; border-radius:50%; border:2px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:.7rem; font-weight:700;}
+  .steps li.done{color:var(--ink);} .steps li.done .dot{background:#5EA671; border-color:#5EA671; color:#0F2E22;} .steps li.now{color:var(--ink);} .steps li.now .dot{border-color:var(--accent); color:var(--accent);} .steps small{display:block; color:var(--dim);}
+  .stars{display:flex; gap:6px; margin:10px 0 14px;} .stars button{flex:1; background:var(--code); border:1px solid var(--line); color:var(--dim); border-radius:8px; font-size:1.4rem; padding:8px 0; cursor:pointer;} .stars button.on{color:var(--warn); border-color:var(--warn); background:rgba(242,169,59,.12);}
+  .finishbox{background:var(--code); border:1px solid var(--line); border-radius:8px; padding:14px; margin-top:10px;} textarea{display:block; width:100%; margin-top:6px; padding:12px; font-size:16px; font-family:inherit; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:6px; min-height:70px; resize:vertical;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="brand"><a href="index.html">ECOSWITCH</a></div><button class="link" id="signOut" type="button" hidden>Sign out</button></div>
+
+  <div class="card" id="loginCard" hidden>
+    <h1>Member dashboard</h1>
+    <p class="sub" style="margin-top:6px;">Sign in with your Membership ID and your password.</p>
+    <label>Membership ID<input id="lId" type="text" autocapitalize="characters" autocorrect="off" placeholder="ECO-XXXXXX"></label>
+    <label>Password<input id="lPw" type="password" autocomplete="current-password"></label>
+    <button class="btn" id="lGo" type="button">Sign in</button>
+    <p class="err" id="lErr" hidden></p>
+    <p class="muted" style="margin-top:14px;">Forgot your password? <a href="join.html">Set a new one</a> (use the sign-up form with your payment reference). Not a member yet? <a href="ecoswitch.html">Join Ecoswitch</a>.</p>
+  </div>
+
+  <div id="main" hidden></div>
+  <p class="err" id="topErr" hidden></p>
+</div>
+
+<script src="config.js"></script>
+<script>
+  var API_BASE = window.AUTOFIXER_API || 'https://YOUR_PROJECT_REF.supabase.co/functions/v1'; // normally set via config.js
+  var ANON_KEY = window.AUTOFIXER_ANON_KEY || '';
+  var CONFIGURED = API_BASE.indexOf('YOUR_PROJECT' + '_REF') === -1 && API_BASE.indexOf('YOUR-REF') === -1;
+  var me = null, data = null; // me = { id, token }; data = membership summary
+  var repairs = null, rate = {}; // repairs = null while not loaded or not available
+
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function show(id, msg){ var e = $(id); e.textContent = msg || ''; e.hidden = !msg; }
+  function N(kobo){ return '\u20a6' + (Number(kobo || 0) / 100).toLocaleString('en-NG', { maximumFractionDigits: 2 }); }
+
+  var TEXT = {
+    invalid_login:'Wrong Membership ID or password. If you forgot your password, set a new one from the link below.', session_expired:'Your sign-in has ended. Please sign in again.',
+    not_configured:'This page could not find the backend address. Check config.js.'
+  };
+  function api(path, body){
+    if(!CONFIGURED) return Promise.resolve({ status: 0, body: { error: 'not_configured' } });
+    var h = { 'Content-Type': 'application/json' };
+    if(ANON_KEY){ h['apikey'] = ANON_KEY; h['Authorization'] = 'Bearer ' + ANON_KEY; }
+    if(me && me.token) h['x-member-token'] = me.token;
+    return fetch(API_BASE + '/members' + path, { method: 'POST', headers: h, body: JSON.stringify(body || {}) })
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return { status: r.status, body: j }; }); });
+  }
+  function fapi(path, body){
+    if(!CONFIGURED) return Promise.resolve({ status: 0, body: {} });
+    var h = { 'Content-Type': 'application/json' }; if(ANON_KEY){ h['apikey'] = ANON_KEY; h['Authorization'] = 'Bearer ' + ANON_KEY; } if(me && me.token) h['x-member-token'] = me.token;
+    return fetch(API_BASE + '/funding' + path, { method: 'POST', headers: h, body: JSON.stringify(body || {}) }).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return { status: r.status, body: j }; }); });
+  }
+  function leave(msg){ try{ sessionStorage.removeItem('eco_me'); }catch(e){} me = null; data = null; repairs = null; rate = {}; $('main').hidden = true; $('signOut').hidden = true; $('loginCard').hidden = false; show('lErr', msg || ''); show('topErr', ''); }
+  function loadRepairs(){ return fapi('/member/repairs').then(function(r){ repairs = r.status === 200 ? r.body.repairs : null; if(data) render(); }).catch(function(){ repairs = null; }); }
+
+  // ---------- sign in ----------
+  function remember(){ try{ sessionStorage.setItem('eco_me', JSON.stringify(me)); }catch(e){} }
+  $('lGo').addEventListener('click', function(){
+    var id = $('lId').value.trim().toUpperCase(), pw = $('lPw').value; show('lErr', '');
+    if(!id || !pw){ show('lErr', 'Enter your Membership ID and password.'); return; }
+    me = null; $('lGo').disabled = true;
+    api('/login', { membershipId: id, password: pw }).then(function(res){
+      $('lGo').disabled = false;
+      if(res.status !== 200){ show('lErr', res.body.error === 'locked' ? 'Too many wrong tries. Please wait ' + (res.body.minutes || 15) + ' minutes, or set a new password.' : (TEXT[res.body && res.body.error] || 'Something went wrong. Please try again.')); return; }
+      me = { id: res.body.membershipId, token: res.body.token }; remember(); $('lPw').value = '';
+      load(function(ok, r2){ if(!ok){ leave(TEXT[r2.body && r2.body.error] || 'Something went wrong. Please try again.'); } });
+    }).catch(function(){ $('lGo').disabled = false; show('lErr', 'Something went wrong. Please check your connection and try again.'); });
+  });
+  $('signOut').addEventListener('click', function(){ if(me && me.token) api('/logout').catch(function(){}); leave(''); });
+  function load(cb){
+    api('/status').then(function(res){
+      if(res.status === 200){ data = res.body; show('topErr', ''); render(); loadRepairs(); if(cb) cb(true, res); }
+      else { if(res.body && res.body.error === 'session_expired') return leave(TEXT.session_expired); if(cb) cb(false, res); else show('topErr', 'Something went wrong. Please try again.'); }
+    }).catch(function(){ if(cb) cb(false, { body: {} }); else show('topErr', 'Something went wrong. Please check your connection and try again.'); });
+  }
+
+  // ---------- pieces ----------
+  function profile(d){
+    var ap = d.approval, apPill = ap === 'approved' ? '<span class="pill green">Approved</span>' : ap === 'rejected' ? '<span class="pill red">Not approved</span>' : '<span class="pill amber">Waiting for approval</span>';
+    return '<div class="card"><h1>' + esc(d.fullName) + '</h1><div class="idbox"><small>Membership ID</small><b>' + esc(d.membershipId) + '</b></div>' + apPill +
+      (d.group ? '<span class="pill">Group ' + esc(d.group.groupCode) + '</span>' + (d.group.isCreator ? '<span class="pill green">Group creator</span>' : '') : '<span class="pill amber">No group yet</span>') +
+      (d.benefitsActive ? '<span class="pill green">Benefits active</span>' : '') + '</div>';
+  }
+  function groupCard(d){
+    if(!d.group) return '<div class="card"><h2>Your group</h2><p class="sub">Your benefits start when you are in a group of at least 5 members. <a href="join.html">Create or join a group</a>.</p></div>';
+    var g = d.group, pct = Math.min(100, Math.round(g.memberCount * 100 / g.minimum));
+    var msg = d.benefitsActive ? 'Your group has ' + g.minimum + ' or more members and our team has approved you. Your member benefits are active.'
+      : d.approval === 'rejected' ? 'Our team could not approve your membership. Please contact support@autofixer.fund.'
+      : g.active ? 'Your group is complete. Your membership is waiting for approval by our team. Benefits start once you are approved.'
+      : 'Your benefits start when your group has ' + g.minimum + ' members and our team has approved you. Share your Group ID only with people you know and trust.';
+    return '<div class="card"><h2>Your group</h2><div class="idbox"><small>Group ID</small><b>' + esc(g.groupCode) + '</b></div><p style="font-weight:600;">' + g.memberCount + ' of ' + g.minimum + ' members' + (g.memberCount >= g.minimum ? '' : ' needed') + '</p><div class="bar"><i style="width:' + pct + '%"></i></div><p class="sub" style="margin-top:8px;">' + esc(msg) + '</p></div>';
+  }
+  var STAGES = ['received', 'valuation', 'approved', 'repair', 'done'];
+  function repairItem(r){
+    var at = STAGES.indexOf(r.stage), closed = r.stage === 'closed';
+    var steps = [['Request received', 'We have your repair request.'], ['Vehicle valuation', r.appointment ? 'Bring your vehicle on ' + new Date(r.appointment.at).toLocaleString('en-NG', { weekday:'long', day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' }) + ' to ' + r.appointment.place + '.' : 'Our funding partner checks your vehicle.'], ['Repair approved', 'Your repair has been approved for funding.'], ['Repair in progress', 'Your mechanic is working on your vehicle.'], ['Repair finished', 'You confirmed the work and rated it. Payment to your mechanic is being processed.']];
+    var h = '<div class="ritem"><div class="rtop"><div><b>' + esc(r.vehiclePlate) + '</b> <span class="muted">' + esc(r.reference) + (r.workshopName ? ' \u00b7 ' + esc(r.workshopName) : '') + ' \u00b7 ' + N(r.totalKobo) + '</span></div>' + (closed ? '<span class="pill red">Closed</span>' : r.stage === 'done' ? '<span class="pill green">Finished</span>' : '<span class="pill amber">In progress</span>') + '</div>';
+    if(closed) h += '<p class="muted" style="margin-top:6px;">This repair request is closed. Contact us if you have a question.</p>';
+    else h += '<ul class="steps">' + steps.map(function(s, i){ var cls = i < at || (i === at && r.stage === 'done') ? 'done' : i === at ? 'now' : ''; return '<li class="' + cls + '"><span class="dot">' + (cls === 'done' ? '\u2713' : i + 1) + '</span><span>' + s[0] + (cls ? '<small>' + esc(s[1]) + '</small>' : '') + '</span></li>'; }).join('') + '</ul>';
+    if(r.canFinish){
+      var n = rate[r.reference] || 0;
+      h += '<div class="finishbox"><b>Is your repair finished?</b><p class="muted" style="margin-top:4px;">Press the button only when your mechanic has finished and you are happy with the work. Check the vehicle first. This tells us the job is done so your mechanic can be paid.</p><div class="stars">' + [1,2,3,4,5].map(function(k){ return '<button type="button" class="' + (k <= n ? 'on' : '') + '" data-act="rate" data-ref="' + esc(r.reference) + '" data-n="' + k + '" aria-label="' + k + ' stars">\u2605</button>'; }).join('') + '</div><label>Comment (optional)<textarea id="cm-' + esc(r.reference) + '" maxlength="400" placeholder="How was the work?"></textarea></label><button class="btn" data-act="finish" data-ref="' + esc(r.reference) + '" type="button"' + (n ? '' : ' disabled') + '>My repair is finished</button><p class="err" id="re-' + esc(r.reference) + '" hidden></p></div>';
+    } else if(r.rated){ h += '<p style="margin-top:8px;">You rated the work <b style="color:var(--warn);">' + '\u2605'.repeat(r.rating) + '\u2606'.repeat(5 - r.rating) + '</b>. Thank you.</p>'; }
+    return h + '</div>';
+  }
+  function repairsCard(){
+    if(repairs === null) return '';
+    if(!repairs.length) return '<div class="card" id="repairs"><h2>My repairs</h2><p class="sub">No repair loan requests are linked to your phone number yet. <a href="index.html">Request repair financing</a>.</p></div>';
+    return '<div class="card" id="repairs"><h2>My repairs</h2><p class="sub">Repair loan requests sent with your phone number.</p>' + repairs.map(repairItem).join('') + '</div>';
+  }
+  function render(){
+    $('loginCard').hidden = true; $('signOut').hidden = false; $('main').hidden = false;
+    $('main').innerHTML = profile(data) + repairsCard() + groupCard(data) + '<button class="btn ghost" data-act="refresh" type="button">Refresh</button>';
+    if(location.hash === '#repairs' && !render.scrolled && $('repairs') && $('repairs').scrollIntoView){ render.scrolled = true; $('repairs').scrollIntoView(); }
+  }
+
+  // ---------- actions ----------
+  $('main').addEventListener('click', function(e){
+    var b = e.target.closest('[data-act]'); if(!b) return; var act = b.dataset.act; show('topErr', '');
+    if(act === 'refresh'){ load(); return; }
+    if(act === 'rate'){ var ref = b.dataset.ref, nn = Number(b.dataset.n); rate[ref] = nn; [].forEach.call(b.parentNode.children, function(x){ x.classList.toggle('on', Number(x.dataset.n) <= nn); }); var fb = b.closest('.finishbox').querySelector('[data-act="finish"]'); if(fb) fb.disabled = false; return; }
+    if(act === 'finish'){
+      var rf = b.dataset.ref, errEl = $('re-' + rf);
+      if(!rate[rf]){ errEl.textContent = 'Please tap the stars to rate the work.'; errEl.hidden = false; return; }
+      if(!window.confirm('Is your repair really finished? You cannot undo this.')) return;
+      b.disabled = true; errEl.hidden = true;
+      fapi('/member/repairs/finish', { reference: rf, rating: rate[rf], comment: $('cm-' + rf).value }).then(function(r){
+        if(r.status === 200){ delete rate[rf]; loadRepairs(); }
+        else if(r.status === 401){ leave(TEXT.session_expired); }
+        else { b.disabled = false; errEl.textContent = r.body.error === 'not_ready' ? 'This repair cannot be finished right now.' : 'Something went wrong. Please try again.'; errEl.hidden = false; }
+      }).catch(function(){ b.disabled = false; errEl.textContent = 'Connection problem. Please try again.'; errEl.hidden = false; });
+    }
+  });
+
+  // ---------- start ----------
+  try{ var s = JSON.parse(sessionStorage.getItem('eco_me') || 'null'); if(s && s.id && s.token){ me = s; load(function(ok){ if(!ok){ me = null; try{ sessionStorage.removeItem('eco_me'); }catch(e){} $('loginCard').hidden = false; } }); } else $('loginCard').hidden = false; }catch(e){ $('loginCard').hidden = false; }
+  if(!CONFIGURED){ $('loginCard').hidden = false; show('lErr', TEXT.not_configured); }
+</script>
+</body>
+</html>
