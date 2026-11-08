@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Join Ecoswitch</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F4F2EE;--ink:#171A1C;--dim:#5C6166;--accent:#E8743B;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#171A1C;--ink:#F2EEE6;--dim:#A8ADB1;}}
+  *{box-sizing:inherit;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px;line-height:1.5;}
+  .card{width:100%;max-width:420px;}
+  .brand{font-weight:600;font-size:0.9rem;letter-spacing:0.16em;margin-bottom:32px;}
+  h1{font-size:1.9rem;font-weight:600;letter-spacing:-0.02em;line-height:1.1;}
+  .price{margin-top:12px;font-size:1.05rem;} .price b{font-size:1.5rem;font-weight:600;}
+  .sub{color:var(--dim);font-size:0.9rem;margin-top:4px;}
+  ul{list-style:none;margin:22px 0 26px;font-size:0.95rem;} li{padding:9px 0;border-top:1px solid rgba(128,128,128,0.25);}
+  .btn{display:block;text-align:center;background:var(--accent);color:#241F1C;font-weight:600;padding:15px;border-radius:5px;text-decoration:none;}
+  .fine{margin-top:16px;font-size:0.8rem;color:var(--dim);}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">ECOSWITCH</div>
+  <h1>Join Ecoswitch.</h1>
+  <p class="price"><b>₦10,000</b> per year</p>
+  <p class="sub">Renews automatically each year. Cancel any time.</p>
+  <ul>
+    <li>Membership ID</li>
+    <li>Better repair loans through our lending partners</li>
+    <li>Loan approval by lending partners, determined from your bank data and your vehicle value</li>
+    <li>One loan approval, multiple repairs</li>
+    <li>Convert to CNG and pay small small</li>
+  </ul>
+  <p class="sub" style="margin:-12px 0 16px;font-weight:500;color:var(--ink);">You join a group of at least 5 members. Group members share responsibility for defaults. Our team approves each membership before benefits start. Read the Membership Terms before you pay.</p>
+  <a class="btn" id="payLink" href="https://paystack.shop/pay/5ffyr9yv7n" rel="noopener">Continue to secure payment</a>
+  <p class="fine">Payment is taken by Paystack by bank card. Paystack emails you before each yearly payment, and you can cancel before it is charged.</p>
+  <p class="fine">Already paid? <a href="join.html" style="color:inherit;text-decoration:underline;">Complete your membership</a> &middot; <a href="dashboard.html" style="color:inherit;text-decoration:underline;">Member dashboard</a> &middot; <a href="index.html" style="color:inherit;text-decoration:underline;">Back to Autofixer</a></p>
+</div>
+<script src="config.js"></script>
+<script>if(window.AUTOFIXER_PAYSTACK_URL){document.getElementById("payLink").href=window.AUTOFIXER_PAYSTACK_URL;}</script>
+</body>
+</html>
