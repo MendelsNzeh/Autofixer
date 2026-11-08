@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Autofixer Admin: Funding</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#14181C; --soft:#1E252B; --paper:#F2EEE6; --dim:#B5B0A4; --amber:#F2A93B; --red:#E26B61; --green:#5EA671; --line:rgba(242,238,230,0.14);
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+  *{box-sizing:inherit; margin:0; padding:0;}
+  body{background:var(--ink); color:var(--paper); font-family:'Inter',sans-serif; line-height:1.5; font-size:16px;}
+  h1,h2,h3{font-family:'Archivo Black',sans-serif; font-weight:400;} button,input,select,textarea{font-family:inherit; font-size:.95rem;} a{color:inherit;} [hidden]{display:none !important;}
+  .btn{white-space:nowrap; background:var(--amber); color:var(--ink); font-weight:700; border:none; border-radius:5px; padding:10px 16px; cursor:pointer; text-decoration:none; display:inline-block; text-align:center;}
+  .btn.ghost{background:none; color:var(--paper); border:1px solid var(--line); font-weight:600;} .btn.danger{background:none; color:var(--red); border:1px solid var(--red); font-weight:600;} .btn:disabled{opacity:.45; cursor:not-allowed;} .btn.sm{padding:7px 12px; font-size:.85rem;}
+  input,select,textarea{background:var(--ink); color:var(--paper); border:1px solid var(--line); border-radius:5px; padding:9px 11px; width:100%;}
+  label{display:block; font-size:.82rem; color:var(--dim); margin-bottom:10px;} label input,label select{margin-top:5px;}
+  .err{color:var(--red); font-size:.9rem; margin-top:10px;} .meta{color:var(--dim); font-size:.88rem;}
+  .login{min-height:100dvh; display:flex; align-items:center; justify-content:center; padding:24px;} .login-card{width:100%; max-width:380px; background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:30px 26px;}
+  .brand{font-family:'Archivo Black',sans-serif; font-size:1.3rem;} .brand span{color:var(--amber);}
+  .bar{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:14px 22px; border-bottom:1px solid var(--line); position:sticky; top:0; background:rgba(20,24,28,.95); z-index:5;}
+  .wrap{max-width:900px; margin:0 auto; padding:22px 18px 80px;}
+  .tabs{display:flex; flex-wrap:wrap; gap:2px 6px; border-bottom:1px solid var(--line); margin-bottom:20px;} .tab{background:none; border:none; color:var(--dim); font-weight:600; padding:12px 14px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; white-space:nowrap;} .tab.active{color:var(--paper); border-bottom-color:var(--amber);}
+  .count{display:inline-block; min-width:22px; text-align:center; background:var(--amber); color:var(--ink); border-radius:11px; font-size:.75rem; font-weight:700; padding:1px 7px; margin-left:6px;} .count.zero{background:var(--line); color:var(--dim);}
+  .list{display:grid; gap:14px;} .empty{color:var(--dim); text-align:center; padding:28px 0;} h3.sec{font-size:1.1rem; margin:22px 0 10px;}
+  .card{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:18px;} .top{display:flex; justify-content:space-between; gap:10px; align-items:flex-start; flex-wrap:wrap;} .card h3{font-size:1.02rem;}
+  .pill{font-size:.74rem; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap;} .pill.amber{background:rgba(242,169,59,.16); color:var(--amber);} .pill.green{background:rgba(94,166,113,.18); color:var(--green);} .pill.red{background:rgba(226,107,97,.18); color:var(--red);} .pill.grey{background:var(--line); color:var(--dim);}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;} .row{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; align-items:center;}
+  table{width:100%; border-collapse:collapse; font-size:.86rem; margin-top:10px;} th,td{text-align:left; padding:8px 6px; border-bottom:1px solid var(--line); vertical-align:top;} th{color:var(--dim); font-weight:600;} td.r,th.r{text-align:right;}
+  .note{border-left:4px solid var(--amber); background:rgba(242,169,59,.08); padding:10px 12px; border-radius:4px; font-size:.88rem; margin-top:12px;}
+  .invite{background:var(--ink); border:1px dashed var(--amber); border-radius:8px; padding:12px; margin-top:12px;} .invite input{margin-top:6px;}
+  .prow{display:grid; grid-template-columns:110px 1fr 110px; gap:6px; margin-top:8px; padding-top:8px; border-top:1px solid var(--line);} .prow .w2{grid-column:span 1;} .prow select,.prow input{padding:8px 9px;}
+  .stars{color:var(--amber); letter-spacing:2px;}
+  @media (max-width:640px){.grid2{grid-template-columns:1fr;} .prow{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<div class="login" id="gate"><form class="login-card" id="gateForm"><div class="brand">Auto<span>fixer</span> Funding</div><p class="meta" style="margin:8px 0 18px;">Admin sign in</p><label>Password<input id="apw" type="password" autocomplete="current-password"></label><button class="btn" style="width:100%;" type="submit">Sign in</button><p class="err" id="gateErr" hidden></p></form></div>
+
+<div id="app" hidden>
+  <div class="bar"><div class="brand">Auto<span>fixer</span> Funding</div><div><a class="btn ghost sm" href="staff.html">Back to staff page</a> <button class="btn ghost sm" id="signOut" type="button">Sign out</button></div></div>
+  <div class="wrap">
+    <p class="err" id="topErr" hidden></p>
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-tab="assign">To assign <span class="count zero" id="cAssign">0</span></button>
+      <button class="tab" data-tab="val">Value approvals <span class="count zero" id="cVal">0</span></button>
+      <button class="tab" data-tab="jobs">Repairs &amp; payments <span class="count zero" id="cJobs">0</span></button>
+      <button class="tab" data-tab="lenders">Partners</button>
+    </div>
+    <section id="v-assign"><p class="meta" style="margin-bottom:14px;">Repair requests that are not with a funding partner yet. Pick the partner and book the vehicle for prequalification and valuation.</p><div class="list" id="assignList"></div></section>
+    <section id="v-val" hidden><div class="list" id="valList"></div></section>
+    <section id="v-jobs" hidden><div class="list" id="jobList"></div></section>
+    <section id="v-lenders" hidden>
+      <div class="card"><h3>Add a funding partner</h3><p class="meta" style="margin:6px 0 12px;">They get a link to create their own password.</p>
+        <div class="grid2"><label>Company name<input id="lnName"></label><label>Contact person<input id="lnContact"></label><label>Email<input id="lnEmail" type="email" autocapitalize="none"></label><label>Phone<input id="lnPhone" type="tel"></label></div>
+        <button class="btn" id="lnCreate" type="button">Create and get the link</button><p class="err" id="lnErr" hidden></p><div id="lnInvite"></div></div>
+      <h3 class="sec">Funding partners</h3><div class="list" id="lenderList"></div>
+    </section>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+  var API_BASE = window.AUTOFIXER_API || 'https://YOUR_PROJECT_REF.supabase.co/functions/v1';
+  var ANON_KEY = window.AUTOFIXER_ANON_KEY || '';
+  var CONFIGURED = API_BASE.indexOf('YOUR_PROJECT' + '_REF') === -1 && API_BASE.indexOf('YOUR-REF') === -1;
+  var pw = '', D = null, inviteBox = '';
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function show(id, m){ var e = $(id); e.textContent = m || ''; e.hidden = !m; }
+  function N(k){ return '\u20a6' + (Number(k || 0) / 100).toLocaleString('en-NG', { maximumFractionDigits: 2 }); }
+  function when(iso){ if(!iso) return ''; var d = new Date(iso); return isNaN(d) ? '' : d.toLocaleString('en-NG', { weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }); }
+  var ERR = { invalid_details:'Please enter the company name and a valid email.', email_in_use:'A funding partner with that email already exists.', invalid_appointment:'Pick a date and time from now up to 4 months ahead.', place_required:'Enter where the vehicle should be brought.', already_assigned:'That request is already with a funding partner.', exceeds_available:'That is more than the available repair amount on this vehicle.', invalid_lines:'Check the payment lines: every line needs a party, a name, an amount, a bank, a 10-digit account number and an account name.', not_paid_yet:'The funding partner has not clicked Paid yet.', invalid_amount:'Enter a valid amount (not more than the requested repair amount).', note_required:'Please give a reason.', no_password_yet:'They have not created a password yet.', not_a_member:'This customer is not an Ecoswitch member (no active member has this phone number), so the repair cannot go through the funded process.', not_found:'Not found.',
+    total_mismatch:'The payee amounts must add up to the repair amount minus Autofixer\'s commission.', autofixer_bank_missing:'Autofixer\'s bank details are not set in the Supabase secrets (AUTOFIXER_BANK_NAME, AUTOFIXER_ACCOUNT_NUMBER, AUTOFIXER_ACCOUNT_NAME).' };
+  function req(method, path, body){
+    if(!CONFIGURED) return Promise.resolve({ status: 0, body: { error: 'not_configured' } });
+    var h = { 'x-admin-key': pw }; if(body) h['Content-Type'] = 'application/json'; if(ANON_KEY){ h.apikey = ANON_KEY; h.Authorization = 'Bearer ' + ANON_KEY; }
+    return fetch(API_BASE + '/funding' + path, { method: method, headers: h, body: body ? JSON.stringify(body) : undefined }).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return { status: r.status, body: j }; }); });
+  }
+  function fail(res, elId){
+    var m = ERR[res.body && res.body.error] || (res.status === 401 ? 'Wrong password.' : 'Something went wrong. Please try again.');
+    if(res.body && res.body.availableKobo != null) m += ' Available now: ' + N(res.body.availableKobo) + '.';
+    if(res.body && res.body.expectedKobo != null) m += ' Expected total for payees: ' + N(res.body.expectedKobo) + '.';
+    show(elId || 'topErr', m);
+  }
+
+  // ---------- sign in ----------
+  function open(){ req('GET', '/admin/overview').then(function(r){
+    if(r.status === 200){ D = r.body; $('gate').hidden = true; $('app').hidden = false; try{ sessionStorage.setItem('af_admin_pw', pw); }catch(e){} render(); }
+    else { $('app').hidden = true; $('gate').hidden = false; show('gateErr', r.status === 401 ? 'Wrong password. Please try again.' : (r.body.error === 'not_configured' ? 'Backend address missing. Check config.js.' : 'Could not reach the server.')); }
+  }).catch(function(){ show('gateErr', 'Could not reach the server.'); }); }
+  $('gateForm').addEventListener('submit', function(e){ e.preventDefault(); pw = $('apw').value; show('gateErr', ''); open(); });
+  $('signOut').addEventListener('click', function(){ pw = ''; try{ sessionStorage.removeItem('af_admin_pw'); }catch(e){} $('app').hidden = true; $('gate').hidden = false; $('apw').value = ''; });
+  function reload(){ return req('GET', '/admin/overview').then(function(r){ if(r.status === 200){ D = r.body; render(); } else fail(r); }); }
+
+  // ---------- pieces ----------
+  var JOBST = { scheduled:['Waiting for valuation','grey'], awaiting_valuation_approval:['Value awaiting your approval','amber'], ready:['Ready: authorise the repair','green'], repair_in_progress:['Repair in progress','amber'], payment_pending:['Payment pending','amber'], paid:['Paid by funding partner: confirm','amber'], completed:['Completed','green'], declined:['Declined','red'], cancelled:['Cancelled','grey'] };
+  var ORDER = ['payment_pending','paid','ready','repair_in_progress','awaiting_valuation_approval','scheduled','completed','declined','cancelled'];
+  var PARTY = { mechanic:'Mechanic', autofixer:'Autofixer', supplier:'Parts supplier', other:'Other' };
+  function pill(m, k){ var s = m[k] || [k, 'grey']; return '<span class="pill ' + s[1] + '">' + esc(s[0]) + '</span>'; }
+  function stars(n){ return n ? '<span class="stars">' + '\u2605'.repeat(n) + '\u2606'.repeat(5 - n) + '</span>' : ''; }
+  function assignCard(r){
+    var opts = D.lenders.filter(function(l){ return l.status !== 'suspended'; }).map(function(l){ return '<option value="' + l.id + '">' + esc(l.name) + (l.status === 'invited' ? ' (not signed in yet)' : '') + '</option>'; }).join('');
+    var mem = r.member ? '<span class="pill green">Ecoswitch member ' + esc(r.member.membershipId) + '</span>' : '<span class="pill red">Not an Ecoswitch member: cannot be assigned</span>';
+    return '<article class="card"><div class="top"><div><h3>' + esc(r.name) + ' \u00b7 ' + esc(r.vehiclePlate) + '</h3><p class="meta">' + esc(r.reference) + ' \u00b7 <a href="tel:+' + esc(r.phone) + '">' + esc(r.phone) + '</a>' + (r.workshopName ? ' \u00b7 ' + esc(r.workshopName) : '') + '</p></div><b>' + N(r.totalKobo) + '</b></div><p style="margin-top:8px;">' + mem + '</p>' +
+      '<div class="grid2" style="margin-top:12px;"><label>Funding partner<select id="sl-' + r.id + '">' + (opts || '<option value="">Add a funding partner first</option>') + '</select></label><label>Bring the vehicle on<input id="sd-' + r.id + '" type="datetime-local"></label></div><label>Where<input id="sp-' + r.id + '" placeholder="Address or yard"></label>' +
+      '<button class="btn" data-act="schedule" data-id="' + r.id + '" type="button"' + (r.member ? '' : ' disabled') + '>Assign and schedule</button><p class="meta" style="margin-top:6px;">If this partner already approved this vehicle, no new valuation is needed and the date is ignored.</p><p class="err" id="e-' + r.id + '" hidden></p></article>';
+  }
+  function valCard(v){
+    var h = '<article class="card"><div class="top"><div><h3>' + esc(v.vehiclePlate) + ' \u00b7 ' + esc(v.lenderName || '') + '</h3><p class="meta">' + esc(v.customerName || '') + ' \u00b7 ' + esc(v.customerPhone || '') + (v.appointmentAt ? ' \u00b7 ' + esc(when(v.appointmentAt)) : '') + '</p></div>' + pill({ scheduled:['Waiting for the partner','grey'], awaiting_approval:['Needs your approval','amber'], approved:['Approved','green'], rejected:['Sent back','red'], declined:['Declined by partner','red'] }, v.status) + '</div>';
+    if(v.fsvKobo) h += '<p style="margin-top:10px;">Forced sale value entered: <b>' + N(v.fsvKobo) + '</b> \u2192 maximum repair amount at ' + D.percent + '%: <b>' + N(Math.floor(v.fsvKobo * D.percent / 100)) + '</b>' + (v.fsvNote ? '<br><span class="meta">Partner note: ' + esc(v.fsvNote) + '</span>' : '') + '</p>';
+    if(v.status === 'awaiting_approval') h += '<div class="row"><button class="btn" data-act="approve" data-id="' + v.id + '" type="button">Approve value</button><button class="btn danger" data-act="reject" data-id="' + v.id + '" type="button">Send back</button></div>';
+    if(v.status === 'approved') h += '<p class="meta" style="margin-top:6px;">Paid out ' + N(v.disbursedKobo) + ' \u00b7 set aside ' + N(v.reservedKobo) + ' \u00b7 <b style="color:var(--paper);">available ' + N(v.availableKobo) + '</b></p>';
+    if(v.decisionNote && v.status !== 'approved') h += '<p class="meta">Your note: ' + esc(v.decisionNote) + '</p>';
+    return h + '<p class="err" id="e-v' + v.id + '" hidden></p></article>';
+  }
+  function payRow(l){
+    l = l || {};
+    return '<div class="prow"><select class="pa">' + Object.keys(PARTY).filter(function(k){ return k !== 'autofixer'; }).map(function(k){ return '<option value="' + k + '"' + (l.party === k ? ' selected' : '') + '>' + PARTY[k] + '</option>'; }).join('') + '</select><input class="pn" placeholder="Pay to (name)" value="' + esc(l.payeeName || '') + '"><input class="pm" type="number" inputmode="decimal" min="0" placeholder="Amount \u20a6" value="' + (l.amountKobo ? l.amountKobo / 100 : '') + '"><input class="pb" placeholder="Bank" value="' + esc(l.bankName || '') + '"><input class="pc" inputmode="numeric" maxlength="10" placeholder="Account number (10 digits)" value="' + esc(l.accountNumber || '') + '"><input class="pk" placeholder="Account name" value="' + esc(l.accountName || '') + '"></div>';
+  }
+  function linesTable(j){
+    return '<table><thead><tr><th>Pay to</th><th class="r">Amount</th><th>Bank details</th><th>Status</th></tr></thead><tbody>' + j.lines.map(function(l){
+      var st = l.status === 'confirmed' ? ['Confirmed','green'] : l.status === 'paid' ? ['Paid','amber'] : ['To pay','grey'];
+      return '<tr><td><b>' + esc(PARTY[l.party] || l.party) + '</b><br>' + esc(l.payeeName) + '</td><td class="r">' + N(l.amountKobo) + '</td><td>' + esc(l.bankName) + '<br><b>' + esc(l.accountNumber) + '</b><br>' + esc(l.accountName) + '</td><td><span class="pill ' + st[1] + '">' + st[0] + '</span></td></tr>';
+    }).join('') + '</tbody><tfoot><tr><td><b>Total</b></td><td class="r"><b>' + N(j.linesTotalKobo) + '</b></td><td colspan="2"></td></tr></tfoot></table>';
+  }
+  function jobCard(j){
+    var h = '<article class="card"><div class="top"><div><h3>' + esc(j.customerName) + ' \u00b7 ' + esc(j.vehiclePlate) + '</h3><p class="meta">' + esc(j.reference) + (j.membershipId ? ' \u00b7 ' + esc(j.membershipId) : '') + ' \u00b7 ' + esc(j.lenderName || '') + (j.workshopName ? ' \u00b7 ' + esc(j.workshopName) : '') + '</p></div>' + pill(JOBST, j.status) + '</div>' +
+      '<p style="margin-top:10px;">Repair amount <b>' + N(j.amountKobo) + '</b> <span class="meta">(parts ' + N(j.partsKobo) + ', labor ' + N(j.laborKobo) + ')</span>' + (j.invoiceUrl ? ' \u00b7 <a href="' + esc(j.invoiceUrl) + '" target="_blank" rel="noopener" style="color:var(--amber);">Invoice</a>' : '') + '</p>' +
+      (j.commissionKobo ? '<p class="meta">Autofixer commission (' + D.commissionPercent + '% of labor, registered workshop): <b style="color:var(--paper);">' + N(j.commissionKobo) + '</b>. The mechanic receives ' + N(j.amountKobo - j.commissionKobo) + '.</p>' : '') +
+      (j.availableKobo != null ? '<p class="meta">Available on this vehicle' + (j.status === 'payment_pending' ? ' for this payment' : '') + ': ' + N(j.availableKobo) + '</p>' : '');
+    if(j.rating) h += '<p style="margin-top:8px;">Customer rating ' + stars(j.rating) + (j.ratingComment ? ' <span class="meta">"' + esc(j.ratingComment) + '"</span>' : '') + '</p>';
+    if(j.status === 'ready') h += '<div class="row"><label style="margin:0;flex:1;min-width:160px;">Amount to authorise (\u20a6)<input id="au-' + j.id + '" type="number" value="' + (j.amountKobo / 100) + '" min="1" max="' + (j.amountKobo / 100) + '"></label><button class="btn" data-act="authorise" data-id="' + j.id + '" type="button">Authorise repair</button><button class="btn danger" data-act="cancel" data-id="' + j.id + '" type="button">Cancel</button></div>';
+    if(j.status === 'repair_in_progress') h += '<div class="note">Authorised. Waiting for the customer to end the repair and rate the work.</div><div class="row"><button class="btn danger sm" data-act="cancel" data-id="' + j.id + '" type="button">Cancel this job</button></div>';
+    if(j.status === 'payment_pending'){
+      var editable = j.lines.filter(function(l){ return l.party !== 'autofixer'; });
+      var rows = editable.length ? editable.map(payRow).join('') : payRow({ party: 'mechanic', payeeName: j.workshopName || '', amountKobo: j.amountKobo - (j.commissionKobo || 0) });
+      h += '<div class="note">The repair is done and rated. ' + (j.lines.length ? 'Waiting for the funding partner to click Paid. You can still correct the details below.' : 'Enter who is to be paid and their bank details. The funding partner then pays and clicks Paid.') +
+        (j.commissionKobo ? ' Autofixer\'s ' + D.commissionPercent + '% labor commission of ' + N(j.commissionKobo) + ' is added automatically, so the payees below must total ' + N(j.amountKobo - j.commissionKobo) + '.' : ' The payees below must total ' + N(j.amountKobo) + '.') + '</div><div id="pl-' + j.id + '">' + rows + '</div>' +
+        '<div class="row"><button class="btn ghost sm" data-act="addrow" data-id="' + j.id + '" type="button">+ Add another payee</button><button class="btn" data-act="savelines" data-id="' + j.id + '" type="button">Save payment details</button><button class="btn danger sm" data-act="cancel" data-id="' + j.id + '" type="button">Cancel this job</button></div>';
+      if(j.lines.length) h += linesTable(j);
+    }
+    if(j.lines.length && j.status !== 'payment_pending') h += linesTable(j);
+    if(j.status === 'paid') h += '<p class="meta" style="margin-top:8px;">Funding partner paid ' + esc(when(j.lenderPaidAt)) + (j.lenderPaidReference ? ' (ref ' + esc(j.lenderPaidReference) + ')' : '') + '.</p><div class="row"><button class="btn" data-act="confirm" data-id="' + j.id + '" type="button">Confirmed</button></div>';
+    if(j.status === 'completed') h += '<p class="meta" style="margin-top:8px;">Cycle complete. Confirmed ' + esc(when(j.adminConfirmedAt)) + '.</p>';
+    return h + '<p class="err" id="e-j' + j.id + '" hidden></p></article>';
+  }
+  function lenderCard(l){
+    return '<article class="card"><div class="top"><div><h3>' + esc(l.name) + '</h3><p class="meta">' + esc(l.contactName || '') + ' \u00b7 ' + esc(l.email) + (l.phone ? ' \u00b7 ' + esc(l.phone) : '') + '</p></div>' + pill({ invited:['Invited: no password yet','amber'], active:['Active','green'], suspended:['Suspended','red'] }, l.status) + '</div>' +
+      '<div class="row"><button class="btn ghost sm" data-act="newlink" data-id="' + l.id + '" type="button">Get a new link</button>' + (l.status === 'suspended' ? '<button class="btn ghost sm" data-act="activate" data-id="' + l.id + '" type="button">Reactivate</button>' : '<button class="btn danger sm" data-act="suspend" data-id="' + l.id + '" type="button">Suspend</button>') + '</div><div id="inv-' + l.id + '"></div><p class="err" id="e-l' + l.id + '" hidden></p></article>';
+  }
+  function inviteHtml(token){
+    var link = location.href.split('#')[0].replace(/[^\/]*$/, '') + 'lender.html#invite=' + token;
+    return '<div class="invite"><b>Give this link to the funding partner</b><p class="meta">It works once and for 7 days. They choose their own password. Anyone with this link can set the password, so send it only to them.</p><input readonly value="' + esc(link) + '" onclick="this.select()"><div class="row"><button class="btn sm" data-act="copy" type="button">Copy link</button></div></div>';
+  }
+  function render(){
+    var jobsAction = D.jobs.filter(function(j){ return ['payment_pending','paid','ready'].indexOf(j.status) > -1; }).length;
+    var valAction = D.valuations.filter(function(v){ return v.status === 'awaiting_approval'; }).length;
+    [['cAssign', D.unassigned.length], ['cVal', valAction], ['cJobs', jobsAction]].forEach(function(p){ $(p[0]).textContent = p[1]; $(p[0]).classList.toggle('zero', !p[1]); });
+    $('assignList').innerHTML = D.unassigned.map(assignCard).join('') || '<p class="empty">Every repair request is with a funding partner.</p>';
+    var vs = D.valuations.slice().sort(function(a, b){ return (b.status === 'awaiting_approval') - (a.status === 'awaiting_approval'); });
+    $('valList').innerHTML = vs.map(valCard).join('') || '<p class="empty">No vehicles booked for valuation yet.</p>';
+    var js = D.jobs.slice().sort(function(a, b){ return ORDER.indexOf(a.status) - ORDER.indexOf(b.status); });
+    $('jobList').innerHTML = js.map(jobCard).join('') || '<p class="empty">No repair jobs yet.</p>';
+    $('lenderList').innerHTML = D.lenders.map(lenderCard).join('') || '<p class="empty">No funding partners yet.</p>';
+    if(inviteBox){ $('lnInvite').innerHTML = inviteBox; }
+  }
+  $('tabs').addEventListener('click', function(e){ var b = e.target.closest('[data-tab]'); if(!b) return; document.querySelectorAll('.tab').forEach(function(x){ x.classList.toggle('active', x === b); }); ['assign','val','jobs','lenders'].forEach(function(k){ $('v-' + k).hidden = k !== b.dataset.tab; }); });
+
+  // ---------- actions ----------
+  $('lnCreate').addEventListener('click', function(){
+    show('lnErr', ''); var b = $('lnCreate'); b.disabled = true;
+    req('POST', '/admin/lenders', { name: $('lnName').value, contactName: $('lnContact').value, email: $('lnEmail').value, phone: $('lnPhone').value }).then(function(r){
+      b.disabled = false; if(r.status !== 201){ fail(r, 'lnErr'); return; }
+      inviteBox = '<p class="meta" style="margin-top:12px;">Created ' + esc(r.body.lender.name) + '.</p>' + inviteHtml(r.body.inviteToken); ['lnName','lnContact','lnEmail','lnPhone'].forEach(function(i){ $(i).value = ''; }); reload();
+    }).catch(function(){ b.disabled = false; show('lnErr', 'Could not reach the server.'); });
+  });
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('[data-act]'); if(!b) return; var act = b.dataset.act, id = b.dataset.id; show('topErr', '');
+    if(act === 'copy'){ var inp = b.closest('.invite').querySelector('input'); inp.select(); try{ navigator.clipboard.writeText(inp.value); }catch(x){ document.execCommand('copy'); } b.textContent = 'Copied'; return; }
+    if(act === 'addrow'){ $('pl-' + id).insertAdjacentHTML('beforeend', payRow()); return; }
+    var done = function(r, el){ b.disabled = false; if(r.status === 200 || r.status === 201) reload(); else fail(r, el); };
+    if(act === 'schedule'){
+      var d = $('sd-' + id).value; b.disabled = true;
+      req('POST', '/admin/schedule', { requestId: Number(id), lenderId: Number($('sl-' + id).value), appointmentAt: d ? new Date(d).toISOString() : '', place: $('sp-' + id).value }).then(function(r){ done(r, 'e-' + id); });
+    }
+    if(act === 'approve'){ var v = D.valuations.filter(function(x){ return String(x.id) === id; })[0]; if(!window.confirm('Approve a forced sale value of ' + N(v.fsvKobo) + '? The maximum available repair amount will be ' + N(Math.floor(v.fsvKobo * D.percent / 100)) + '.')) return; b.disabled = true; req('POST', '/admin/valuations/' + id + '/decision', { decision: 'approve' }).then(function(r){ done(r, 'e-v' + id); }); }
+    if(act === 'reject'){ var n = window.prompt('Why are you sending this back? The funding partner will see it.'); if(!n) return; b.disabled = true; req('POST', '/admin/valuations/' + id + '/decision', { decision: 'reject', note: n }).then(function(r){ done(r, 'e-v' + id); }); }
+    if(act === 'authorise'){ var a = Number($('au-' + id).value); if(!window.confirm('Authorise this repair for ' + N(a * 100) + '? It is set aside from the vehicle\'s available repair amount.')) return; b.disabled = true; req('POST', '/admin/jobs/' + id + '/authorise', { amountNaira: a }).then(function(r){ done(r, 'e-j' + id); }); }
+    if(act === 'cancel'){ if(!window.confirm('Cancel this job? Anything set aside is released.')) return; b.disabled = true; req('POST', '/admin/jobs/' + id + '/cancel', {}).then(function(r){ done(r, 'e-j' + id); }); }
+    if(act === 'savelines'){
+      var lines = [].map.call($('pl-' + id).querySelectorAll('.prow'), function(r){ return { party: r.querySelector('.pa').value, payeeName: r.querySelector('.pn').value, amountNaira: Number(r.querySelector('.pm').value), bankName: r.querySelector('.pb').value, accountNumber: r.querySelector('.pc').value, accountName: r.querySelector('.pk').value }; });
+      b.disabled = true; req('POST', '/admin/jobs/' + id + '/payees', { lines: lines }).then(function(r){ done(r, 'e-j' + id); });
+    }
+    if(act === 'confirm'){ if(!window.confirm('Confirm that every party was paid? This closes the transaction.')) return; b.disabled = true; req('POST', '/admin/jobs/' + id + '/confirm', {}).then(function(r){ done(r, 'e-j' + id); }); }
+    if(act === 'newlink'){ b.disabled = true; req('POST', '/admin/lenders/' + id + '/invite', {}).then(function(r){ b.disabled = false; if(r.status === 200){ $('inv-' + id).innerHTML = inviteHtml(r.body.inviteToken); } else fail(r, 'e-l' + id); }); }
+    if(act === 'suspend' || act === 'activate'){ b.disabled = true; req('PATCH', '/admin/lenders/' + id, { status: act === 'suspend' ? 'suspended' : 'active' }).then(function(r){ done(r, 'e-l' + id); }); }
+  });
+
+  // ---------- start ----------
+  try{ var s = sessionStorage.getItem('af_admin_pw'); if(s){ pw = s; open(); } }catch(e){}
+  if(!CONFIGURED) show('gateErr', 'Backend address missing. Check config.js.');
+</script>
+</body>
+</html>
