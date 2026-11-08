@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Funding partner dashboard | Autofixer</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#14181C; --soft:#1E252B; --paper:#F2EEE6; --dim:#B5B0A4; --amber:#F2A93B; --red:#E26B61; --green:#5EA671; --line:rgba(242,238,230,0.14);
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+  *{box-sizing:inherit; margin:0; padding:0;}
+  body{background:var(--ink); color:var(--paper); font-family:'Inter',sans-serif; line-height:1.5; font-size:16px;}
+  h1,h2,h3{font-family:'Archivo Black',sans-serif; font-weight:400;}
+  button,input,select,textarea{font-family:inherit; font-size:0.95rem;} a{color:inherit;}
+  [hidden]{display:none !important;}
+  .btn{white-space:nowrap; background:var(--amber); color:var(--ink); font-weight:700; border:none; border-radius:5px; padding:11px 18px; cursor:pointer; text-align:center; text-decoration:none; display:inline-block;}
+  .btn.ghost{background:none; color:var(--paper); border:1px solid var(--line); font-weight:600;} .btn.danger{background:none; color:var(--red); border:1px solid var(--red); font-weight:600;} .btn:disabled{opacity:.45; cursor:not-allowed;} .btn.full{width:100%;}
+  input,select,textarea{background:var(--ink); color:var(--paper); border:1px solid var(--line); border-radius:5px; padding:10px 12px; width:100%;}
+  label{display:block; font-size:.85rem; color:var(--dim); margin-bottom:12px;} label input,label textarea{margin-top:6px;}
+  .err{color:var(--red); font-size:.9rem; margin-top:10px;} .okmsg{color:var(--green); font-size:.9rem; margin-top:10px;} .meta{color:var(--dim); font-size:.88rem;}
+  .login{min-height:100dvh; display:flex; align-items:center; justify-content:center; padding:24px;}
+  .login-card{width:100%; max-width:400px; background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:30px 26px;}
+  .brand{font-family:'Archivo Black',sans-serif; font-size:1.3rem;} .brand span{color:var(--amber);} .lead{color:var(--dim); font-size:.93rem; margin:8px 0 20px;}
+  .bar{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:14px 22px; border-bottom:1px solid var(--line); position:sticky; top:0; background:rgba(20,24,28,.95); z-index:5;}
+  .wrap{max-width:880px; margin:0 auto; padding:22px 18px 80px;}
+  .tabs{display:flex; flex-wrap:wrap; gap:2px 6px; border-bottom:1px solid var(--line); margin-bottom:20px;}
+  .tab{background:none; border:none; color:var(--dim); font-weight:600; padding:12px 14px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; white-space:nowrap;} .tab.active{color:var(--paper); border-bottom-color:var(--amber);}
+  .count{display:inline-block; min-width:22px; text-align:center; background:var(--amber); color:var(--ink); border-radius:11px; font-size:.75rem; font-weight:700; padding:1px 7px; margin-left:6px;} .count.zero{background:var(--line); color:var(--dim);}
+  .list{display:grid; gap:14px;} .empty{color:var(--dim); text-align:center; padding:28px 0;}
+  .card{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:18px;}
+  .top{display:flex; justify-content:space-between; gap:10px; align-items:flex-start; flex-wrap:wrap;} .card h3{font-size:1.05rem;}
+  .pill{font-size:.74rem; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap;} .pill.amber{background:rgba(242,169,59,.16); color:var(--amber);} .pill.green{background:rgba(94,166,113,.18); color:var(--green);} .pill.red{background:rgba(226,107,97,.18); color:var(--red);} .pill.grey{background:var(--line); color:var(--dim);}
+  .tiles{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:14px 0;} .tile{background:var(--ink); border:1px solid var(--line); border-radius:8px; padding:10px; text-align:center;} .tile small{display:block; color:var(--dim); font-size:.72rem;} .tile b{font-size:1rem;} .tile.big b{color:var(--amber); font-size:1.15rem;}
+  .bar2{height:10px; background:var(--ink); border-radius:5px; overflow:hidden;} .bar2 i{display:block; height:100%; background:var(--amber);}
+  .row{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; align-items:center;} .row input{flex:1; min-width:140px;}
+  table{width:100%; border-collapse:collapse; font-size:.86rem; margin-top:10px;} th,td{text-align:left; padding:8px 6px; border-bottom:1px solid var(--line); vertical-align:top;} th{color:var(--dim); font-weight:600;} td.r,th.r{text-align:right;}
+  .note{border-left:4px solid var(--amber); background:rgba(242,169,59,.08); padding:10px 12px; border-radius:4px; font-size:.88rem; margin-top:12px;}
+  .stars{color:var(--amber); letter-spacing:2px;}
+  @media (max-width:640px){.tiles{grid-template-columns:1fr 1fr;} .bar{padding:12px 14px;} table{font-size:.8rem;}}
+</style>
+</head>
+<body>
+
+<div class="login" id="gate">
+  <div class="login-card">
+    <div class="brand">Auto<span>fixer</span> Funding</div>
+
+    <form id="inviteForm" hidden>
+      <p class="lead" id="inviteLead">Welcome. Choose your own password to open your funding partner dashboard.</p>
+      <label>Choose a password (8 or more characters)<input id="np1" type="password" autocomplete="new-password"></label>
+      <label>Type it again<input id="np2" type="password" autocomplete="new-password"></label>
+      <button class="btn full" type="submit">Create my password</button>
+      <p class="err" id="inviteErr" hidden></p>
+    </form>
+
+    <form id="loginForm">
+      <p class="lead">Sign in to see the customers scheduled for valuation, your repair credit lines and payments.</p>
+      <label>Email<input id="em" type="email" autocomplete="username" autocapitalize="none"></label>
+      <label>Password<input id="pw" type="password" autocomplete="current-password"></label>
+      <button class="btn full" type="submit">Sign in</button>
+      <p class="err" id="loginErr" hidden></p>
+      <p class="meta" style="margin-top:14px;">Forgot your password or link expired? Ask Autofixer for a new link.</p>
+    </form>
+  </div>
+</div>
+
+<div id="app" hidden>
+  <div class="bar"><div class="brand">Auto<span>fixer</span> Funding <span class="meta" id="who" style="font-family:Inter,sans-serif;font-size:.85rem;"></span></div><button class="btn ghost" id="signOut" type="button">Sign out</button></div>
+  <div class="wrap">
+    <p class="err" id="topErr" hidden></p>
+    <div class="tabs">
+      <button class="tab active" data-tab="val">Vehicles to value <span class="count zero" id="cVal">0</span></button>
+      <button class="tab" data-tab="lines">Credit lines</button>
+      <button class="tab" data-tab="jobs">Repairs &amp; payments <span class="count zero" id="cJobs">0</span></button>
+    </div>
+    <section id="v-val"><div class="list" id="valList"></div></section>
+    <section id="v-lines" hidden><div class="list" id="lineList"></div></section>
+    <section id="v-jobs" hidden><div class="list" id="jobList"></div></section>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+  var API_BASE = window.AUTOFIXER_API || 'https://YOUR_PROJECT_REF.supabase.co/functions/v1';
+  var ANON_KEY = window.AUTOFIXER_ANON_KEY || '';
+  var CONFIGURED = API_BASE.indexOf('YOUR_PROJECT' + '_REF') === -1 && API_BASE.indexOf('YOUR-REF') === -1;
+  var token = '', D = null, inviteToken = '';
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function show(id, m){ var e = $(id); e.textContent = m || ''; e.hidden = !m; }
+  function N(k){ return '\u20a6' + (Number(k || 0) / 100).toLocaleString('en-NG', { maximumFractionDigits: 2 }); }
+  function when(iso){ if(!iso) return ''; var d = new Date(iso); return isNaN(d) ? '' : d.toLocaleString('en-NG', { weekday:'short', day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }); }
+  var ERR = { invalid_login:'Wrong email or password.', session_expired:'Your sign-in has ended. Please sign in again.', invite_invalid:'This link has expired or was already used. Ask Autofixer for a new one.', weak_password:'Choose a stronger password: at least 8 characters, and not an easy one like 12345678.',
+    invalid_amount:'Enter a sensible forced sale value in naira (between \u20a650,000 and \u20a6500,000,000).', not_open:'This valuation can no longer be changed.', already_approved:'This value was already approved and cannot be changed.', no_payment_details_yet:'Autofixer has not entered the payment details yet.', not_payment_pending:'This job is not waiting for payment.', exceeds_available:'This is more than the available repair amount for this vehicle.' };
+  function api(path, body){
+    if(!CONFIGURED) return Promise.resolve({ status: 0, body: { error: 'not_configured' } });
+    var h = { 'Content-Type': 'application/json' }; if(ANON_KEY){ h.apikey = ANON_KEY; h.Authorization = 'Bearer ' + ANON_KEY; } if(token) h['x-lender-token'] = token;
+    return fetch(API_BASE + '/funding' + path, { method: 'POST', headers: h, body: JSON.stringify(body || {}) }).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return { status: r.status, body: j }; }); });
+  }
+  function say(res){ var e = res.body && res.body.error; if(e === 'session_expired'){ out('Your sign-in has ended. Please sign in again.'); return; } show('topErr', ERR[e] || 'Something went wrong. Please try again.'); }
+
+  // ---------- sign in / invite ----------
+  function keep(t){ token = t; try{ sessionStorage.setItem('lender_token', t); }catch(e){} }
+  function out(msg){ token = ''; D = null; try{ sessionStorage.removeItem('lender_token'); }catch(e){} $('app').hidden = true; $('gate').hidden = false; $('inviteForm').hidden = true; $('loginForm').hidden = false; show('loginErr', msg || ''); }
+  $('loginForm').addEventListener('submit', function(e){
+    e.preventDefault(); show('loginErr', '');
+    api('/lender/login', { email: $('em').value.trim(), password: $('pw').value }).then(function(r){
+      if(r.status !== 200){ show('loginErr', r.body.error === 'locked' ? 'Too many wrong tries. Please wait ' + (r.body.minutes || 15) + ' minutes.' : (ERR[r.body.error] || 'Something went wrong. Please try again.')); return; }
+      $('pw').value = ''; keep(r.body.token); load();
+    }).catch(function(){ show('loginErr', 'Connection problem. Please try again.'); });
+  });
+  $('inviteForm').addEventListener('submit', function(e){
+    e.preventDefault(); show('inviteErr', '');
+    var a = $('np1').value, b = $('np2').value;
+    if(a.length < 8){ show('inviteErr', ERR.weak_password); return; } if(a !== b){ show('inviteErr', 'The two passwords do not match.'); return; }
+    api('/lender/accept-invite', { token: inviteToken, password: a }).then(function(r){
+      if(r.status !== 200){ show('inviteErr', ERR[r.body.error] || 'Something went wrong. Please try again.'); return; }
+      $('np1').value = ''; $('np2').value = ''; inviteToken = ''; try{ history.replaceState(null, '', location.pathname); }catch(x){} keep(r.body.token); load();
+    }).catch(function(){ show('inviteErr', 'Connection problem. Please try again.'); });
+  });
+  $('signOut').addEventListener('click', function(){ if(token) api('/lender/logout').catch(function(){}); out(''); });
+
+  function load(cb){
+    api('/lender/overview').then(function(r){
+      if(r.status === 200){ D = r.body; $('gate').hidden = true; $('app').hidden = false; show('topErr', ''); render(); if(typeof cb === 'function') cb(); }
+      else if(r.status === 401){ out(cb === 'init' ? '' : ERR.session_expired); }
+      else say(r);
+    }).catch(function(){ show('topErr', 'Connection problem. Please try again.'); });
+  }
+
+  // ---------- rendering ----------
+  var JOBST = { scheduled:['Waiting for valuation','grey'], awaiting_valuation_approval:['Value awaiting Autofixer approval','amber'], ready:['Ready: repair can start','green'], repair_in_progress:['Repair in progress','amber'], payment_pending:['Payment pending','amber'], paid:['Paid: waiting for Autofixer to confirm','amber'], completed:['Completed','green'], declined:['Declined','red'], cancelled:['Cancelled','grey'] };
+  var PARTY = { mechanic:'Mechanic', autofixer:'Autofixer', supplier:'Parts supplier', other:'Other' };
+  var VALST = { scheduled:['Enter the forced sale value','amber'], awaiting_approval:['Awaiting Autofixer approval','amber'], approved:['Approved','green'], rejected:['Changes requested','red'], declined:['Declined','red'] };
+  function pill(m, k){ var s = m[k] || [k, 'grey']; return '<span class="pill ' + s[1] + '">' + esc(s[0]) + '</span>'; }
+  function valuationCard(v){
+    var h = '<article class="card"><div class="top"><div><h3>' + esc(v.customerName || 'Customer') + ' \u00b7 ' + esc(v.vehiclePlate) + '</h3><p class="meta"><a href="tel:+' + esc(v.customerPhone) + '">' + esc(v.customerPhone) + '</a></p></div>' + pill(VALST, v.status) + '</div>';
+    if(v.appointmentAt) h += '<p style="margin-top:10px;">Bring the vehicle: <b>' + esc(when(v.appointmentAt)) + '</b><br><span class="meta">' + esc(v.appointmentPlace || '') + '</span></p>';
+    if(v.status === 'scheduled' || v.status === 'rejected'){
+      if(v.status === 'rejected') h += '<div class="note"><b>Autofixer asked for a change:</b> ' + esc(v.decisionNote || '') + '</div>';
+      h += '<label style="margin-top:12px;">Forced sale value of this vehicle (\u20a6)<input id="fsv-' + v.id + '" type="number" inputmode="decimal" min="50000" placeholder="e.g. 2000000"></label><label>Note (optional)<input id="fn-' + v.id + '" type="text" maxlength="300" placeholder="Condition, mileage, remarks"></label><p class="meta">The available repair amount is shown after Autofixer approves this value. It will be ' + (D.percent) + '% of it.</p>' +
+        '<div class="row"><button class="btn" data-act="fsv" data-id="' + v.id + '" type="button">Submit for approval</button><button class="btn danger" data-act="decline" data-id="' + v.id + '" type="button">Not prequalified</button></div><p class="err" id="e-' + v.id + '" hidden></p>';
+    } else if(v.status === 'awaiting_approval'){
+      h += '<p style="margin-top:10px;">Forced sale value submitted: <b>' + N(v.fsvKobo) + '</b></p><p class="meta">Waiting for Autofixer to approve it. The available repair amount will appear once it is approved.</p>';
+    } else if(v.status === 'approved'){
+      h += '<p style="margin-top:10px;">Approved forced sale value <b>' + N(v.fsvKobo) + '</b>. Maximum available repair amount <b>' + N(v.ceilingKobo) + '</b>, still available <b>' + N(v.availableKobo) + '</b>.</p>';
+    }
+    return h + '</article>';
+  }
+  function lineCard(v){
+    var used = v.ceilingKobo ? Math.min(100, Math.round((v.disbursedKobo + v.reservedKobo) * 100 / v.ceilingKobo)) : 0;
+    return '<article class="card"><div class="top"><div><h3>' + esc(v.vehiclePlate) + '</h3><p class="meta">' + esc(v.customerName || '') + '</p></div><span class="pill green">Approved</span></div>' +
+      '<div class="tiles"><div class="tile"><small>Forced sale value</small><b>' + N(v.fsvKobo) + '</b></div><div class="tile"><small>Max repair amount (' + v.percent + '%)</small><b>' + N(v.ceilingKobo) + '</b></div><div class="tile"><small>Paid out so far</small><b>' + N(v.disbursedKobo) + '</b></div><div class="tile big"><small>Available now</small><b>' + N(v.availableKobo) + '</b></div></div>' +
+      '<div class="bar2"><i style="width:' + used + '%"></i></div><p class="meta" style="margin-top:6px;">' + (v.reservedKobo ? N(v.reservedKobo) + ' is set aside for repairs under way. ' : '') + 'Every repair paid out is taken off this amount. The vehicle can keep being funded until it is used up.</p></article>';
+  }
+  function stars(n){ return n ? '<span class="stars">' + '\u2605'.repeat(n) + '\u2606'.repeat(5 - n) + '</span>' : ''; }
+  function jobCard(j){
+    var h = '<article class="card"><div class="top"><div><h3>' + esc(j.customerName) + ' \u00b7 ' + esc(j.vehiclePlate) + '</h3><p class="meta">' + esc(j.reference) + (j.workshopName ? ' \u00b7 ' + esc(j.workshopName) : '') + '</p></div>' + pill(JOBST, j.status) + '</div>' +
+      '<p style="margin-top:10px;">Repair amount <b>' + N(j.amountKobo) + '</b> <span class="meta">(parts ' + N(j.partsKobo) + ', labor ' + N(j.laborKobo) + ')</span>' + (j.invoiceUrl ? ' \u00b7 <a href="' + esc(j.invoiceUrl) + '" target="_blank" rel="noopener" style="color:var(--amber);">View invoice</a>' : '') + '</p>';
+    if(j.availableKobo != null) h += '<p class="meta">Available on this vehicle: ' + N(j.availableKobo) + '</p>';
+    if(j.rating) h += '<p style="margin-top:8px;">Customer rating: ' + stars(j.rating) + (j.ratingComment ? ' <span class="meta">"' + esc(j.ratingComment) + '"</span>' : '') + '</p>';
+    if(j.lines.length){
+      h += '<table><thead><tr><th>Pay to</th><th class="r">Amount</th><th>Bank details</th><th>Status</th></tr></thead><tbody>' + j.lines.map(function(l){
+        var st = l.status === 'confirmed' ? ['Confirmed','green'] : l.status === 'paid' ? ['Paid','amber'] : ['To pay','grey'];
+        return '<tr><td><b>' + esc(PARTY[l.party] || l.party) + '</b><br>' + esc(l.payeeName) + '</td><td class="r">' + N(l.amountKobo) + '</td><td>' + esc(l.bankName) + '<br><b>' + esc(l.accountNumber) + '</b><br>' + esc(l.accountName) + '</td><td><span class="pill ' + st[1] + '">' + st[0] + '</span></td></tr>';
+      }).join('') + '</tbody><tfoot><tr><td><b>Total</b></td><td class="r"><b>' + N(j.linesTotalKobo) + '</b></td><td colspan="2"></td></tr></tfoot></table>';
+    }
+    if(j.status === 'payment_pending'){
+      if(j.lines.length) h += '<div class="note">The repair is done and rated. Please pay everyone listed (including Autofixer\'s commission line where shown), then click <b>Paid</b>.</div><div class="row"><input id="ref-' + j.id + '" type="text" maxlength="100" placeholder="Your payment reference (optional)"><button class="btn" data-act="paid" data-id="' + j.id + '" type="button">Paid</button></div><p class="err" id="e-' + j.id + '" hidden></p>';
+      else h += '<div class="note">The repair is done and rated. Waiting for Autofixer to enter the payment details.</div>';
+    }
+    if(j.status === 'paid') h += '<p class="meta" style="margin-top:10px;">You marked this paid ' + esc(when(j.lenderPaidAt)) + (j.lenderPaidReference ? ' (ref ' + esc(j.lenderPaidReference) + ')' : '') + '. Waiting for Autofixer to confirm.</p>';
+    if(j.status === 'completed') h += '<p class="meta" style="margin-top:10px;">Completed. Autofixer confirmed ' + esc(when(j.adminConfirmedAt)) + '.</p>';
+    return h + '</article>';
+  }
+  function render(){
+    $('who').textContent = '\u00b7 ' + (D.lender.name || '');
+    var toValue = D.valuations.filter(function(v){ return ['scheduled','rejected','awaiting_approval'].indexOf(v.status) > -1; });
+    var needVal = D.valuations.filter(function(v){ return v.status === 'scheduled' || v.status === 'rejected'; }).length;
+    $('cVal').textContent = needVal; $('cVal').classList.toggle('zero', !needVal);
+    var action = D.jobs.filter(function(j){ return j.status === 'payment_pending' && j.lines.length; }).length;
+    $('cJobs').textContent = action; $('cJobs').classList.toggle('zero', !action);
+    var rest = D.valuations.filter(function(v){ return toValue.indexOf(v) < 0 && v.status !== 'approved'; });
+    $('valList').innerHTML = (toValue.concat(rest)).map(valuationCard).join('') || '<p class="empty">No customers are scheduled to bring a vehicle yet.</p>';
+    var lines = D.valuations.filter(function(v){ return v.status === 'approved'; });
+    $('lineList').innerHTML = lines.map(lineCard).join('') || '<p class="empty">No repair credit lines yet. A line appears here once Autofixer approves a forced sale value.</p>';
+    $('jobList').innerHTML = D.jobs.map(jobCard).join('') || '<p class="empty">No repair jobs yet.</p>';
+  }
+  document.querySelector('.tabs').addEventListener('click', function(e){
+    var b = e.target.closest('[data-tab]'); if(!b) return; var t = b.dataset.tab;
+    document.querySelectorAll('.tab').forEach(function(x){ x.classList.toggle('active', x === b); });
+    ['val','lines','jobs'].forEach(function(k){ $('v-' + k).hidden = k !== t; });
+  });
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('[data-act]'); if(!b) return; var id = b.dataset.id, act = b.dataset.act; show('topErr', ''); var eb = $('e-' + id);
+    if(act === 'fsv'){
+      var v = Number($('fsv-' + id).value); if(!(v > 0)){ eb.textContent = ERR.invalid_amount; eb.hidden = false; return; }
+      if(!window.confirm('Submit a forced sale value of ' + N(v * 100) + '? Autofixer must approve it, and you will not be able to change it after approval.')) return;
+      b.disabled = true; api('/lender/valuations/' + id + '/fsv', { fsvNaira: v, note: $('fn-' + id).value }).then(function(r){ b.disabled = false; if(r.status === 200) load(); else { eb.textContent = ERR[r.body.error] || 'Could not save.'; eb.hidden = false; if(r.status === 401) say(r); } });
+    }
+    if(act === 'decline'){
+      var note = window.prompt('This customer does not prequalify. Add a short reason (optional):'); if(note === null) return;
+      api('/lender/valuations/' + id + '/decline', { note: note }).then(function(r){ if(r.status === 200) load(); else say(r); });
+    }
+    if(act === 'paid'){
+      if(!window.confirm('Confirm that you have paid every party listed? This takes the amount off the vehicle\'s available repair amount and cannot be undone.')) return;
+      b.disabled = true; api('/lender/jobs/' + id + '/paid', { reference: $('ref-' + id).value }).then(function(r){ b.disabled = false; if(r.status === 200) load(); else { eb.textContent = ERR[r.body.error] || 'Could not save.'; eb.hidden = false; } });
+    }
+  });
+
+  // ---------- start ----------
+  (function(){
+    var m = /invite=([A-Za-z0-9_-]+)/.exec(location.hash || '');
+    if(m){ inviteToken = m[1]; $('inviteForm').hidden = false; $('loginForm').hidden = true; return; }
+    try{ var t = sessionStorage.getItem('lender_token'); if(t){ token = t; load('init'); } }catch(e){}
+    if(!CONFIGURED) show('loginErr', 'This page could not find the backend address. Check config.js.');
+  })();
+</script>
+</body>
+</html>
